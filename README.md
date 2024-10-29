@@ -8,5 +8,5 @@
 - 수정 : fix페이지이름
 (예시) fixmain
 
-## push 후 commit 필수! 
+## push 전 commit 필수! 
 
