@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
   .page-container {
     display: flex;
     flex-direction: column;
-    width: 400px; /* 고정된 너비 */
+    width: 390px; /* 고정된 너비 */
     height: 1200px; /* 고정된 높이 */
     align-items: center;
     justify-content: center;
