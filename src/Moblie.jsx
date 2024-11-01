@@ -22,6 +22,7 @@ const MobileButton = styled(Link)`
   }
 
   @media (max-width: 480px) {
+    background-color:#F9F9F9;
     font-size: 14px;
     height: 40px;
   }

@@ -4,7 +4,7 @@ import Require from './page/Require';
 import Login from './page/Login/Login';
 import LoginModal from './page/Login/LoginModal';
 import Info from './page/Info';
-import Main from './page/Mainpage';
+import Main from './page/Main/Mainpage';
 import DepthRequire from './page/Depthrequire/Depthrequire';
 import MobileMenu from './Moblie';
 import GlobalStyle from './globalstyle';
