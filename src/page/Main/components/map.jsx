@@ -39,7 +39,7 @@ const BuildingOne = styled.div`
   position: absolute;
   background-image: url("/img/building1.png");
   top: 18%;
-  left: 72%;
+  left: 71%;
   width: 9vh;
   height: 10vh;
   background-size: cover;
