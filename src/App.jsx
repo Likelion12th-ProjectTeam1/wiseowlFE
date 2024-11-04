@@ -3,7 +3,7 @@ import Landing from './page/landing';
 import Require from './page/Require';
 import Login from './page/Login/Login';
 import LoginModal from './page/Login/LoginModal';
-import Info from './page/Info';
+import Info from './page/Info/Info';
 import Main from './page/Main/Mainpage';
 import DepthRequire from './page/Depthrequire/Depthrequire';
 import MobileMenu from './Moblie';
