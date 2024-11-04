@@ -4,6 +4,7 @@ import Require from './page/Require';
 import Login from './page/Login/Login';
 import LoginModal from './page/Login/LoginModal';
 import Info from './page/Info/Info';
+import InfoTwo from './page/Info/infotwo';
 import Main from './page/Main/Mainpage';
 import DepthRequire from './page/Depthrequire/Depthrequire';
 import MobileMenu from './Moblie';
@@ -29,6 +30,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/loginmodal" element={<LoginModal />} />
         <Route path="/info" element={<Info />} />
+        <Route path="/infotwo" element={<InfoTwo />} />
         <Route path="/main" element={<Main />} />
         <Route path="/require" element={<Require />} />
         <Route path="/depthrequire" element={<DepthRequire/>} />

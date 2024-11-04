@@ -3,6 +3,7 @@ import Require from './page/Require';
 import Login from './page/Login/Login';
 import LoginModal from './page/Login/LoginModal';
 import Info from './page/Info';
+import InfoTwo from './page/Info/infotwo';
 import Main from './page/Main/Mainpage';
 import DepthRequire from './page/Depthrequire/Depthrequire';
 import ShoppingModal from './page/Shopping/ShopModal';
@@ -118,9 +119,12 @@ const routes = [
     exact: true,
     element: <EditRequire />,
     name: '졸업요건수정모달'
-  }
-  
-  
-];
+  },
+  {
+    path: '/infotwo',
+    exact: true,
+    element: <InfoTwo />,
+    name: '이수과목입력'
+  }];
 
 export default routes;
