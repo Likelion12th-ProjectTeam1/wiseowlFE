@@ -7,7 +7,7 @@ const MobileButton = styled(Link)`
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 300px;
+  max-width: 390px;
   height: 45px;
   color: white;
   background-color: #007bff;
@@ -22,7 +22,6 @@ const MobileButton = styled(Link)`
   }
 
   @media (max-width: 480px) {
-    background-color:#F9F9F9;
     font-size: 14px;
     height: 40px;
   }
