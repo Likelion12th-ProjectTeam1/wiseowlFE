@@ -9,11 +9,13 @@ const PageContainer = styled.div`
     justify-content: center;
     height: 100vh;
     background-color: #F9F9F9;
-    gap: 20px; /* Char와 버튼 사이 간격 조절 */
+    gap: 10px; 
 `;
 
-const StyledChar = styled(Char)`
-    margin-bottom: 90px; /* Char와 버튼 사이 간격 조절 */
+const Text = styled.p`
+    font-size: 11.5px; 
+    color: #535353; 
+    margin: 0; 
 `;
 
 const GoogleButton = styled.button`
@@ -24,24 +26,19 @@ const GoogleButton = styled.button`
     border-radius: 30px;
     border: 1px solid #909090;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 12px;
     display: flex;
     align-items: center;
 
     &:hover {
-        background-color: gray;
+        background-color: #cccccc;
     }
 `;
 
 const ButtonContent = styled.div`
     display: flex;
     align-items: center;
-    gap: 16px; /* 로고와 텍스트 사이 간격 조절 */
-`;
-
-
-const StyledGoogleLogo = styled(ImportedGoogleLogo)`
-    margin-right: 68px; /* 로고와 텍스트 사이 간격 조절 */
+    gap: 16px; 
 `;
 
 export default function Login() {
@@ -52,10 +49,11 @@ export default function Login() {
     return (
         <PageContainer>
             <Logo />
-            <StyledChar />
+            <Text>캠퍼스 생활의 지혜를 담다, 와이즈올</Text>
+            <Char />
             <GoogleButton onClick={handleGoogleLogin}>
                 <ButtonContent>
-                    <StyledGoogleLogo />
+                    <ImportedGoogleLogo /> 
                     구글로 로그인하기
                 </ButtonContent>
             </GoogleButton>
