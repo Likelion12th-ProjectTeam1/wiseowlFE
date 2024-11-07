@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     flex-direction: column;
     width: 390px; /* 고정된 너비 */
-    height: 1200px; /* 고정된 높이 */
+    height: 1500px; /* 고정된 높이 */
     align-items: center;
     justify-content: center;
     padding: 20px;
