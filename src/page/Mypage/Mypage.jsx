@@ -3,10 +3,12 @@ import styled from "styled-components";
 import MyPageLinks from "./components/mypagelinks";
 import mypage_progile from "../../img/mypage_profile.png";
 import MypageInfoBar from "./components/MypageInfoBar";
+
 const Container = styled.div`
   width: 390px;
   margin: 0 auto;
   padding: 20px;
+  margin-bottom: 70px;
 `;
 const CustomSpace = styled.div`
   height: ${(props) => props.height || "0px"};

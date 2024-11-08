@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { LuMinusCircle } from "react-icons/lu";
 import { Checkbox, Switch, Input, Select, Button } from "antd";
 
@@ -8,6 +8,7 @@ const Container = styled.div`
   width: 390px;
   margin: 0 auto;
   padding: 20px;
+  margin-bottom: 70px;
 `;
 
 const CustomSpace = styled.div`
