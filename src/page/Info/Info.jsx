@@ -1,29 +1,23 @@
 import styled from "styled-components";
 import InfoHeader from "./components/infoheader";
 import DropDown from "../../component/DropDown";
+import { Input, Flex } from 'antd';
 import { useState } from "react";
+import DropDown2 from "../../component/DropDown2";
 
-const Container = styled.div`
-  width: 390px;
-  margin: 0 auto;
-  padding: 20px;
-`;
-const CustomSpace = styled.div`
-  height: ${(props) => props.height || "0px"};
-`;
+const NameContainer = styled.div`
+  width: 100%;
+  height : 10%;
+  flex-direction : column;
+  margin-top: 100px;
+  margin-left: 80px;
+`
 
-const Title = styled.h1`
-  font-family: Inter;
-  font-size: 24px;
-  padding-left: 15px;
-  margin-bottom: 20px;
-`;
 const MiddleContainer = styled.div`
   width: 390px;
   height: 50px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 950px;
 `;
 
 const MajorContainer = styled.div`
@@ -32,15 +26,17 @@ const MajorContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 35px;
+  margin-left: 80px;
 `;
+
+
 
 const SecondmajorContainer = styled.div`
   width: 390px;
   height: 50px;
   display: flex;
   flex-direction: row;
-  position: absolute;
-  top: 500px;
+  margin-left: 80px;
 `;
 
 const DropDownContainer = styled.div`
@@ -48,10 +44,9 @@ const DropDownContainer = styled.div`
   height: 50px;
   display: flex;
   flex-direction: column;
-  margin-left: 40px;
 `;
 
-const DropdownText = styled.h4`
+const ContentText = styled.h4`
   color: #000;
   font-family: Inter;
   font-size: 14.486px;
@@ -60,6 +55,14 @@ const DropdownText = styled.h4`
   line-height: normal;
   margin-bottom: 10px;
 `;
+
+const NameInput = styled.input`
+  width : 40%;
+  height : 25%;
+  border-radius: 4px;
+  border: 1.811px solid #D9D9D9;
+  margin-bottom: 15px;
+`
 
 const ButtonTitle = styled.h4`
   color: #000;
@@ -79,8 +82,7 @@ const CautionText = styled.h5`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  position: absolute;
-  top: 620px;
+  margin-top: 50px;
 `;
 
 const ChooseContainer = styled.div`
@@ -88,8 +90,7 @@ const ChooseContainer = styled.div`
   height: 100px;
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 380px;
+  margin-top: 30px;
 `;
 
 const ButtonContainer = styled.div`
@@ -99,7 +100,7 @@ const ButtonContainer = styled.div`
   flex-direction: row;
 `;
 const MajorButton = styled.div`
-  width: 20%;
+  width: 18%;
   height: 45%;
   border-radius: 16px;
   border: 1.811px solid ${(props) => (props.isActive ? "#5D96E8" : "#D9D9D9")};
@@ -125,11 +126,11 @@ const NextButton = styled.div`
   border-radius: 4px;
   background: #5d96e8;
   color: #fff;
-  position: absolute;
   top: 750px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
 `;
 export default function Info() {
   const [choose, setChoose] = useState("이중전공");
@@ -141,11 +142,62 @@ export default function Info() {
   return (
     <div className="page-container">
       <InfoHeader />
-      <MiddleContainer>
+      <NameContainer>
+        <ContentText>이름</ContentText>
+        <NameInput placeholder="이름을 입력해주세요"/>
+        <ContentText>학번</ContentText>
+        <DropDown2 />
+      </NameContainer>
+      <MajorContainer>
         <DropDownContainer>
-          <DropdownText>학번</DropdownText>
-          <DropDown />
+          <ContentText>단과대</ContentText>
+          <DropDown2 />
         </DropDownContainer>
+        <DropDownContainer>
+          <ContentText>본전공</ContentText>
+          <DropDown2 />
+        </DropDownContainer>
+      </MajorContainer>
+      <ChooseContainer>
+      <ButtonTitle>이중전공 및 부전공</ButtonTitle>
+        <ButtonContainer>
+          <MajorButton
+            isActive={choose === "이중전공"}
+            onClick={() => HandleChoose("이중전공")}
+          >
+            이중전공
+          </MajorButton>
+          <MajorButton
+            isActive={choose === "부전공"}
+            onClick={() => HandleChoose("부전공")}
+          >
+            부전공
+          </MajorButton>
+          <MajorButton
+            isActive={choose === "전공심화"}
+            onClick={() => HandleChoose("전공심화")}
+          >
+            전공심화
+          </MajorButton>
+        </ButtonContainer>
+      </ChooseContainer>
+      {choose !== "전공심화" && (
+        <SecondmajorContainer>
+          <DropDownContainer>
+            <ContentText>{choose} 단과대</ContentText>
+            <DropDown2 />
+          </DropDownContainer>
+          <DropDownContainer>
+            <ContentText>{choose}</ContentText>
+            <DropDown2 />
+          </DropDownContainer>
+        </SecondmajorContainer>
+      )}
+      <CautionText>
+        학과정보를 입력하지 않으시면 이수과목을 입력할 수 없습니다.
+      </CautionText>
+      <NextButton>다음</NextButton>
+      {/* <MiddleContainer>
         <MajorContainer>
           <DropDownContainer>
             <DropdownText>본전공 단과대</DropdownText>
@@ -195,7 +247,7 @@ export default function Info() {
       <CautionText>
         학과정보를 입력하지 않으시면 이수과목을 입력할 수 없습니다.
       </CautionText>
-      <NextButton>다음</NextButton>
+      <NextButton>다음</NextButton> */}
     </div>
   );
 }

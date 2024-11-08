@@ -21,11 +21,10 @@ const GlobalStyle = createGlobalStyle`
   .page-container {
     display: flex;
     flex-direction: column;
-    width: 390px; /* 고정된 너비 */
-    height: 1500px; /* 고정된 높이 */
+    width: 390px;
+    height: 1200px;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
+    /* justify-content: center; */
     background-color: #FFFF;
     border-radius: 12px;
     border: 2px solid #ccc; /* 테두리 추가 */
