@@ -20,31 +20,43 @@ import EditCourse from "./page/Editcourse/Editcourse";
 import EditcourseModal from "./page/Editcourse/EditcourseModal";
 import EditRequire from "./page/Editrequire/Editrequire";
 
+import Navigatebar from "./component/Navigatebar";
+import { ThemeProvider } from "styled-components";
+
+const theme = {
+  colors: {
+    primary: "#000",
+  },
+};
+
 function App() {
   return (
     <Router>
       <GlobalStyle />
-      <Routes>
-        <Route path="/" element={<MobileMenu />} />
-        <Route path="/landing" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/loginmodal" element={<LoginModal />} />
-        <Route path="/info" element={<Info />} />
-        <Route path="/infotwo" element={<InfoTwo />} />
-        <Route path="/main" element={<Main />} />
-        <Route path="/require" element={<Require />} />
-        <Route path="/depthrequire" element={<DepthRequire />} />
-        <Route path="/shoppingmodal" element={<ShoppingModal />} />
-        <Route path="/shopping" element={<Shopping />} />
-        <Route path="/buy" element={<Buy />} />
-        <Route path="/notice" element={<Notice />} />
-        <Route path="/noticemodal" element={<NoticeModal />} />
-        <Route path="/mypage" element={<Mypage />} />
-        <Route path="/editmypage" element={<EditMypage />} />
-        <Route path="/editcourse" element={<EditCourse />} />
-        <Route path="/editcoursemodal" element={<EditcourseModal />} />
-        <Route path="/editrequire" element={<EditRequire />} />
-      </Routes>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="/" element={<MobileMenu />} />
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/loginmodal" element={<LoginModal />} />
+          <Route path="/info" element={<Info />} />
+          <Route path="/infotwo" element={<InfoTwo />} />
+          <Route path="/main" element={<Main />} />
+          <Route path="/require" element={<Require />} />
+          <Route path="/depthrequire" element={<DepthRequire />} />
+          <Route path="/shoppingmodal" element={<ShoppingModal />} />
+          <Route path="/shopping" element={<Shopping />} />
+          <Route path="/buy" element={<Buy />} />
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/noticemodal" element={<NoticeModal />} />
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/editmypage" element={<EditMypage />} />
+          <Route path="/editcourse" element={<EditCourse />} />
+          <Route path="/editcoursemodal" element={<EditcourseModal />} />
+          <Route path="/editrequire" element={<EditRequire />} />
+        </Routes>
+        <Navigatebar />
+      </ThemeProvider>
     </Router>
   );
 }
