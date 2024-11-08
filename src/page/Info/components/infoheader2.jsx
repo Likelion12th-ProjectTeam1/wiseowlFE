@@ -5,8 +5,6 @@ const HeaderContainer = styled.div`
     height : 50px;
     display : flex;
     flex-direction: row;
-    position: absolute;
-    bottom : 700px;
 `
 
 const InfoTitle = styled.h2`

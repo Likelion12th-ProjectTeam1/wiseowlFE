@@ -10,9 +10,7 @@ const CautionText = styled.h5`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  position : absolute;
-  top: 150px;
-  margin-right : 80px;
+  margin-top: 20px;
 `;
 
 const FormContainer = styled.div`
@@ -123,11 +121,12 @@ export default function InfoTwo() {
     <div className="page-container">
       <InfoHeader2 />
       <CautionText>미입력시 해당 학기는 미이수로 인정됩니다.</CautionText>
+      {/* <CautionText>미입력시 해당 학기는 미이수로 인정됩니다.</CautionText>
       <FormArea>
         {forms}
       </FormArea>
       <AddFormButton onClick={addForm}>학기 추가하기</AddFormButton>
-      <EnterButton>확인</EnterButton>
+      <EnterButton>확인</EnterButton> */}
     </div>
   );
 }

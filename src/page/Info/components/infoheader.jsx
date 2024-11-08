@@ -5,7 +5,14 @@ const HeaderContainer = styled.div`
     height : 50px;
     display : flex;
     flex-direction: row;
-    margin-bottom: auto;
+
+`
+
+const TitleContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    height : 100%;
 `
 
 const InfoTitle = styled.h2`
@@ -26,14 +33,25 @@ const JumpInfo = styled.h3`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    margin-left: 80px;
+    margin-left: 50px;
     margin-top: 25px;
 `
-
+const QuestionImg = styled.div`
+    width: 30px;
+    height: 30px;
+    background-image: url("/img/question.png"); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-top: 75px;
+    margin-left: 10px;
+`;
 export default function InfoHeader(){
     return(
         <HeaderContainer>
-            <InfoTitle>학과정보를 <br/>입력해주세요.</InfoTitle>
+            <TitleContainer>
+                <InfoTitle>학과정보를 <br/>입력해주세요</InfoTitle>
+                <QuestionImg />
+            </TitleContainer>
             <JumpInfo>건너뛰기</JumpInfo>
         </HeaderContainer>
     );
