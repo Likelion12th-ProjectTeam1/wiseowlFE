@@ -34,9 +34,14 @@ function MobileMenu() {
       <MobileButton to="/require">Requirepage</MobileButton>
       <MobileButton to="/login">Loginpage</MobileButton>
       <MobileButton to="/loginmodal">Loginmodal</MobileButton>
+      <MobileButton to="/request">request</MobileButton>
+      <MobileButton to="/requestaccept">requestaccept</MobileButton>
       <MobileButton to="/info">Infopage</MobileButton>
       <MobileButton to="/infotwo">Info2page</MobileButton>
+      <MobileButton to="/subjectmodal">subjectmodal</MobileButton>
+      <MobileButton to="/subjectmodal2">subjectmodal2</MobileButton>
       <MobileButton to="/main">Mainpage</MobileButton>
+      <MobileButton to="/mainnotice">MainNotice</MobileButton>
       <MobileButton to="/depthrequire">Depthrequirepage</MobileButton>
       <MobileButton to="/shoppingmodal">ShoppingModal</MobileButton>
       <MobileButton to="/shopping">Shoppingpage</MobileButton>

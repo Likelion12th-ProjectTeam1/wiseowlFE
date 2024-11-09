@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     flex-direction: column;
     width: 390px;
-    height: 1200px;
+    height: 1500px;
     align-items: center;
     /* justify-content: center; */
     background-color: #FFFF;

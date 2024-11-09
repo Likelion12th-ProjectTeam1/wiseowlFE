@@ -16,6 +16,11 @@ import EditMypage from './page/Editmypage/Editmypage';
 import EditCourse from './page/Editcourse/Editcourse';
 import EditcourseModal from './page/Editcourse/EditcourseModal';
 import EditRequire from './page/Editrequire/Editrequire';
+import SubjectModal from './page/Info/subjectmodal1';
+import SubjectModal2 from './page/Info/subjectmodal2';
+import Request from './page/request.jsx/request';
+import RequestAccept from './page/request.jsx/requestaccept';
+import MainNotice from './page/Mypage/mainnotice';
 
 const routes = [
   {
@@ -124,6 +129,36 @@ const routes = [
     path: '/infotwo',
     exact: true,
     element: <InfoTwo />,
+    name: '이수과목입력'
+  },
+  {
+    path: '/subjectmodal',
+    exact: true,
+    element: <SubjectModal />,
+    name: '이수과목입력'
+  },
+  {
+    path: '/subjectmodal2',
+    exact: true,
+    element: <SubjectModal2 />,
+    name: '이수과목입력'
+  },
+  {
+    path: '/request',
+    exact: true,
+    element: <Request />,
+    name: '이수과목입력'
+  },
+  {
+    path: '/requestaccept',
+    exact: true,
+    element: <RequestAccept/>,
+    name: '이수과목입력'
+  },
+  {
+    path: '/mainnotice',
+    exact: true,
+    element: <MainNotice />,
     name: '이수과목입력'
   }];
 
