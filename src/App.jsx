@@ -19,8 +19,12 @@ import EditMypage from "./page/Editmypage/Editmypage";
 import EditCourse from "./page/Editcourse/Editcourse";
 import EditcourseModal from "./page/Editcourse/EditcourseModal";
 import EditRequire from "./page/Editrequire/Editrequire";
-
+import SubjectModal from "./page/Info/subjectmodal1";
+import SubjectModal2 from "./page/Info/subjectmodal2";
 import Navigatebar from "./component/Navigatebar";
+import Request from './page/request.jsx/request';
+import RequestAccept from './page/request.jsx/requestaccept';
+import MainNotice from './page/Mypage/mainnotice';
 import { ThemeProvider } from "styled-components";
 
 const theme = {
@@ -39,9 +43,14 @@ function App() {
           <Route path="/landing" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/loginmodal" element={<LoginModal />} />
+          <Route path="/request" element={<Request />} />
+          <Route path="/requestaccept" element={<RequestAccept />} />
           <Route path="/info" element={<Info />} />
           <Route path="/infotwo" element={<InfoTwo />} />
+          <Route path="/subjectmodal" element={<SubjectModal/>} />
+          <Route path="/subjectmodal2" element={<SubjectModal2/>} />
           <Route path="/main" element={<Main />} />
+          <Route path="/mainnotice" element={<MainNotice />} />
           <Route path="/require" element={<Require />} />
           <Route path="/depthrequire" element={<DepthRequire />} />
           <Route path="/shoppingmodal" element={<ShoppingModal />} />
