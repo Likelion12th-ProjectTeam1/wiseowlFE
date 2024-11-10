@@ -288,7 +288,7 @@ export default function Require() {
               <RequirementText>토익 700점 이상</RequirementText>
             </RequirementContainer>
             <ArrowContainer>
-              <Link to="/Depthrequire">
+              <Link to="/Depthrequire2">
                 <Arrow />
               </Link>
             </ArrowContainer>
@@ -303,7 +303,7 @@ export default function Require() {
               <RequirementText>캡스톤 프로젝트 PASS</RequirementText>
             </RequirementContainer>
             <ArrowContainer>
-              <Link to="/Depthrequire">
+              <Link to="/Depthrequire2">
                 <Arrow />
               </Link>
             </ArrowContainer>
@@ -318,7 +318,7 @@ export default function Require() {
               <RequirementText>졸업필수과목 수강</RequirementText>
             </RequirementContainer>
             <ArrowContainer>
-              <Link to="/Depthrequire">
+              <Link to="/Depthrequire2">
                 <Arrow />
               </Link>
             </ArrowContainer>

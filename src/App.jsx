@@ -7,6 +7,7 @@ import Info from "./page/Info/Info";
 import InfoTwo from "./page/Info/infotwo";
 import Main from "./page/Main/Mainpage";
 import DepthRequire from "./page/Depthrequire/Depthrequire";
+import DepthRequire2 from "./page/Depthrequire/Depthrequire2";
 import MobileMenu from "./Moblie";
 import GlobalStyle from "./globalstyle";
 import ShoppingModal from "./page/Shopping/ShopModal";
@@ -53,6 +54,7 @@ function App() {
           <Route path="/mainnotice" element={<MainNotice />} />
           <Route path="/require" element={<Require />} />
           <Route path="/depthrequire" element={<DepthRequire />} />
+          <Route path="/depthrequire2" element={<DepthRequire2 />} />
           <Route path="/shoppingmodal" element={<ShoppingModal />} />
           <Route path="/shopping" element={<Shopping />} />
           <Route path="/buy" element={<Buy />} />
