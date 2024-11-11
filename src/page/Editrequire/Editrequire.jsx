@@ -52,7 +52,7 @@ const FirstCourse = styled.div`
   border-radius: 4px;
   background-color: rgba(225, 237, 255, 0.67);
   font-family: Inter;
-  font-size: 600;
+  font-weight: 600;
   font-size: 11px;
   color: #5d96e8;
   display: flex;
