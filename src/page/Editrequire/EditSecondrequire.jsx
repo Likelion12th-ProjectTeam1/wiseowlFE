@@ -189,7 +189,6 @@ const AddCourse = styled.button`
   color: #000;
   font-size: 14px;
   font-weight: 500;
-  cursor: pointer;
 `;
 const Savebtn = styled.button`
   width: 130px;
@@ -249,7 +248,7 @@ export default function EditRequire() {
   // });
 
   const [iscomplete, setIscomplete] = useState(false);
-  const [necessary, setNecessary] = useState([false, true, true, true]);
+  const [necessary, setNecessary] = useState([true, true, true, true]);
   const [firstcheck, setFirstcheck] = useState(true);
   const [secondcheck, setSecondcheck] = useState(false);
   const [thirdcheck, setThirdcheck] = useState(false);
@@ -258,7 +257,7 @@ export default function EditRequire() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/editsecondrequire");
+    navigate("/editrequire");
   };
 
   function changeforeignbtn(key) {
@@ -286,7 +285,7 @@ export default function EditRequire() {
     <Container>
       <Title>졸업요건 수정</Title>
       <FirstHorizontalBox>
-        <FirstCourseText>본전공</FirstCourseText>
+        <FirstCourseText>이중전공</FirstCourseText>
         <FirstCourse>통계학과</FirstCourse>
       </FirstHorizontalBox>
       <CustomSpace height="15px" />
@@ -317,6 +316,7 @@ export default function EditRequire() {
           TOEIC
         </ForeignBtn>
       </TopSecondHorizontalBox>
+      {console.log(firstcheck)}
       <BottomSecondHorizontalBox>
         <ForeignBtn
           width="126px"
@@ -381,10 +381,17 @@ export default function EditRequire() {
         setCheck={setForthcheck}
       />
       <SortHorizontalBox>
-        <AddCourse onClick={handleClick}>이중전공</AddCourse>
+        <AddCourse onClick={handleClick}>본전공</AddCourse>
         <Savebtn>수정완료</Savebtn>
       </SortHorizontalBox>
       <CautionText>미 입력시 해당 학기는 미이수로 인정됩니다.</CautionText>
     </Container>
   );
 }
+/**API 연동시해야할 것 : CheckHorizontalBox 내에 있는것들을 하나의 컴포넌트로 만들기
+ *
+ * 컴포넌트 prop 내용 : check text 내용, margin-left 내용
+ * 그외 : state는 1개씩 하면 될거고..
+ * 가능하다면, 외국어인증 ~ 자격증 인증까지를 하나의 컴포넌트로 만들고,
+ * 졸업논문, 졸업시험, ..., 자격증 인증을 하나의 컴포넌트로 만들어서 재활용하기
+ */

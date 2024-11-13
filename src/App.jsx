@@ -20,12 +20,13 @@ import EditMypage from "./page/Editmypage/Editmypage";
 import EditCourse from "./page/Editcourse/Editcourse";
 import EditcourseModal from "./page/Editcourse/EditcourseModal";
 import EditRequire from "./page/Editrequire/Editrequire";
+import EditSecondRequire from "./page/Editrequire/EditSecondrequire";
 import SubjectModal from "./page/Info/subjectmodal1";
 import SubjectModal2 from "./page/Info/subjectmodal2";
 import Navigatebar from "./component/Navigatebar";
-import Request from './page/request.jsx/request';
-import RequestAccept from './page/request.jsx/requestaccept';
-import MainNotice from './page/Mypage/mainnotice';
+import Request from "./page/request.jsx/request";
+import RequestAccept from "./page/request.jsx/requestaccept";
+import MainNotice from "./page/Mypage/mainnotice";
 import { ThemeProvider } from "styled-components";
 
 const theme = {
@@ -48,8 +49,8 @@ function App() {
           <Route path="/requestaccept" element={<RequestAccept />} />
           <Route path="/info" element={<Info />} />
           <Route path="/infotwo" element={<InfoTwo />} />
-          <Route path="/subjectmodal" element={<SubjectModal/>} />
-          <Route path="/subjectmodal2" element={<SubjectModal2/>} />
+          <Route path="/subjectmodal" element={<SubjectModal />} />
+          <Route path="/subjectmodal2" element={<SubjectModal2 />} />
           <Route path="/main" element={<Main />} />
           <Route path="/mainnotice" element={<MainNotice />} />
           <Route path="/require" element={<Require />} />
@@ -65,6 +66,7 @@ function App() {
           <Route path="/editcourse" element={<EditCourse />} />
           <Route path="/editcoursemodal" element={<EditcourseModal />} />
           <Route path="/editrequire" element={<EditRequire />} />
+          <Route path="/editsecondrequire" element={<EditSecondRequire />} />
         </Routes>
         <Navigatebar />
       </ThemeProvider>
