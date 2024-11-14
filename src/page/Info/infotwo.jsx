@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import InfoHeader2 from "./components/infoheader2";
-import DropDown2 from "../../component/DropDown2";
+import { LuMinusCircle } from "react-icons/lu";
+import { Select } from "antd";
 
 const CautionText = styled.h5`
   color: #a3a3a3;
@@ -34,9 +35,11 @@ const FormArea = styled.div`
 `;
 
 const DropdownContainer = styled.div`
-  width: 40%;
+  width: 80%;
   height: 10%;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
 `;
 
 const Form = styled.div`
@@ -61,7 +64,7 @@ const FormBody = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
 `;
 
 const FormFooter = styled.div`
@@ -160,9 +163,10 @@ const AddFormButton = styled.div`
 const EnterButton = styled.div`
   width: 80%;
   min-height: 40px;
-  border-radius: 4px;
-  background: #5d96e8;
-  color: #fff;
+  border-radius: 33px;
+  border: 1px solid #5D96E8;
+  background: #FFF;
+  color : #5D96E8;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,94 +174,219 @@ const EnterButton = styled.div`
   margin-top: 20px;
 `;
 
-export default function InfoTwo() {
-  const [forms, setForms] = useState([<FormComponent key={0} />]);
+const SemesterContainer = styled.div`
+  width : 120px;
+  height : 30px;
+  padding : 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 2.811px solid #E8E8E8;
+  background: #FFF;
+  margin-left: 15px;
+`
 
-  const addForm = () => {
-    setForms([...forms, <FormComponent key={forms.length} />]);
+const SemesterText = styled.h4`
+  color: #737373;
+  font-family: Inter;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+`
+
+const CustomSelect = styled(Select)` // antd의 Select로 사용
+  width: 120px !important;
+  height: 30px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  .ant-select-selector {
+    height: 30px !important;
+    border-radius: 4px !important;
+    border: 2.811px solid #E8E8E8 !important;
+    background: #FFF !important;
+    color: #000 !important;
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const GradeSelect = styled(Select)` // antd의 Select로 사용
+  width: 70px !important;
+  height: 30px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  margin-left: 18px;
+  .ant-select-selector {
+    height: 30px !important;
+    border-radius: 4px !important;
+    border: 2.811px solid #E8E8E8 !important;
+    background: #FFF !important;
+    color: #000 !important;
+    display: flex;
+    align-items: center;
+  }
+`;
+
+export default function InfoTwo() {
+    const [forms, setForms] = useState([<FormComponent key={0} semester="1학년 1학기" />]); // Initial semester for first form
+    const [formsyear, setFormsyear] = useState([
+      { key: 0, year: "1학년 1학기" },
+      { key: 1, year: "1학년 2학기" },
+      { key: 2, year: "2학년 1학기" },
+      { key: 3, year: "2학년 2학기" },
+      { key: 4, year: "3학년 1학기" },
+      { key: 5, year: "3학년 2학기" },
+      { key: 6, year: "4학년 1학기" },
+      { key: 7, year: "4학년 2학기" },
+    ]);
+  
+    const addForm = () => {
+      const newKey = forms.length;
+      setForms([...forms, <FormComponent key={newKey} semester={formsyear[newKey].year} />]); // Pass new semester year to FormComponent
+    };
+  
+    return (
+      <div className="page-container">
+        <InfoHeader2 />
+        <CautionText>미입력시 해당 학기는 미이수로 인정됩니다.</CautionText>
+        <FormArea>
+          {forms}
+          <AddFormButton onClick={addForm}>학기 추가하기</AddFormButton>
+          <EnterButton>시작하기</EnterButton>
+        </FormArea>
+      </div>
+    );
+  }
+
+  const FormComponent = ({ semester }) => { // Accept semester as prop
+    const [courses, setCourses] = useState([
+      {
+        id: 0,
+        subject_name: "컴퓨터사고",
+        grade: "",
+        credits: "3",
+        retry_yn: false,
+      },
+    ]);
+  
+    const addClass = () => {
+      const newCourse = {
+        id: courses.length,
+        subject_name: "",
+        grade: "",
+        credits: "",
+        retry_yn: false,
+      };
+      setCourses([...courses, newCourse]);
+    };
+  
+    const handleDelete = (id) => {
+      setCourses((prevCourses) => prevCourses.filter((course) => course.id !== id));
+    };
+  
+    const handleCheckboxChange = (id) => {
+      setCourses((prevCourses) =>
+        prevCourses.map((course) =>
+          course.id === id ? { ...course, retry_yn: !course.retry_yn } : course
+        )
+      );
+    };
+  
+    const handleFieldChange = (id, field, value) => {
+      setCourses((prevCourses) =>
+        prevCourses.map((course) =>
+          course.id === id ? { ...course, [field]: value } : course
+        )
+      );
+    };
+  
+    return (
+      <FormContainer>
+        <DropdownContainer>
+          <CustomSelect placeholder="학기 선택">
+            {/* Hardcoded years for now */}
+            <Select.Option value="2021 1학기">2021 1학기</Select.Option>
+            <Select.Option value="2021 2학기">2021 2학기</Select.Option>
+            <Select.Option value="2022 1학기">2022 1학기</Select.Option>
+            <Select.Option value="2022 2학기">2022 2학기</Select.Option>
+          </CustomSelect>
+          <SemesterContainer>
+            <SemesterText>{semester}</SemesterText> {/* Display the passed semester */}
+          </SemesterContainer>
+        </DropdownContainer>
+        <Form>
+          <FormHeader>
+            <ClassText>재수강</ClassText>
+            <ClassText>과목명</ClassText>
+            <GradeText>성적</GradeText>
+            <GradeText>학점</GradeText>
+          </FormHeader>
+          <FormBody>
+            {courses.map((course) => (
+              <ClassRow
+                key={course.id}
+                course={course}
+                onFieldChange={handleFieldChange}
+                onDelete={handleDelete}
+                onCheckboxChange={handleCheckboxChange}
+              />
+            ))}
+            <AddClassButton onClick={addClass}>수강과목 추가</AddClassButton>
+          </FormBody>
+          <FormFooter>
+            <FooterText>학기평점</FooterText>
+            <AvgText>4.2</AvgText>
+            <TotalText>/4.5</TotalText>
+          </FormFooter>
+        </Form>
+      </FormContainer>
+    );
   };
 
-  return (
-    <div className="page-container">
-      <InfoHeader2 />
-      <CautionText>미입력시 해당 학기는 미이수로 인정됩니다.</CautionText>
-      <FormArea>
-        {forms}
-        <AddFormButton onClick={addForm}>학기 추가하기</AddFormButton>
-        <EnterButton>WiseOwl 시작하기</EnterButton>
-      </FormArea>
+  const ClassRow = ({ course, onFieldChange, onDelete, onCheckboxChange }) => (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        marginTop: "10px",
+        alignItems: "center",
+      }}
+    >
+      <input
+        type="checkbox"
+        style={{ marginLeft: "15px" }}
+        checked={course.retry_yn}
+        onChange={() => onCheckboxChange(course.id)}
+      />
+      <FormText>{course.subject_name || "과목명"}</FormText>
+      <GradeSelect
+        value={course.grade} // bind the select value to course grade
+        onChange={(value) => onFieldChange(course.id, "grade", value)} // update grade
+        placeholder="성적 선택"
+      >
+        <Select.Option value="A+">A+</Select.Option>
+        <Select.Option value="A">A</Select.Option>
+        <Select.Option value="B+">B+</Select.Option>
+        <Select.Option value="B">B</Select.Option>
+        <Select.Option value="C+">C+</Select.Option>
+        <Select.Option value="C">C</Select.Option>
+        <Select.Option value="D+">D+</Select.Option>
+        <Select.Option value="D">D</Select.Option>
+        <Select.Option value="F">F</Select.Option>
+      </GradeSelect>
+      <FormText>{course.credits}</FormText>
+      <LuMinusCircle
+        onClick={() => onDelete(course.id)}
+        style={{
+          width: "40px",
+          cursor: "pointer",
+          color: "#B1B0B0",
+          marginLeft: "20px",
+          paddingRight: "20px",
+        }}
+      />
     </div>
   );
-}
-
-const FormComponent = () => {
-  const [classes, setClasses] = useState([{ id: 0, name: '', grade: '', credits: '' }]);
-  const mockdata = {
-    "subject_department_id": 4,
-    "subject_department_name": "통계학개론",  // 여기에서 과목명이 "통계학개론"
-    "subject_department_professor": "최대우",
-    "subject_department_credit": 3,
-    "subject_department_date": "수56 금4",
-    "subject_department_rmn": "0304"
-  };
-
-  const addClass = () => {
-    setClasses([...classes, { id: classes.length, name: '', grade: '', credits: '' }]);
-  };
-
-  return (
-    <FormContainer>
-      <DropdownContainer>
-        <DropDown2 />
-      </DropdownContainer>
-      <Form>
-        <FormHeader>
-          <ClassText>재수강</ClassText>
-          <ClassText>과목명</ClassText>
-          <GradeText>성적</GradeText>
-          <GradeText>학점</GradeText>
-        </FormHeader>
-        <FormBody>
-          {classes.map((subject, index) => (
-            <ClassRow
-              key={index}
-              subject={subject}
-              mockdata={mockdata}
-              onChange={(field, value) =>
-                setClasses((prevClasses) =>
-                  prevClasses.map((s, idx) =>
-                    idx === index ? { ...s, [field]: value } : s
-                  )
-                )
-              }
-            />
-          ))}
-          <AddClassButton onClick={addClass}>수강과목추가</AddClassButton>
-        </FormBody>
-        <FormFooter>
-          <FooterText>학기평점</FooterText>
-          <AvgText>4.2</AvgText>
-          <TotalText>/4.5</TotalText>
-        </FormFooter>
-      </Form>
-    </FormContainer>
-  );
-};
-
-const ClassRow = ({ subject, onChange, mockdata }) => (
-  <div style={{ display: "flex", flexDirection: "row", marginTop: "10px", alignItems: "center" }}>
-    <input
-      type="checkbox"
-      style={{ marginLeft: "15px" }}
-    />
-    <FormText>{mockdata.subject_department_name}</FormText>
-    <input
-      type="text"
-      placeholder="성적 입력"
-      value={subject.grade}
-      onChange={(e) => onChange("grade", e.target.value)}
-      style={{ width: "20%", marginLeft: "30px",marginRight: "15px" }}
-    />
-    <FormText>{mockdata.subject_department_credit}</FormText>
-  </div>
-);

@@ -43,7 +43,7 @@ const Board = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 5px;
   background: rgb(255, 255, 255);
   box-shadow: 0px 1px 1px 0.7px rgba(0, 0, 0, 0.25);
 `;
@@ -56,6 +56,16 @@ const InfoContainer = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+const UserContainer = styled.div`
+  width :100%;
+  height : 100%;
+  display : flex;
+  align-items: center;
+  justify-content: center;
+  margin-top : 20px;
+  margin-left: 17px;
+`
 
 const ViewContainer = styled.div`
   width: 100%;
@@ -81,11 +91,16 @@ const RequirementsContainer = styled.div`
   flex-direction: column;
 `;
 
+const RequireTitle = styled.div`
+  width : 100%;
+  height : 20%;
+`
+
 const MajorContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 8px;
+  margin-top: 20px;
 `;
 
 const Requirement = styled.div`
@@ -97,9 +112,16 @@ const Requirement = styled.div`
   background: #FFF;
 `;
 
+const LineContainer = styled.div`
+  width : 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 const UnderLine = styled.div`
-  width: 100%;
-  height: 1.8px;
+  width: 80%;
+  height: 2px;
   background: #ebedee;
   margin-top: 18px;
 `;
@@ -112,13 +134,106 @@ const Major = styled.div`
   text-align: center;
 `;
 
+const MajorText = styled.h4`
+  color: #000;
+  font-family: Inter;
+  font-size: 7.884px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`
+
+const RateText = styled.h4`
+  color: #A7A8AB;
+  font-family: Roboto;
+  font-size: 7.884px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-top : 10px;
+`
+
+const UserText = styled.h2`
+  color: #000;
+  font-family: Roboto;
+  font-size: 14.885px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+`
+const RequireText = styled.h4`
+  color: #000;
+  font-family: Roboto;
+  font-size: 10.347px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-right : auto;
+  margin-left: 10px;
+`
+
 const Text = styled.p`
   font-size: 13px;
   color: #333;
   margin: 0;
 `;
 
-export default function DashBoard() {
+
+const TitleBox = styled.div`
+  font-size: 10px;
+  margin-bottom: 20px;
+  font-weight: 400;
+  white-space: pre-line;
+  text-align: left;
+  width: 100%;
+`;
+
+const ProgressCircleContainer = styled.div`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: conic-gradient(
+    #113371 ${(props) => props.progress * 100}%, 
+    #ddd ${(props) => props.progress * 100}%
+  );
+`;
+
+const ProgressCircleInner = styled.div`
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ProgressText = styled.div`
+  display: flex;
+  align-items: baseline;
+`;
+
+const CurrentText = styled.span`
+  font-size: 20.94px;
+  color: #000000;
+  font-weight: 700;
+`;
+
+const TotalText = styled.span`
+  font-size: 14.04px;
+  color: #737373;
+  margin-left: 4px;
+`;
+
+
+
+
+
+export default function DashBoard({mockdata}) {
   const [major, setMajor] = useState("통계학과");
   const [secondmajor, setSecondmajor] = useState("AI융합전공");
   const [username, setUsername] = useState("김민석");
@@ -132,43 +247,102 @@ export default function DashBoard() {
     slidesToScroll: 1,
   };
 
+  function ProgressBox({ title, progress, total, complete}) {
+    const current = Math.floor(progress * 54);
+    const isElective = title === "자율선택\n이수율";
+  
+    return (
+      <>
+        <ProgressCircleContainer progress={30}>
+          <ProgressCircleInner>
+            <ProgressText>
+              <CurrentText>{complete}</CurrentText>
+              {!isElective && <TotalText>/{total}</TotalText>}
+            </ProgressText>
+          </ProgressCircleInner> 
+        </ProgressCircleContainer>
+      </>
+    );
+  }
+
   return (
     <CarouselWrapper>
       <StyledSlider {...settings}>
         <Board key="slide1">
           <InfoContainer>
-            <Text style={{ marginRight: '10px' }}>안녕하세요 {username}님</Text>
+            <UserContainer>
+              <UserText style={{ marginLeft: '10px' }}>안녕하세요 {mockdata.name}님</UserText>
+            </UserContainer>
             <MajorContainer>
               <Major>
-                <Text>{major}</Text>
+                <MajorText>{mockdata.major}</MajorText>
               </Major>
               <Major>
-                <Text>{secondmajor}</Text>
+                <MajorText>{mockdata.double_major}</MajorText>
               </Major>
             </MajorContainer>
           </InfoContainer>
-          <UnderLine />
+          <LineContainer>
+            <UnderLine />
+          </LineContainer>
           <ViewContainer>
             <RateContainer>
-              <CircularProgressbar value={rate} text={"34/54"} />
-              <Text>본전공 이수율</Text>
+              <ProgressBox total={mockdata.major_credit_required} complete={mockdata.major_credit_completed}/>
+              <RateText>본전공 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
-              <Text>졸업요건</Text>
+              <RequireTitle>
+                <RequireText>졸업요건</RequireText>
+              </RequireTitle>
               <Requirement>
-                <Text>1</Text>
+                <RequireText>{mockdata.major_requirements[0]}</RequireText>
               </Requirement>
               <Requirement>
-                <Text>2</Text>
+                <RequireText>{mockdata.major_requirements[1]}</RequireText>
               </Requirement>
               <Requirement>
-                <Text>3</Text>
+                <RequireText>{mockdata.major_requirements[2]}</RequireText>
               </Requirement>
             </RequirementsContainer>
           </ViewContainer>
         </Board>
         <Board key="slide2">
-          <Text>완성단계에서 앞 페이지의 state값만 변경</Text>
+        <InfoContainer>
+            <UserContainer>
+              <UserText style={{ marginLeft: '10px' }}>안녕하세요 {mockdata.name}님</UserText>
+            </UserContainer>
+            <MajorContainer>
+              <Major>
+                <MajorText>{mockdata.major}</MajorText>
+              </Major>
+              <Major>
+                <MajorText>{mockdata.double_major}</MajorText>
+              </Major>
+            </MajorContainer>
+          </InfoContainer>
+          <LineContainer>
+            <UnderLine />
+          </LineContainer>
+          <ViewContainer>
+            <RateContainer>
+              <ProgressBox total={mockdata.double_credit_required} complete={mockdata.double_credit_completed}/>
+              <RateText>본전공 이수율</RateText>
+            </RateContainer>
+            <RequirementsContainer>
+              <RequireTitle>
+                <RequireText>졸업요건</RequireText>
+              </RequireTitle>
+              <Requirement>
+                <RequireText>{mockdata.double_requirements[0]}</RequireText>
+              </Requirement>
+              <Requirement>
+                <RequireText>{mockdata.double_requirements[1]}</RequireText>
+              </Requirement>
+              <Requirement>
+                <RequireText>{mockdata.double_requirements[2]}</RequireText>
+              </Requirement>
+            </RequirementsContainer>
+          </ViewContainer>
         </Board>
       </StyledSlider>
     </CarouselWrapper>
