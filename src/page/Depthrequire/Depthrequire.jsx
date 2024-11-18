@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const PageContainer = styled.div`
   background-color: #FFFFFF;
-  height: 100vh;
-  width: 100%;
+  height:100vh;
+  width: 390px;
   padding: 0 20px;
   display: flex;
   flex-direction: column;
@@ -13,7 +12,7 @@ const PageContainer = styled.div`
   justify-content: center;
   margin: 0 auto;
   overflow-x: hidden;
-  padding-bottom: 100px; //이건 네브바때문에 잠시만 해둘게염
+  padding-bottom: 76px; 
 `;
 
 const Title = styled.h1`
@@ -54,7 +53,7 @@ const Title4Container = styled.div`
   align-items: center;
   justify-content: flex-start;
   padding-left: 20px; 
-  width: 100%;
+  width: 390px;
 `;
 
 const Title4 = styled.h1`
@@ -86,18 +85,19 @@ const ProgressContainer = styled.div`
   gap: 20px;
   overflow-x: auto;
   padding: 10px;
-  width: 400px;
+  width: auto; 
 `;
 
+
 const Section1 = styled.div`
-  width: 100%;
+  width: 390px;
   padding: 20px;
   background-color: #F6F6F6;
   margin-bottom: 20px;
 `;
 
 const SectionDivider = styled.div`
-  width: 100%;
+  width: 390px;
   height: 40px;
   display: flex;
   justify-content: flex-start;
@@ -106,7 +106,7 @@ const SectionDivider = styled.div`
 `;
 
 const Section2 = styled.div`
-  width: 100%;
+  width: 390px;
   padding: 20px;
   background-color: #F6F6F6;
 `;
@@ -297,7 +297,7 @@ export default function DepthRequire() {
           <ProgressBox title={"본전공\n이수율"} progress={completionRates.major} />
           <ProgressBox title={"이중전공\n이수율"} progress={completionRates.doubleMajor} />
           <ProgressBox title={"교양\n이수율"} progress={completionRates.liberalArts} />
-          <ProgressBox title={"자율선택\n이수율"} progress={completionRates.elective} />
+          <ProgressBox title={"자율선택\n이수학점"} progress={completionRates.elective} />
         </ProgressContainer>
       </Section1>
 
@@ -352,9 +352,7 @@ export default function DepthRequire() {
         </DataRow>
         </SubjectBox>
         <ButtonContainer>
-            <Link to="/DepthRequire2">
             <Button>이중전공 보기</Button>
-            </Link>
         </ButtonContainer>
       </Section2>
     </PageContainer>
@@ -362,22 +360,27 @@ export default function DepthRequire() {
 }
 
 function ProgressBox({ title, progress }) {
-  const current = Math.floor(progress * 54);
-  const total = 54;
-  const isElective = title === "자율선택\n이수율";
-
-  return (
-    <ProgressBoxContainer>
-      <TitleBox>{title}</TitleBox>
-      <ProgressCircleContainer progress={progress}>
-        <ProgressCircleInner>
-          <ProgressText>
-            <CurrentText>{current}</CurrentText>
-            {!isElective && <TotalText>/{total}</TotalText>}
-          </ProgressText>
-        </ProgressCircleInner>
-      </ProgressCircleContainer>
-      {!isElective && <PercentageText>{`${(progress * 100).toFixed(0)}%`}</PercentageText>}
-    </ProgressBoxContainer>
-  );
-}
+    const current = Math.floor(progress * 54);
+    const total = 54;
+    const isElective = title === "자율선택\n이수학점";
+  
+    return (
+      <ProgressBoxContainer>
+        <TitleBox>{title}</TitleBox>
+        <ProgressCircleContainer progress={progress}>
+          <ProgressCircleInner>
+            <ProgressText>
+              <CurrentText>{current}</CurrentText>
+              {!isElective && <TotalText>/{total}</TotalText>}
+            </ProgressText>
+          </ProgressCircleInner>
+        </ProgressCircleContainer>
+        {!isElective ? (
+          <PercentageText>{`${(progress * 100).toFixed(0)}%`}</PercentageText>
+        ) : (
+          <PercentageText>자율선택</PercentageText>
+        )}
+      </ProgressBoxContainer>
+    );
+  }
+  

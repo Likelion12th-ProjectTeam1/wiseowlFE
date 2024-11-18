@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Logo, Char, GoogleLogo as ImportedGoogleLogo } from '../../img/logo';
+import { Logo, Char, GoogleLogo as ImportedGoogleLogo } from '../../img/Logo'
 
 const PageContainer = styled.div`
     display: flex;
@@ -8,8 +8,10 @@ const PageContainer = styled.div`
     align-items: center;
     justify-content: center;
     height: 100vh;
+    width: 390px;
     background-color: #F9F9F9;
     gap: 10px; 
+    padding-bottom: 36px;
 `;
 
 const Text = styled.p`
@@ -27,6 +29,7 @@ const GoogleButton = styled.button`
     border: 1px solid #909090;
     cursor: pointer;
     font-size: 12px;
+    font-family: 'Inter';
     display: flex;
     align-items: center;
 

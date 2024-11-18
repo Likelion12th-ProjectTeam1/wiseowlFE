@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Arrow, CheckBox } from '../../img/logo';
+import { Arrow, CheckBox } from '../../img/Logo';
+
 
 const PageContainer = styled.div`
     display: flex;
+    width: 390px;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     height: 100vh;
     background-color: #FFFFFF;
     padding: 0px;
+    padding-bottom: 100px;
 `;
 
 const Title = styled.h1`
@@ -37,7 +40,7 @@ const AgreementTitle = styled.h2`
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* 오른쪽 끝으로 정렬 */
+    justify-content: space-between;
     font-weight: 400;
     cursor: pointer;
 `;
@@ -53,9 +56,16 @@ const AgreementItem = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 390px;
     padding: 12px 0;
     cursor: pointer;
+`;
+
+const ArrowContainer = styled.div`
+    margin-left: auto; /* Arrow를 오른쪽 끝으로 이동 */
+    padding-right: 10px; /* 오른쪽 여백 추가 */
+    display: flex;
+    align-items: center;
 `;
 
 const CheckboxLabel = styled.span`
@@ -66,7 +76,7 @@ const CheckboxLabel = styled.span`
 const SubmitButtonContainer = styled.div`
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 390px;
     margin-top: 90px;
 `;
 
@@ -137,9 +147,9 @@ export default function LoginModal() {
                         <StyledCheckBox checked={checkedList[0]} />
                         <CheckboxLabel>모두 동의합니다.</CheckboxLabel>
                     </div>
-                    <div onClick={handleArrowClick}>
+                    <ArrowContainer onClick={handleArrowClick}>
                         <Arrow />
-                    </div>
+                    </ArrowContainer>
                 </AgreementTitle>
                 <Divider />
                 
@@ -149,9 +159,9 @@ export default function LoginModal() {
                             <StyledCheckBox checked={checkedList[index + 1]} />
                             <CheckboxLabel>{text}</CheckboxLabel>
                         </div>
-                        <div onClick={(e) => { e.stopPropagation(); handleArrowClick(e); }}>
+                        <ArrowContainer onClick={(e) => { e.stopPropagation(); handleArrowClick(e); }}>
                             <Arrow />
-                        </div>
+                        </ArrowContainer>
                     </AgreementItem>
                 ))}
             </AgreementContainer>
