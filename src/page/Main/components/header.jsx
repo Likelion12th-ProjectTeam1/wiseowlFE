@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { FaBell } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -28,10 +29,19 @@ const Notice = styled(FaBell)`
 `;
 
 export default function Header() {
+
+
+  const navigate = useNavigate();
+  
+  const goToMainNoticepage = () => {
+    navigate("/mainnotice");
+};
+
+
     return (
         <HeaderContainer>
             <Title />
-            <Notice size={30} /> 
+            <Notice size={30} onClick={goToMainNoticepage}/> 
         </HeaderContainer>
     );
 }
