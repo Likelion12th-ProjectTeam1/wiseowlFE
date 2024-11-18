@@ -29,6 +29,7 @@ const HeaderHorizontalBox = styled.div`
   align-items: center;
   margin-left: 25px;
   gap: 15px;
+  margin-top: 15px;
   margin-bottom: 30px;
 `;
 const NameText = styled.p`
