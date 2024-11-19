@@ -100,7 +100,7 @@ const SelectContainer = styled.div`
 `
 
 const Line = styled.div`
-    width : 1px;
+    width : 0.5px;
     height : 100%;
     margin-left: 5px;
     margin-right: 5px;
@@ -147,27 +147,43 @@ const ContentContainer = styled.div`
     height : 60%;
     padding: 15px;
     display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    overflow-y: auto;
+`
+const Content1 = styled.div`
+    width : 50%;
+    height : 60%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+`
+const Content2 = styled.div`
+    width : 50%;
+    height : 60%;
+    display: flex;
     flex-direction: column;
     margin-top: 10px;
 `
 
+
 const ContentButton = styled.div`
-    width : 40%;
-    height : 20%;
+    width : 120px;
+    height : 40px;
     display: flex;
     align-items: center;
     flex-direction: row;
     border-radius: 8px;
     background: #F9F9F9;
-    padding : 5px;
+    padding : 4px;
     margin-top : 10px;
     border: 1px solid rgba(115, 115, 115, 0.30);
+    gap : 10px;
 `
 
 const InfoContainer = styled.div`
-    width : 50%;
+    width : 60px;
     height : 100%;
-    margin-left: 15px;
     display : flex;
     flex-direction: row;
     justify-content: center;
@@ -181,6 +197,7 @@ const ContentText = styled.h4`
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    white-space: nowrap; 
 `
 const InfoText = styled.h4`
     color: #A5A3A3;
@@ -190,37 +207,6 @@ const InfoText = styled.h4`
     font-weight: 600;
     line-height: normal;
 `
-const facilityData = {
-    total: 8,
-    categories: [
-        { category: "전체", count: 8 },
-        { category: "카페/식당", count: 3 },
-        { category: "편의점", count: 2 },
-        { category: "열람실", count: 1 },
-        { category: "컴퓨터/복사기", count: 2 },
-        { category: "기타", count: 0 }
-    ],
-    facility_set: [
-        {
-            facility_category: "전체",
-            facility_list: [
-                { facility_name: "Coopsket", building_name: "백년관", facility_loc: "2층" },
-                { facility_name: "열람실", building_name: "백년관", facility_loc: "3층" },
-                // Add other items here...
-            ]
-        },
-        {
-            facility_category: "카페/식당",
-            facility_list: [
-                { facility_name: "던킨도넛", building_name: "백년관", facility_loc: "1층" },
-                // Add other items here...
-            ]
-        }
-        // Add other categories here...
-    ]
-};
-
-
 
 
 // Styled components
@@ -238,7 +224,6 @@ export default function Main() {
     const [loading, setLoading] = useState(true);  // 로딩 상태 추가
 
     useEffect(() => {
-        // 화면 렌더링 전에 GET 요청을 보내는 코드
         const fetchData = async () => {
           try {
             const response = await axios.get('http://43.201.90.146:8000/api/main/', {
@@ -246,12 +231,20 @@ export default function Main() {
                 Authorization: `Bearer ${token}`, // Bearer 방식으로 토큰 설정
               },
             });
+            const responsemodal = await axios.get('http://43.201.90.146:8000/api/facilities/facility_moeum/', {
+                headers: {
+                  Authorization: `Bearer ${token}`, // Bearer 방식으로 토큰 설정
+                },
+            });
+            setFulldata(responsemodal.data);
             setData(response.data);  // 성공 시 받은 데이터 저장
             console.log(response.data);  // 받은 데이터 출력 (이제 응답 데이터를 정상적으로 확인 가능)
+            console.log(fulldata);
+            
             setLoading(false);  // 데이터가 로드되면 로딩 상태 false로 설정
           } catch (err) {
             setError('데이터를 불러오는 중 오류가 발생했습니다.');  // 에러 처리
-            setLoading(false);  // 에러 발생 시에도 로딩 상태 false로 설정
+            setLoading(false);  
             console.error('Error fetching data:', err);  // 에러 로그 출력
           }
         };
@@ -267,25 +260,25 @@ export default function Main() {
         return <div>{error}</div>;  // 에러가 발생한 경우 에러 메시지 출력
       }
 
-    const fetchFullData = async () => {
-        try {
-          const response = await axios.get('http://43.201.90.146:8000/api/facilities/facility_moeum/', {
-            headers: {
-              Authorization: `Bearer ${token}`, // Bearer 방식으로 토큰 설정
-            },
-          });
-          setFulldata(response.data);  // 성공 시 받은 데이터 저장
-          console.log(fulldata);
-          
-        } catch (err) {
-          setError('데이터를 불러오는 중 오류가 발생했습니다.');  // 에러 처리
-          console.error('Error fetching data:', err);  // 에러 로그 출력
-        }
-      };
+    // const fetchFullData = async () => {
+    //     try {
+    //       const response = await axios.get('http://43.201.90.146:8000/api/facilities/facility_moeum/', {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`, // Bearer 방식으로 토큰 설정
+    //         },
+    //       });
+    //       setFulldata(response.data);  // 성공 시 받은 데이터 저장
+    //       console.log(fulldata);
+    
+    //     } catch (err) {
+    //       setError('데이터를 불러오는 중 오류가 발생했습니다.');  // 에러 처리
+    //       console.error('Error fetching data:', err);  // 에러 로그 출력
+    //     }
+    //   };
 
 
     const handleButtonClick = () => {
-        fetchFullData();
+        // fetchFullData();
         setIsActive(!isActive);
         setIsModalOpen(!isModalOpen);
         setSelectedCategory("전체");
@@ -296,65 +289,85 @@ export default function Main() {
 
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);
-        const selectedFacilityData = facilityData.facility_set.find(
+        const selectedFacilityData = fulldata.facility_set.find(
             (item) => item.facility_category === category
         );
         setFacilityList(selectedFacilityData ? selectedFacilityData.facility_list : []);
     };
 
-    return (
-        <MainContainer>
-            <Section><Header /></Section>
-            <Section><DashBoard data = {data.dashboard}/></Section>
-            <ButtonContainer>
-                <MapButton isActive={isActive} onClick={handleButtonClick}>
-                    <ButtonText>편의시설 모아보기</ButtonText>
-                </MapButton>
-            </ButtonContainer>
-            <Section>
-                <MapContainer>
-                    <Map data = {data.building_list}/>
-                    {isModalOpen && (
-                        <TotalModal>
-                            <TitleContainer>
-                                <TitleText>교내 편의시설</TitleText>
-                                <SelectContainer>
-                                    {facilityData.categories.map((category, index) => (
-                                        <FacilityContainer
-                                            key={index}
-                                            onClick={() => handleCategoryClick(category.category)}
-                                        >
-                                            <FacilityText isButtonactive={selectedCategory === category.category}>
-                                                {category.category}
-                                            </FacilityText>
-                                            <FacilityCount isButtonactive={selectedCategory === category.category}>
-                                                {category.count}
-                                            </FacilityCount>
-                                        </FacilityContainer>
-                                    ))}
-                                </SelectContainer>
-                            </TitleContainer>
-                            <ContentContainer>
-                                {facilityList.length > 0 ? (
-                                    facilityList.map((facility, index) => (
-                                        <ContentButton key={index}>
-                                            <ContentText>{facility.facility_name}</ContentText>
-                                            <InfoContainer>
-                                                <InfoText>{facility.building_name}</InfoText>
-                                                <Line />
-                                                <InfoText>{facility.facility_loc}</InfoText>
-                                            </InfoContainer>
-                                        </ContentButton>
-                                    ))
-                                ) : (
-                                    <p>해당 카테고리에 시설이 없습니다.</p>
-                                )}
-                            </ContentContainer>
-                        </TotalModal>
-                    )}
-                </MapContainer>
-            </Section>
-            <Section><NoticeMain data = {data.notice_list}/></Section>
-        </MainContainer>
-    );
+    const halfIndex = Math.ceil(facilityList.length / 2); // 리스트를 반으로 나누는 인덱스
+const firstHalf = facilityList.slice(0, halfIndex);  // 첫 번째 절반
+const secondHalf = facilityList.slice(halfIndex);   // 두 번째 절반
+
+return (
+    <MainContainer>
+        <Section><Header /></Section>
+        <Section><DashBoard data={data.dashboard} /></Section>
+        <ButtonContainer>
+            <MapButton isActive={isActive} onClick={handleButtonClick}>
+                <ButtonText>편의시설 모아보기</ButtonText>
+            </MapButton>
+        </ButtonContainer>
+        <Section>
+            <MapContainer>
+                <Map data={data.building_list} />
+                {isModalOpen && (
+                    <TotalModal>
+                        <TitleContainer>
+                            <TitleText>교내 편의시설</TitleText>
+                            <SelectContainer>
+                                {fulldata.facility_set.map((category, index) => (
+                                    <FacilityContainer
+                                        key={index}
+                                        onClick={() => handleCategoryClick(category.facility_category)}
+                                    >
+                                        <FacilityText isButtonactive={selectedCategory === category.facility_category}>
+                                            {category.facility_category}
+                                        </FacilityText>
+                                        <FacilityCount isButtonactive={selectedCategory === category.facility_category}>
+                                            {category.facility_list.length}
+                                        </FacilityCount>
+                                    </FacilityContainer>
+                                ))}
+                            </SelectContainer>
+                        </TitleContainer>
+                        <ContentContainer>
+                            {facilityList.length > 0 ? (
+                                <>
+                                    <Content1>
+                                        {firstHalf.map((facility, index) => (
+                                            <ContentButton key={index}>
+                                                <ContentText>{facility.facility_name}</ContentText>
+                                                <InfoContainer>
+                                                    <InfoText>{facility.building_name}</InfoText>
+                                                    <Line />
+                                                    <InfoText>{facility.facility_loc}</InfoText>
+                                                </InfoContainer>
+                                            </ContentButton>
+                                        ))}
+                                    </Content1>
+                                    <Content2>
+                                        {secondHalf.map((facility, index) => (
+                                            <ContentButton key={index}>
+                                                <ContentText>{facility.facility_name}</ContentText>
+                                                <InfoContainer>
+                                                    <InfoText>{facility.building_name}</InfoText>
+                                                    <Line />
+                                                    <InfoText>{facility.facility_loc}</InfoText>
+                                                </InfoContainer>
+                                            </ContentButton>
+                                        ))}
+                                    </Content2>
+                                </>
+                            ) : (
+                                <p>해당 카테고리에 시설이 없습니다.</p>
+                            )}
+                        </ContentContainer>
+                    </TotalModal>
+                )}
+            </MapContainer>
+        </Section>
+        <Section><NoticeMain data={data.notice_list} /></Section>
+    </MainContainer>
+);
 }
