@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/header";
 import Map from "./components/map";
 import DashBoard from "./components/dashboard";
 import NoticeMain from "./components/notices";
-
+import axios from "axios";
 
 const MainContainer = styled.div`
     display: flex;
@@ -221,297 +221,6 @@ const facilityData = {
 };
 
 
-const Mockdata = 
-{
-    "dashboard": {
-        "name": "박주영",
-        "major": "통계학과",
-        "double_major": "컴퓨터공학부",
-        "major_credit_completed": 0,
-        "major_credit_required": 54,
-        "major_requirements": [
-            "졸업논문",
-            "전공 필수 과목 이수"
-        ],
-        "double_credit_completed": 0,
-        "double_credit_required": 42,
-        "double_requirements": [
-            "졸업논문",
-            "TOPCIT",
-            "전공 필수 과목 이수"
-        ]
-    },
-    "building_list": [
-        {
-            "building_num": 0,
-            "building_name": "백년관",
-            "facilities_summary": {
-                "total": 6,
-                "restaurant_cafe": 1,
-                "convenience_store": 1,
-                "reading_room": 2,
-                "computer_copier": 1,
-                "etc": 1,
-                "facility_set": [
-                    {
-                        "facility_category": "전체",
-                        "facility_list": [
-                            {
-                                "facility_name": "Coopsket",
-                                "facility_loc": "3층",
-                                "facility_desc": "편의점"
-                            },
-                            {
-                                "facility_name": "라운지",
-                                "facility_loc": "1층",
-                                "facility_desc": "컴퓨터, 복사기"
-                            },
-                            {
-                                "facility_name": "던킨",
-                                "facility_loc": "1층",
-                                "facility_desc": "카페"
-                            },
-                            {
-                                "facility_name": "라운지",
-                                "facility_loc": "1층",
-                                "facility_desc": "라운지"
-                            },
-                            {
-                                "facility_name": "열람실",
-                                "facility_loc": "3층",
-                                "facility_desc": "열람실"
-                            },
-                            {
-                                "facility_name": "스터디룸",
-                                "facility_loc": "1층",
-                                "facility_desc": "스터디룸"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "카페/식당",
-                        "facility_list": [
-                            {
-                                "facility_name": "던킨",
-                                "facility_loc": "1층",
-                                "facility_desc": "카페"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "편의점",
-                        "facility_list": [
-                            {
-                                "facility_name": "Coopsket",
-                                "facility_loc": "3층",
-                                "facility_desc": "편의점"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "열람실",
-                        "facility_list": [
-                            {
-                                "facility_name": "라운지",
-                                "facility_loc": "1층",
-                                "facility_desc": "라운지"
-                            },
-                            {
-                                "facility_name": "열람실",
-                                "facility_loc": "3층",
-                                "facility_desc": "열람실"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "컴퓨터/복사기",
-                        "facility_list": [
-                            {
-                                "facility_name": "라운지",
-                                "facility_loc": "1층",
-                                "facility_desc": "컴퓨터, 복사기"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "기타",
-                        "facility_list": [
-                            {
-                                "facility_name": "스터디룸",
-                                "facility_loc": "1층",
-                                "facility_desc": "스터디룸"
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            "building_num": 1,
-            "building_name": "어문관",
-            "facilities_summary": {
-                "total": 10,
-                "restaurant_cafe": 4,
-                "convenience_store": 1,
-                "reading_room": 2,
-                "computer_copier": 2,
-                "etc": 1,
-                "facility_set": [
-                    {
-                        "facility_category": "전체",
-                        "facility_list": [
-                            {
-                                "facility_name": "애플빈",
-                                "facility_loc": "1층",
-                                "facility_desc": "카페/아이스크림"
-                            },
-                            {
-                                "facility_name": "아리랑덮밥",
-                                "facility_loc": "1층",
-                                "facility_desc": "덮밥 전문점"
-                            },
-                            {
-                                "facility_name": "우리은행 ATM",
-                                "facility_loc": "1층",
-                                "facility_desc": "은행 ATM"
-                            },
-                            {
-                                "facility_name": "까르보네",
-                                "facility_loc": "1층",
-                                "facility_desc": "파스타 전문점"
-                            },
-                            {
-                                "facility_name": "Coopsket",
-                                "facility_loc": "1층",
-                                "facility_desc": "편의점"
-                            },
-                            {
-                                "facility_name": "외대 복사실",
-                                "facility_loc": "2층",
-                                "facility_desc": "인쇄/스캔/팩스"
-                            },
-                            {
-                                "facility_name": "컴퓨터실",
-                                "facility_loc": "4층",
-                                "facility_desc": "컴퓨터"
-                            },
-                            {
-                                "facility_name": "헬로밀",
-                                "facility_loc": "1층",
-                                "facility_desc": "토스트/샌드위치/핫도그/샐러드"
-                            },
-                            {
-                                "facility_name": "열람실",
-                                "facility_loc": "1층",
-                                "facility_desc": "열람실"
-                            },
-                            {
-                                "facility_name": "열람실",
-                                "facility_loc": "4층",
-                                "facility_desc": "열람실"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "카페/식당",
-                        "facility_list": [
-                            {
-                                "facility_name": "애플빈",
-                                "facility_loc": "1층",
-                                "facility_desc": "카페/아이스크림"
-                            },
-                            {
-                                "facility_name": "아리랑덮밥",
-                                "facility_loc": "1층",
-                                "facility_desc": "덮밥 전문점"
-                            },
-                            {
-                                "facility_name": "까르보네",
-                                "facility_loc": "1층",
-                                "facility_desc": "파스타 전문점"
-                            },
-                            {
-                                "facility_name": "헬로밀",
-                                "facility_loc": "1층",
-                                "facility_desc": "토스트/샌드위치/핫도그/샐러드"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "편의점",
-                        "facility_list": [
-                            {
-                                "facility_name": "Coopsket",
-                                "facility_loc": "1층",
-                                "facility_desc": "편의점"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "열람실",
-                        "facility_list": [
-                            {
-                                "facility_name": "열람실",
-                                "facility_loc": "1층",
-                                "facility_desc": "열람실"
-                            },
-                            {
-                                "facility_name": "열람실",
-                                "facility_loc": "4층",
-                                "facility_desc": "열람실"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "컴퓨터/복사기",
-                        "facility_list": [
-                            {
-                                "facility_name": "외대 복사실",
-                                "facility_loc": "2층",
-                                "facility_desc": "인쇄/스캔/팩스"
-                            },
-                            {
-                                "facility_name": "컴퓨터실",
-                                "facility_loc": "4층",
-                                "facility_desc": "컴퓨터"
-                            }
-                        ]
-                    },
-                    {
-                        "facility_category": "기타",
-                        "facility_list": [
-                            {
-                                "facility_name": "우리은행 ATM",
-                                "facility_loc": "1층",
-                                "facility_desc": "은행 ATM"
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
-    ],
-    "notice_list": [
-        {
-            "notice_department": "국제교류팀",
-            "notice_title": "2024 CAMPUS Asia Plus 단기 유학 프로그램 in ASEAN 파견 학생 모집",
-            "notice_date": "2024-11-15",
-            "notice_link": "https://builder.hufs.ac.kr/user/indexSub.action?codyMenuSeq=135456840&siteId=oia3&menuType=T&uId=8&sortChar=A&menuFrame=left&linkUrl=7_1.html&mainFrame=right&dum=dum&boardId=133295660&page=1&command=view&boardSeq=192177851"
-        },
-        {
-            "notice_department": "국제교류팀",
-            "notice_title": "[국제교류팀] 2024학년도 하반기 3회차 기관토플 접수 안내",
-            "notice_date": "2024-11-10",
-            "notice_link": "https://builder.hufs.ac.kr/user/indexSub.action?codyMenuSeq=135456840&siteId=oia3&menuType=T&uId=8&sortChar=A&menuFrame=left&linkUrl=7_1.html&mainFrame=right&dum=dum&boardId=133295660&page=1&command=view&boardSeq=191957847"
-        },
-        {
-            "notice_department": "FLEX 센터",
-            "notice_title": "2024년 4회차 FLEX 시험 시간표 및 고사실 배치표(한국외대) 안내",
-            "notice_date": "2024-10-23",
-            "notice_link": "https://builder.hufs.ac.kr/user/indexSub.action?codyMenuSeq=84761504&siteId=flex2&menuType=T&uId=6&sortChar=A&linkUrl=4_1.html&mainFrame=right&dum=dum&boardId=84761437&page=1&command=view&boardSeq=191017853"
-        }
-    ]
-};
 
 
 // Styled components
@@ -522,14 +231,66 @@ export default function Main() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("전체");
     const [facilityList, setFacilityList] = useState([]);
+    const [data, setData] = useState(null);  // 서버에서 받아온 데이터를 저장할 state
+    const [fulldata , setFulldata] = useState(null);
+    const [error, setError] = useState(null); // 에러 상태
+    const [token , setToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0NDM1NTU2LCJpYXQiOjE3MzE4NDM1NTYsImp0aSI6ImQ5NWRlNGUyZWQ4ZTRkZmZiMmU2OThmMTM4NjFjZGU0IiwidXNlcl9pZCI6NX0.Uq1roWDY74apsMgfLzJYY46GENHUd0Zd3PET_piePDw")
+    const [loading, setLoading] = useState(true);  // 로딩 상태 추가
+
+    useEffect(() => {
+        // 화면 렌더링 전에 GET 요청을 보내는 코드
+        const fetchData = async () => {
+          try {
+            const response = await axios.get('http://43.201.90.146:8000/api/main/', {
+              headers: {
+                Authorization: `Bearer ${token}`, // Bearer 방식으로 토큰 설정
+              },
+            });
+            setData(response.data);  // 성공 시 받은 데이터 저장
+            console.log(response.data);  // 받은 데이터 출력 (이제 응답 데이터를 정상적으로 확인 가능)
+            setLoading(false);  // 데이터가 로드되면 로딩 상태 false로 설정
+          } catch (err) {
+            setError('데이터를 불러오는 중 오류가 발생했습니다.');  // 에러 처리
+            setLoading(false);  // 에러 발생 시에도 로딩 상태 false로 설정
+            console.error('Error fetching data:', err);  // 에러 로그 출력
+          }
+        };
+    
+        fetchData();  // 함수 호출
+      }, [token]);  // token이 변경될 때마다 실행
+    
+      if (loading) {
+        return <div>Loading...</div>;  // 데이터가 로드되기 전에는 로딩 화면을 보여줌
+      }
+    
+      if (error) {
+        return <div>{error}</div>;  // 에러가 발생한 경우 에러 메시지 출력
+      }
+
+    const fetchFullData = async () => {
+        try {
+          const response = await axios.get('http://43.201.90.146:8000/api/facilities/facility_moeum/', {
+            headers: {
+              Authorization: `Bearer ${token}`, // Bearer 방식으로 토큰 설정
+            },
+          });
+          setFulldata(response.data);  // 성공 시 받은 데이터 저장
+          console.log(fulldata);
+          
+        } catch (err) {
+          setError('데이터를 불러오는 중 오류가 발생했습니다.');  // 에러 처리
+          console.error('Error fetching data:', err);  // 에러 로그 출력
+        }
+      };
 
 
     const handleButtonClick = () => {
+        fetchFullData();
         setIsActive(!isActive);
         setIsModalOpen(!isModalOpen);
         setSelectedCategory("전체");
         setFacilityList(
-            facilityData.facility_set.find((item) => item.facility_category === "전체").facility_list
+            fulldata.facility_set.find((item) => item.facility_category === "전체").facility_list
         );
     };
 
@@ -544,7 +305,7 @@ export default function Main() {
     return (
         <MainContainer>
             <Section><Header /></Section>
-            <Section><DashBoard mockdata = {Mockdata.dashboard}/></Section>
+            <Section><DashBoard data = {data.dashboard}/></Section>
             <ButtonContainer>
                 <MapButton isActive={isActive} onClick={handleButtonClick}>
                     <ButtonText>편의시설 모아보기</ButtonText>
@@ -552,7 +313,7 @@ export default function Main() {
             </ButtonContainer>
             <Section>
                 <MapContainer>
-                    <Map Mockdata = {Mockdata.building_list}/>
+                    <Map data = {data.building_list}/>
                     {isModalOpen && (
                         <TotalModal>
                             <TitleContainer>
@@ -593,7 +354,7 @@ export default function Main() {
                     )}
                 </MapContainer>
             </Section>
-            <Section><NoticeMain mockdata = {Mockdata.notice_list}/></Section>
+            <Section><NoticeMain data = {data.notice_list}/></Section>
         </MainContainer>
     );
 }

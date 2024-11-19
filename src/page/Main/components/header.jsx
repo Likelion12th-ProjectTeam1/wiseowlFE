@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FaBell } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
+
 const HeaderContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -32,7 +33,7 @@ export default function Header() {
 
 
   const navigate = useNavigate();
-  
+
   const goToMainNoticepage = () => {
     navigate("/mainnotice");
 };

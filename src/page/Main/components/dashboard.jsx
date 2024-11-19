@@ -233,7 +233,7 @@ const TotalText = styled.span`
 
 
 
-export default function DashBoard({mockdata}) {
+export default function DashBoard({data}) {
   const [major, setMajor] = useState("통계학과");
   const [secondmajor, setSecondmajor] = useState("AI융합전공");
   const [username, setUsername] = useState("김민석");
@@ -271,14 +271,14 @@ export default function DashBoard({mockdata}) {
         <Board key="slide1">
           <InfoContainer>
             <UserContainer>
-              <UserText style={{ marginLeft: '10px' }}>안녕하세요 {mockdata.name}님</UserText>
+              <UserText style={{ marginLeft: '10px' }}>안녕하세요 {data.name}님</UserText>
             </UserContainer>
             <MajorContainer>
               <Major>
-                <MajorText>{mockdata.major}</MajorText>
+                <MajorText>{data.major}</MajorText>
               </Major>
               <Major>
-                <MajorText>{mockdata.double_major}</MajorText>
+                <MajorText>{data.double_major}</MajorText>
               </Major>
             </MajorContainer>
           </InfoContainer>
@@ -287,7 +287,7 @@ export default function DashBoard({mockdata}) {
           </LineContainer>
           <ViewContainer>
             <RateContainer>
-              <ProgressBox total={mockdata.major_credit_required} complete={mockdata.major_credit_completed}/>
+              <ProgressBox total={data.major_credit_required} complete={data.major_credit_completed}/>
               <RateText>본전공 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
@@ -295,28 +295,28 @@ export default function DashBoard({mockdata}) {
                 <RequireText>졸업요건</RequireText>
               </RequireTitle>
               <Requirement>
-                <RequireText>{mockdata.major_requirements[0]}</RequireText>
+                <RequireText>{data.major_requirements[0]}</RequireText>
               </Requirement>
               <Requirement>
-                <RequireText>{mockdata.major_requirements[1]}</RequireText>
+                <RequireText>{data.major_requirements[1]}</RequireText>
               </Requirement>
               <Requirement>
-                <RequireText>{mockdata.major_requirements[2]}</RequireText>
+                <RequireText>{data.major_requirements[2]}</RequireText>
               </Requirement>
             </RequirementsContainer>
           </ViewContainer>
         </Board>
         <Board key="slide2">
-        <InfoContainer>
+          <InfoContainer>
             <UserContainer>
-              <UserText style={{ marginLeft: '10px' }}>안녕하세요 {mockdata.name}님</UserText>
+              <UserText style={{ marginLeft: '10px' }}>안녕하세요 {data.name}님</UserText>
             </UserContainer>
             <MajorContainer>
               <Major>
-                <MajorText>{mockdata.major}</MajorText>
+                <MajorText>{data.major}</MajorText>
               </Major>
               <Major>
-                <MajorText>{mockdata.double_major}</MajorText>
+                <MajorText>{data.double_major}</MajorText>
               </Major>
             </MajorContainer>
           </InfoContainer>
@@ -325,21 +325,21 @@ export default function DashBoard({mockdata}) {
           </LineContainer>
           <ViewContainer>
             <RateContainer>
-              <ProgressBox total={mockdata.double_credit_required} complete={mockdata.double_credit_completed}/>
-              <RateText>본전공 이수율</RateText>
+              <ProgressBox total={data.double_credit_required} complete={data.double_credit_completed}/>
+              <RateText>부전공 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
               <RequireTitle>
                 <RequireText>졸업요건</RequireText>
               </RequireTitle>
               <Requirement>
-                <RequireText>{mockdata.double_requirements[0]}</RequireText>
+                <RequireText>{data.double_requirements[0]}</RequireText>
               </Requirement>
               <Requirement>
-                <RequireText>{mockdata.double_requirements[1]}</RequireText>
+                <RequireText>{data.double_requirements[1]}</RequireText>
               </Requirement>
               <Requirement>
-                <RequireText>{mockdata.double_requirements[2]}</RequireText>
+                <RequireText>{data.double_requirements[2]}</RequireText>
               </Requirement>
             </RequirementsContainer>
           </ViewContainer>
