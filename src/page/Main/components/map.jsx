@@ -189,13 +189,13 @@ const Cancle = styled(IoMdCloseCircleOutline)`
   margin-right: 10px;
 `
 
-const Map = ({ Mockdata }) => {
+const Map = ({ data }) => {
   const [activeBuilding, setActiveBuilding] = useState(null);  // 현재 활성화된 건물의 인덱스를 관리
   const [facilityList, setFacilityList] = useState([]);
   const mapRef = useRef(null);
 
   const handleBuildingClick = (buildingIndex) => {
-    const selectedBuilding = Mockdata[buildingIndex];
+    const selectedBuilding = data[buildingIndex];
 
     if (selectedBuilding && selectedBuilding.facilities_summary) {
       setActiveBuilding(buildingIndex);  // 해당 건물을 클릭하면 그 건물만 모달이 열리도록
@@ -237,13 +237,13 @@ const Map = ({ Mockdata }) => {
           <TotalModal>
             <TitleContainer>
               <HeaderContainer>
-                <TitleText>{Mockdata[activeBuilding]?.building_name || "건물 이름 없음"}</TitleText>
+                <TitleText>{data[activeBuilding]?.building_name || "건물 이름 없음"}</TitleText>
                 <Cancle onClick={handleModal}/>
               </HeaderContainer>
               <ChooseContianer>
                 {/* 첫 번째 줄: 전체, 식장/매점, 열람실 */}
                 <SelectContainer>
-                  {Mockdata[activeBuilding].facilities_summary.facility_set
+                  {data[activeBuilding].facilities_summary.facility_set
                     .filter((category) =>
                       ["전체", "카페/식당", "열람실"].includes(category.facility_category)
                     )
@@ -270,7 +270,7 @@ const Map = ({ Mockdata }) => {
 
                 {/* 두 번째 줄: 컴퓨터/복사기, 기타 */}
                 <SelectContainer>
-                  {Mockdata[activeBuilding].facilities_summary.facility_set
+                  {data[activeBuilding].facilities_summary.facility_set
                     .filter((category) =>
                       ["컴퓨터/복사기", "기타"].includes(category.facility_category)
                     )

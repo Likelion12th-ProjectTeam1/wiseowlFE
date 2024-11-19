@@ -67,7 +67,7 @@ const ContentText = styled.h3`
     margin-left: 11px;
 `;
 
-export default function NoticeMain({ mockdata }) {
+export default function NoticeMain({ data }) {
     const [date, setDate] = useState("10월 2일");
     const navigate = useNavigate();
 
@@ -87,7 +87,7 @@ export default function NoticeMain({ mockdata }) {
                 <Arrow onClick={goToNoticepage} />
             </NoticeHeader>
             <SemiText>{date}</SemiText>
-            {mockdata.map((item, index) => (
+            {data.map((item, index) => (
                 <NoticeContent key={index} onClick={() => handleNoticeClick(item.notice_link)}>
                     <ContentText>{item.notice_title}</ContentText>
                     <SemiText>{item.notice_department}</SemiText>
