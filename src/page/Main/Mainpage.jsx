@@ -286,8 +286,8 @@ export default function Main() {
     };
 
     const halfIndex = Math.ceil(facilityList.length / 2); // 리스트를 반으로 나누는 인덱스
-const firstHalf = facilityList.slice(0, halfIndex);  // 첫 번째 절반
-const secondHalf = facilityList.slice(halfIndex);   // 두 번째 절반
+    const firstHalf = facilityList.slice(0, halfIndex);  // 첫 번째 절반
+    const secondHalf = facilityList.slice(halfIndex);   // 두 번째 절반
 
     return (
         <MainContainer>

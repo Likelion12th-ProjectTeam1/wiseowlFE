@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import NoticeHeader from "./components/NoticeHeader";
 import { Carousel } from "antd";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const PageContainer = styled.div`
     display : flex;
@@ -43,7 +45,7 @@ const NoticeContainer = styled.div`
     display : flex;
     flex-direction: column;
     width : 90%;
-    height : 50px;
+    height : 55px;
     border-radius: 9.855px;
     background: #FFF;
     box-shadow: 0px 0.493px 0.912px 0.985px rgba(0, 0, 0, 0.09);
@@ -92,6 +94,7 @@ const SettingButton = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 `
 
 const SettingText = styled.h3`
@@ -112,64 +115,100 @@ const contentStyle = {
 
 // Main component
 export default function Notice() {
-    const [center, setCenter] = useState("통계학과");
-    const [mockdata, setMockData] = useState([
-        { id: "1", centername: "AI교육원", noticedate: "10월 1일", noticecontent: "[SW중심대학] 제6회 HUFS Code Festival 모집 공고" },
-        { id: "2", centername: "AI교육원", noticedate: "10월 2일", noticecontent: "[SW중심대학] 제7회 HUFS Code Festival 모집 공고" },
-    ]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
+    const [token, setToken] = useState(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0NDM1NTU2LCJpYXQiOjE3MzE4NDM1NTYsImp0aSI6ImQ5NWRlNGUyZWQ4ZTRkZmZiMmU2OThmMTM4NjFjZGU0IiwidXNlcl9pZCI6NX0.Uq1roWDY74apsMgfLzJYY46GENHUd0Zd3PET_piePDw"
+    );
+    const navigate = useNavigate();
 
-    const [boxContainers, setBoxContainers] = useState([1]); // Start with one box
-
-    // Function to add a new BoxContainer
-    const addBoxContainer = () => {
-        setBoxContainers([...boxContainers, boxContainers.length + 1]);
+    const goToNoticeModal = () => {
+        navigate("/noticemodal");
     };
 
-    return (
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(
+                    "http://43.201.90.146:8000/api/notices/notice/",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setData(response.data); // 데이터 저장
+                console.log(response.data); // 데이터 출력
+            } catch (err) {
+                setError("데이터를 불러오는 중 오류가 발생했습니다.");
+                console.error("Error fetching data:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [token]);
+
+    if (loading) {
+        return (
+            <div>loading</div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div>{error}</div>
+        );
+    }
+
+    const chunkNotices = (notices) => {
+        const chunked = [];
+        for (let i = 0; i < notices.length; i += 2) {
+          chunked.push(notices.slice(i, i + 2)); // Creates a chunk of 2 notices at a time
+        }
+        return chunked;
+      };
+    
+      // Render dynamically based on data
+      return (
         <PageContainer>
-            <NoticeHeader />
-            {/* Render each BoxContainer */}
-            {boxContainers.map((box, index) => (
-                <BoxContainer key={index}>
-                    <CenterText>{center} 공지사항 {box}</CenterText>
-                    <Carousel draggable={true} dotPosition={"top"}>
-                        <div>
-                            <ContentContainer>
-                                {mockdata.map((notice) => (
-                                    <NoticeContainer key={notice.id}>
-                                        <NoticeContent>{notice.noticecontent}</NoticeContent>
-                                        <LowContainer>
-                                            <CenterContent>{notice.centername}</CenterContent>
-                                            <DayContent>{notice.noticedate}</DayContent>
-                                        </LowContainer>
-                                    </NoticeContainer>
-                                ))}
-                            </ContentContainer>
-                        </div>
-                        <div>
-                            <ContentContainer>
-                                {mockdata.map((notice) => (
-                                    <NoticeContainer key={notice.id}>
-                                        <NoticeContent>{notice.noticecontent}</NoticeContent>
-                                        <LowContainer>
-                                            <CenterContent>{notice.centername}</CenterContent>
-                                            <DayContent>{notice.noticedate}</DayContent>
-                                        </LowContainer>
-                                    </NoticeContainer>
-                                ))}
-                            </ContentContainer>
-                        </div>
-                        <div>
-                            <h3 style={contentStyle}>3</h3>
-                        </div>
-                    </Carousel>
-                </BoxContainer>
-            ))}
+          <NoticeHeader />
+          {data && data.subscribe_organ && Object.keys(data.subscribe_organ).map((organ) => {
+            const notices = data.subscribe_organ[organ];
+            const noticeChunks = chunkNotices(notices); // Split notices into chunks of 2
             
-            {/* Button to add a new BoxContainer */}
-            <SettingButton onClick={addBoxContainer}>
-                <SettingText>알림받을 기관 선택하기</SettingText>
-            </SettingButton>
+            return (
+              <BoxContainer key={organ}>
+                <CenterText>{organ} 공지사항</CenterText>
+                <Carousel draggable={true} dotPosition={"top"}>
+                  {/* Render each chunk as a separate slide */}
+                  {noticeChunks.map((chunk, index) => (
+                    <div key={index}>
+                      <ContentContainer>
+                        {chunk.map((notice, idx) => (
+                          <NoticeContainer key={idx}>
+                            <NoticeContent>{notice.title}</NoticeContent>
+                            <LowContainer>
+                              <CenterContent>{organ}</CenterContent>
+                              <DayContent>{notice.date}</DayContent>
+                            </LowContainer>
+                          </NoticeContainer>
+                        ))}
+                      </ContentContainer>
+                    </div>
+                  ))}
+                </Carousel>
+              </BoxContainer>
+            );
+          })}
+    
+          <SettingButton onClick={goToNoticeModal}>
+            <SettingText>알림받을 기관 선택하기</SettingText>
+          </SettingButton>
         </PageContainer>
-    );
-}
+      );
+    }
