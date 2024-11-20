@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // axios 추가
+import axiosInstance from "../../auth/axiosInstance";
 
 // Styled Components
 const ModalContainer = styled.div`
@@ -110,9 +110,6 @@ const CenterButton = styled.div`
 // Main Component
 export default function NoticeModal() {
     const [data, setData] = useState(null);
-    const [token, setToken] = useState(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0NDM1NTU2LCJpYXQiOjE3MzE4NDM1NTYsImp0aSI6ImQ5NWRlNGUyZWQ4ZTRkZmZiMmU2OThmMTM4NjFjZGU0IiwidXNlcl9pZCI6NX0.Uq1roWDY74apsMgfLzJYY46GENHUd0Zd3PET_piePDw"
-    );
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -128,20 +125,17 @@ export default function NoticeModal() {
         );
         setData(updatedData); // 데이터 상태 업데이트
         PatchData();
+        console.log(data);
+        
     };
     
     const PatchData = async () => {
         try {
             // PATCH 요청 보내기
-            const response = await axios.patch(
-                "http://43.201.90.146:8000/api/notices/alarm/organ/",
+            const response = await axiosInstance.patch(
+                "/api/notices/alarm/organ/",
                 {
                     data: data, // 데이터 변수 전달
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`, // Bearer 방식으로 토큰 설정
-                    },
                 }
             );
             console.log(response.data); 
@@ -157,13 +151,8 @@ export default function NoticeModal() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(
-                    "http://43.201.90.146:8000/api/notices/alarm/organ/",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
+                const response = await axiosInstance.get(
+                    "/api/notices/alarm/organ/"
                 );
                 setData(response.data.organ); // 데이터 저장
                 console.log(response.data); // 데이터 출력
@@ -176,7 +165,7 @@ export default function NoticeModal() {
         };
 
         fetchData();
-    }, [token]);
+    }, []);
 
     if (loading) {
         return (

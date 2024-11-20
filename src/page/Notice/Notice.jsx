@@ -3,7 +3,7 @@ import NoticeHeader from "./components/NoticeHeader";
 import { Carousel } from "antd";
 import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../auth/axiosInstance";
 
 const PageContainer = styled.div`
     display : flex;
@@ -118,9 +118,6 @@ export default function Notice() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [data, setData] = useState(null);
-    const [token, setToken] = useState(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0NDM1NTU2LCJpYXQiOjE3MzE4NDM1NTYsImp0aSI6ImQ5NWRlNGUyZWQ4ZTRkZmZiMmU2OThmMTM4NjFjZGU0IiwidXNlcl9pZCI6NX0.Uq1roWDY74apsMgfLzJYY46GENHUd0Zd3PET_piePDw"
-    );
     const navigate = useNavigate();
 
     const goToNoticeModal = () => {
@@ -132,13 +129,8 @@ export default function Notice() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(
-                    "http://43.201.90.146:8000/api/notices/notice/",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
+                const response = await axiosInstance.get(
+                    "/api/notices/notice/"
                 );
                 setData(response.data); // 데이터 저장
                 console.log(response.data); // 데이터 출력
@@ -151,7 +143,7 @@ export default function Notice() {
         };
 
         fetchData();
-    }, [token]);
+    }, []);
 
     if (loading) {
         return (

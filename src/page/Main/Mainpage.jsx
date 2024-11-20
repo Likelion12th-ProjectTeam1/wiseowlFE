@@ -220,14 +220,15 @@ export default function Main() {
     const [data, setData] = useState(null);  // 서버에서 받아온 데이터를 저장할 state
     const [fulldata , setFulldata] = useState(null);
     const [error, setError] = useState(null); // 에러 상태
-    const [token , setToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0NDM1NTU2LCJpYXQiOjE3MzE4NDM1NTYsImp0aSI6ImQ5NWRlNGUyZWQ4ZTRkZmZiMmU2OThmMTM4NjFjZGU0IiwidXNlcl9pZCI6NX0.Uq1roWDY74apsMgfLzJYY46GENHUd0Zd3PET_piePDw")
     const [loading, setLoading] = useState(true);  // 로딩 상태 추가
 
     useEffect(() => {
         const fetchData = async () => {
           try {
             const response = await axiosInstance.get('/api/main/');
+            const responsemodal = await axiosInstance.get('/api/facilities/facility_moeum/');
             setData(response.data);  // 성공 시 받은 데이터 저장
+            setFulldata(responsemodal.data);
             console.log(response.data);  // 받은 데이터 출력 (이제 응답 데이터를 정상적으로 확인 가능)
             console.log(fulldata);
             
@@ -240,7 +241,7 @@ export default function Main() {
         };
     
         fetchData();  // 함수 호출
-      }, [token]);  // token이 변경될 때마다 실행
+      }, []);  // token이 변경될 때마다 실행
     
       if (loading) {
         return <div>Loading...</div>;  // 데이터가 로드되기 전에는 로딩 화면을 보여줌
@@ -249,22 +250,6 @@ export default function Main() {
       if (error) {
         return <div>{error}</div>;  // 에러가 발생한 경우 에러 메시지 출력
       }
-
-    const fetchFullData = async () => {
-        try {
-          const response = await axios.get('http://ec2-43-201-90-146.ap-northeast-2.compute.amazonaws.com:8000/api/facilities/facility_moeum/', {
-            headers: {
-              Authorization: `Bearer ${token}`, // Bearer 방식으로 토큰 설정
-            },
-          });
-          setFulldata(response.data);  // 성공 시 받은 데이터 저장
-          console.log(fulldata);
-          
-        } catch (err) {
-          setError('데이터를 불러오는 중 오류가 발생했습니다.');  // 에러 처리
-          console.error('Error fetching data:', err);  // 에러 로그 출력
-        }
-      };
 
 
     const handleButtonClick = () => {
@@ -292,30 +277,30 @@ export default function Main() {
     return (
         <MainContainer>
             <Section><Header /></Section>
-            <Section><DashBoard data = {data.dashboard}/></Section>
+            <Section><DashBoard data={data.dashboard} /></Section>
             <ButtonContainer>
-                <MapButton $isActive={isActive} onClick={handleButtonClick}>
+                <MapButton isActive={isActive} onClick={handleButtonClick}>
                     <ButtonText>편의시설 모아보기</ButtonText>
                 </MapButton>
             </ButtonContainer>
             <Section>
                 <MapContainer>
-                    <Map data = {data.building_list}/>
+                    <Map data={data.building_list} />
                     {isModalOpen && (
                         <TotalModal>
                             <TitleContainer>
                                 <TitleText>교내 편의시설</TitleText>
                                 <SelectContainer>
-                                    {facilityData.categories.map((category, index) => (
+                                    {fulldata.facility_set.map((category, index) => (
                                         <FacilityContainer
                                             key={index}
-                                            onClick={() => handleCategoryClick(category.category)}
+                                            onClick={() => handleCategoryClick(category.facility_category)}
                                         >
-                                            <FacilityText isButtonactive={selectedCategory === category.category}>
-                                                {category.category}
+                                            <FacilityText isButtonactive={selectedCategory === category.facility_category}>
+                                                {category.facility_category}
                                             </FacilityText>
-                                            <FacilityCount isButtonactive={selectedCategory === category.category}>
-                                                {category.count}
+                                            <FacilityCount isButtonactive={selectedCategory === category.facility_category}>
+                                                {category.facility_list.length}
                                             </FacilityCount>
                                         </FacilityContainer>
                                     ))}
@@ -323,16 +308,32 @@ export default function Main() {
                             </TitleContainer>
                             <ContentContainer>
                                 {facilityList.length > 0 ? (
-                                    facilityList.map((facility, index) => (
-                                        <ContentButton key={index}>
-                                            <ContentText>{facility.facility_name}</ContentText>
-                                            <InfoContainer>
-                                                <InfoText>{facility.building_name}</InfoText>
-                                                <Line />
-                                                <InfoText>{facility.facility_loc}</InfoText>
-                                            </InfoContainer>
-                                        </ContentButton>
-                                    ))
+                                    <>
+                                        <Content1>
+                                            {firstHalf.map((facility, index) => (
+                                                <ContentButton key={index}>
+                                                    <ContentText>{facility.facility_name}</ContentText>
+                                                    <InfoContainer>
+                                                        <InfoText>{facility.building_name}</InfoText>
+                                                        <Line />
+                                                        <InfoText>{facility.facility_loc}</InfoText>
+                                                    </InfoContainer>
+                                                </ContentButton>
+                                            ))}
+                                        </Content1>
+                                        <Content2>
+                                            {secondHalf.map((facility, index) => (
+                                                <ContentButton key={index}>
+                                                    <ContentText>{facility.facility_name}</ContentText>
+                                                    <InfoContainer>
+                                                        <InfoText>{facility.building_name}</InfoText>
+                                                        <Line />
+                                                        <InfoText>{facility.facility_loc}</InfoText>
+                                                    </InfoContainer>
+                                                </ContentButton>
+                                            ))}
+                                        </Content2>
+                                    </>
                                 ) : (
                                     <p>해당 카테고리에 시설이 없습니다.</p>
                                 )}
@@ -341,7 +342,7 @@ export default function Main() {
                     )}
                 </MapContainer>
             </Section>
-            <Section><NoticeMain data = {data.notice_list}/></Section>
+            <Section><NoticeMain data={data.notice_list} /></Section>
         </MainContainer>
     );
-}
+    }
