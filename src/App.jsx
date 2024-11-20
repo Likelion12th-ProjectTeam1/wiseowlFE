@@ -27,6 +27,8 @@ import Request from "./page/request.jsx/request";
 import RequestAccept from "./page/request.jsx/requestaccept";
 import MainNotice from "./page/Mypage/mainnotice";
 import { ThemeProvider } from "styled-components";
+import GoogleLoginRedirection from "./page/Login/GoogleLoginRedirection";
+
 
 const theme = {
   colors: {
@@ -65,6 +67,9 @@ function App() {
           <Route path="/editcoursemodal" element={<EditcourseModal />} />
           <Route path="/editrequire" element={<EditRequire />} />
           <Route path="/editsecondrequire" element={<EditSecondRequire />} />
+          <Route path="/googleLogin" element={<GoogleLoginRedirection/>} />
+          
+          
         </Routes>
         <Navigatebar />
       </ThemeProvider>
