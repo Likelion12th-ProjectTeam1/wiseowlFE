@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axiosInstance from "../../auth/axiosInstance";
+import { useNavigate ,useLocation } from "react-router-dom";
 
 const Container = styled.div`
     width: 390px;
@@ -32,6 +34,7 @@ const ModalBack = styled.h4`
     margin-left: auto;
     margin-right: 30px;
     margin-top: 20px;
+    cursor: pointer;
 `
 const BigContainer = styled.div`
     width: 40%;
@@ -68,13 +71,21 @@ const BarContainer = styled.div`
 
 const ClassContainer = styled.div`
     width: 80%;
-    height: 100%;
+    height: auto; /* 내용에 따라 높이 조절 */
+    max-height: calc(100% - 100px); /* 부모 높이에서 여백 제한 */
     padding: 20px;
     margin-right: 50px;
+    margin-top: 20px;
     display: flex;
+    justify-content: flex-start;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+    
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge에서 스크롤바 숨김 */
+    }
 `;
 
 const Bar = styled.div`
@@ -138,20 +149,12 @@ const ClassText = styled.h4`
 export default function SubjectModal() {
     const [activebigText, setActivebigText] = useState(null);
     const [activesmallText, setActivesmallText] = useState(null);
-
-    const department = [
-        { department_id: 1, department_name: "AI데이터융합" },
-        { department_id: 2, department_name: "국제금융학과" },
-        { department_id: 3, department_name: "Global Business & Technology학부" },
-    ];
-
-    const generalEducation = [
-        { gened_category_id: 1, gen_category_name: "대학영어" },
-        { gened_category_id: 2, gen_category_name: "미네르바인문" },
-        { gened_category_id: 3, gen_category_name: "RC영어" },
-        { gened_category_id: 4, gen_category_name: "소프트웨어기초" },
-        { gened_category_id: 5, gen_category_name: "언어와 문학" },
-    ];
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [subjectdata, setSubjectdata] = useState({ department: [] });
+    const navigate = useNavigate();
+    const location = useLocation();
+    const selectedSemester = location?.state?.selectedSemester || "defaultSemester";
 
     const handlebigClick = (textType) => {
         setActivebigText(textType);
@@ -160,12 +163,39 @@ export default function SubjectModal() {
 
     const handlesmallClick = (textType) => {
         setActivesmallText(textType);
+        console.log("Selected Semester:", selectedSemester);
+        console.log(textType);
+        navigate("/subjectmodal2", { state: { selectedSemester ,textType } });
+        
     };
+
+    const handlebackClick = () => {
+        navigate("/infotwo");
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axiosInstance.get(
+                    `/api/requirements/colleges/${selectedSemester}/division/`
+                );
+                setSubjectdata(response.data); // 데이터 저장
+                console.log(response.data); // 데이터 출력
+            } catch (err) {
+                setError("데이터를 불러오는 중 오류가 발생했습니다.");
+                console.error("Error fetching data:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <Container>
             <ModalHeader>
-                    <ModalBack>돌아가기</ModalBack>
+                    <ModalBack onClick={handlebackClick}>돌아가기</ModalBack>
             </ModalHeader>
             <ModalContainer>
                 <BigContainer>
@@ -191,7 +221,7 @@ export default function SubjectModal() {
                     <ClassContainer>
                         {/* 전공 또는 교양 선택에 따라 department 또는 generalEducation 렌더링 */}
                         {activebigText === "major" &&
-                            department.map((dept) => (
+                            subjectdata.department.map((dept) => (
                                 <ClassText
                                     key={dept.department_id}
                                     isActive={activesmallText === dept.department_name}
@@ -201,13 +231,13 @@ export default function SubjectModal() {
                                 </ClassText>
                             ))}
                         {activebigText === "general" &&
-                            generalEducation.map((gen) => (
+                            subjectdata.general_education.map((gen) => (
                                 <ClassText
                                     key={gen.gened_category_id}
-                                    isActive={activesmallText === gen.gen_category_name}
-                                    onClick={() => handlesmallClick(gen.gen_category_name)}
+                                    isActive={activesmallText === gen.gened_category_name}
+                                    onClick={() => handlesmallClick(gen.gened_category_name)}
                                 >
-                                    {gen.gen_category_name}
+                                    {gen.gened_category_name}
                                 </ClassText>
                             ))}
                     </ClassContainer>

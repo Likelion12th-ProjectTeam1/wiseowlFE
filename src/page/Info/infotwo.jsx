@@ -3,6 +3,7 @@ import styled from "styled-components";
 import InfoHeader2 from "./components/infoheader2";
 import { LuMinusCircle } from "react-icons/lu";
 import { Select } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const CautionText = styled.h5`
   color: #a3a3a3;
@@ -262,6 +263,8 @@ export default function InfoTwo() {
   }
 
   const FormComponent = ({ semester }) => { // Accept semester as prop
+    const [selectedSemester, setSelectedSemester] = useState(null);
+    const navigate = useNavigate();
     const [courses, setCourses] = useState([
       {
         id: 0,
@@ -281,6 +284,8 @@ export default function InfoTwo() {
         retry_yn: false,
       };
       setCourses([...courses, newCourse]);
+      console.log(selectedSemester);
+      navigate("/subjectmodal", { state: { selectedSemester } });
     };
   
     const handleDelete = (id) => {
@@ -306,7 +311,11 @@ export default function InfoTwo() {
     return (
       <FormContainer>
         <DropdownContainer>
-          <CustomSelect placeholder="학기 선택">
+        <CustomSelect
+        value={selectedSemester}
+        onChange={(value) => setSelectedSemester(value)}
+        placeholder="학기 선택"
+        >
             {/* Hardcoded years for now */}
             <Select.Option value="2021 1학기">2021 1학기</Select.Option>
             <Select.Option value="2021 2학기">2021 2학기</Select.Option>
