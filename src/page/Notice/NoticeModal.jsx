@@ -120,33 +120,45 @@ export default function NoticeModal() {
 
     // handleOrgan 함수 수정
     const handleOrgan = (index) => {
-        const updatedData = data.map((item, i) => 
-            i === index ? { ...item, subscribe_yn: !item.subscribe_yn } : item
-        );
-        setData(updatedData); // 데이터 상태 업데이트
-        PatchData();
-        console.log(data);
-        
+        setData((prevData) => {
+            const updatedData = prevData.map((item, i) =>
+                i === index ? { ...item, subscribe_yn: !item.subscribe_yn } : item
+            );
+            
+            // 최신 상태로 PatchData 호출
+            PatchData(updatedData);
+    
+            return updatedData; // 상태 업데이트
+        });
     };
     
-    const PatchData = async () => {
+    const PatchData = async (updatedData) => {
         try {
+            const requestBody = {
+                subscribe_major: updatedData[0]?.subscribe_yn || false, // 0번 인덱스
+                subscribe_double: updatedData[1]?.subscribe_yn || false, // 1번 인덱스
+                subscribe_ai: updatedData[2]?.subscribe_yn || false, // 2번 인덱스
+                subscribe_foreign: updatedData[3]?.subscribe_yn || false, // 3번 인덱스
+                subscribe_cfl: updatedData[4]?.subscribe_yn || false, // 4번 인덱스
+                subscribe_flex: updatedData[5]?.subscribe_yn || false, // 5번 인덱스
+                subscribe_foreign_edu: updatedData[6]?.subscribe_yn || false, // 6번 인덱스
+                subscribe_special_foreign: updatedData[7]?.subscribe_yn || false, // 7번 인덱스
+            };
+    
             // PATCH 요청 보내기
             const response = await axiosInstance.patch(
                 "/api/notices/alarm/organ/",
-                {
-                    data: data, // 데이터 변수 전달
-                }
+                requestBody
             );
-            console.log(response.data); 
+    
+            console.log("패치 성공:", response.data);
         } catch (err) {
-            setError("데이터를 불러오는 중 오류가 발생했습니다."); // 에러 처리
-            console.error("Error fetching data:", err); // 에러 로그 출력
-        } finally {
-            setLoading(false); // 데이터 로드 후 로딩 상태 false로 설정
+            setError("데이터를 업데이트하는 중 오류가 발생했습니다.");
+            console.error("Error updating data:", err);
         }
     };
     
+
 
     useEffect(() => {
         const fetchData = async () => {
