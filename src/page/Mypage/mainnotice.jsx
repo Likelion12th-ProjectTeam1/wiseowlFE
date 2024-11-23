@@ -1,11 +1,13 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import NoticeItem from "./components/NoticeItem";
+import axiosInstance from "../../auth/axiosInstance";
 const Container = styled.div`
   width: 390px;
   min-height: 570px;
   margin: 0 auto;
-  margin-bottom: 70px;
+  margin-bottom: 100px;
 `;
 
 const CustomSpace = styled.div`
@@ -21,7 +23,7 @@ const HeaderHorizontalBox = styled.div`
   margin-top: 15px;
   margin-left: 25px;
   gap: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 const NameText = styled.p`
   font-family: Inter;
@@ -32,25 +34,48 @@ const NameText = styled.p`
   margin-left: 40.5%;
 `;
 export default function MainNotice() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get(`/api/notices/alarm/`);
+        let notsorted = response.data.notice;
+        let sorted = notsorted.sort(
+          //날짜순으로 정렬해서 10개만 보여줄것임
+          (a, b) => new Date(b.notice_date) - new Date(a.notice_date)
+        );
+        setData(sorted.slice(0, 10));
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading();
+      }
+    };
+    fetchData();
+    console.log(data);
+  }, []);
   return (
     <Container>
-      <HeaderHorizontalBox>
-        <FaChevronLeft size="22px" />
-        <NameText>알림</NameText>
-      </HeaderHorizontalBox>
-      <CustomSpace height="20px" />
-      <NoticeItem
-        organization={"AI 교육원"}
-        min={"3분전"}
-        text={"[SW중심대학] 제6회 HUFS Code Festival 모집 공고"}
-        isread={true}
-      />
-      <NoticeItem
-        organization={"GBT 학부"}
-        min={"12분전"}
-        text={"[2024-2] 이중전공 졸업시험 장소 및 추가 공지"}
-        isread={true}
-      />
+      {loading ? (
+        "데이터 로딩중..."
+      ) : (
+        <>
+          <HeaderHorizontalBox>
+            <FaChevronLeft size="22px" />
+            <NameText>알림</NameText>
+          </HeaderHorizontalBox>
+          <CustomSpace height="20px" />
+          {data.map((data) => (
+            <NoticeItem
+              organization={data.notice_department}
+              min={data.notice_date}
+              text={data.notice_title}
+              isread={data.notice_read}
+            />
+          ))}
+        </>
+      )}
     </Container>
   );
 }

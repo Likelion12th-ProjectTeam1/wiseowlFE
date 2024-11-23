@@ -1,17 +1,10 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import axiosInstance from "../../auth/axiosInstance";
 import { FaChevronLeft } from "react-icons/fa";
 
 import MenuCard from "./components/MenuCard";
-
-import americano from "../../img/menu/americano.png";
-import latte from "../../img/menu/latte.png";
-import donut from "../../img/menu/donut.png";
-
 import MenuCategory from "./components/MenuCategory";
-import Notice from "./../Notice/Notice";
 
 const Container = styled.div`
   width: 390px;
