@@ -15,7 +15,7 @@ const LinkItem = styled.div`
 const Text = styled.span`
   font-family: Inter;
   font-weight: 500;
-  font-size: 17px;
+  font-size: 17.25px;
   color: #010101;
 `;
 

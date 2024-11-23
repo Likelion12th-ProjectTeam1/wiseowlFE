@@ -13,7 +13,7 @@ const DummyDiv = styled.div`
   width: 10%;
 `;
 const LeftText = styled.p`
-  width: 45%;
+  width: 40%;
   padding-left: 40px;
   font-weight: 500;
   color: #737373;
@@ -23,8 +23,8 @@ const LeftText = styled.p`
 `;
 
 const RightText = styled.p`
-  width: 45%;
-  padding-left: 35px;
+  width: 55%;
+  padding-left: 25px;
   font-weight: 600;
   color: #737373;
   text-align: left;
@@ -32,12 +32,17 @@ const RightText = styled.p`
   margin: 0;
 `;
 
-const MypageInfoBar = ({ lefttext, righttext }) => {
+const MypageInfoBar = ({ lefttext, righttext, isscore }) => {
   return (
     <Item>
       <LeftText>{lefttext}</LeftText>
       <DummyDiv></DummyDiv>
-      <RightText>{righttext}</RightText>
+
+      {isscore ? (
+        <RightText>{righttext}/4.5</RightText>
+      ) : (
+        <RightText>{righttext}</RightText>
+      )}
     </Item>
   );
 };
