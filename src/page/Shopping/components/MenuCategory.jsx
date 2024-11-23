@@ -11,6 +11,12 @@ const MenuCategoryContainer = styled.div`
   display: flex;
   overflow-x: auto;
   margin-top: 10px;
+  -ms-overflow-style: none; /* IE/Edge에서 스크롤바 숨김 */
+
+  /* Webkit 기반 브라우저에서 스크롤바 숨김 */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const CategoryText = styled.button`
@@ -24,72 +30,42 @@ const CategoryText = styled.button`
   cursor: pointer;
 `;
 
-const categories = [
-  { category: "all", label: "전체" },
-  { category: "donuts", label: "도넛" },
-  { category: "coffee", label: "커피" },
-  { category: "beverage", label: "음료" },
-  { category: "ready-made", label: "냉동간편식" },
-];
+function MenuCategory({ data }) {
+  const [selectedCategory, setSelectedCategory] = useState("ALL");
 
-const products = [
-  {
-    product_category: "all",
-    product_list: [
-      {
-        product_name: "아메리카노",
-        product_price: 4500,
-        product_img: americano,
-      },
-      { product_name: "카페라떼", product_price: 5500, product_img: americano },
-    ],
-  },
-  {
-    product_category: "donuts",
-    product_list: [
-      {
-        product_name: "글레이즈드 도넛",
-        product_price: 1800,
-        product_img: americano,
-      },
-    ],
-  },
-  {
-    product_category: "coffee",
-    product_list: [
-      {
-        product_name: "아메리카노",
-        product_price: 4500,
-        product_img: americano,
-      },
-      { product_name: "카페라떼", product_price: 5500, product_img: americano },
-    ],
-  },
-  {
-    product_category: "beverage",
-    product_list: [
-      {
-        product_name: "아메리카노",
-        product_price: 4500,
-        product_img: americano,
-      },
-    ],
-  },
-  {
-    product_category: "ready-made",
-    product_list: [
-      {
-        product_name: "아메리카노",
-        product_price: 4500,
-        product_img: americano,
-      },
-      { product_name: "카페라떼", product_price: 5500, product_img: americano },
-    ],
-  },
-];
+  // API 데이터 구조 변환
+  const transformedData = data.map((category) => ({
+    product_category: category.product_category,
+    product_list: category.product_list.map((product) => ({
+      product_name: product.product_name,
+      product_price: product.product_price,
+      product_img: product.product_img,
+    })),
+  }));
 
-function MenuCategory() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const products = transformedData;
+
+  const getCategoryLabel = (category) => {
+    switch (category) {
+      case "ALL":
+        return "전체";
+      case "DONUT":
+        return "도넛";
+      case "COFFEE":
+        return "커피";
+      case "BEVERAGE":
+        return "음료";
+      case "FOOD":
+        return "음식";
+      case "SNACK & MORE":
+        return "기타";
+    }
+  };
+
+  const categories = products.map((category) => ({
+    category: category.product_category,
+    label: getCategoryLabel(category.product_category),
+  }));
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
