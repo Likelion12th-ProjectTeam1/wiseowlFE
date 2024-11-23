@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import MyPageLinks from "./components/mypagelinks";
 import mypage_progile from "../../img/mypage_profile.png";
 import MypageInfoBar from "./components/MypageInfoBar";
+import axiosInstance from "../../auth/axiosInstance";
 
 const Container = styled.div`
   width: 390px;
   margin: 0 auto;
   padding: 20px;
-  margin-bottom: 70px;
+  margin-bottom: 80px;
 `;
 const CustomSpace = styled.div`
   height: ${(props) => props.height || "0px"};
@@ -17,7 +18,7 @@ const Title = styled.h1`
   font-family: Inter;
   font-size: 24px;
   padding-left: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 const ProfileContainer = styled.div`
   display: flex;
@@ -33,7 +34,7 @@ const Profile = styled.div`
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px #000;
+  box-shadow: 0 0.74px 1.01px 0.25px rgba(0, 0, 0, 0.25);
 `;
 const ProfileImg = styled.img`
   width: 150px;
@@ -68,36 +69,55 @@ const LinkContainer = styled.div`
   align-items: center;
 `;
 export default function Mypage() {
-  const [userName, setUserName] = useState("김민석");
-  const [userScore, setUserScore] = useState("4.3");
-  const [userFirstCourse, setuserFirstCourse] = useState("통계학과");
-  const [userSecondCourse, setUserSecondCourse] = useState("AI 융합전공");
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get("/api/notices/mypage/");
+        setData(response.data);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+    console.log(data);
+  }, []);
 
   return (
     <Container>
       <CustomSpace height="30px"></CustomSpace>
       <Title>마이페이지</Title>
-      <ProfileContainer>
-        <Profile>
-          <CustomSpace height="40px"></CustomSpace>
-          <ProfileImg src={mypage_progile} alt="user profile img" />
-          <STDName>{userName}님</STDName>
-          <STDNum>21학번</STDNum>
-          <CustomSpace height="30px"></CustomSpace>
-          <MypageInfoBar
-            lefttext={"내 성적"}
-            righttext={userScore}
-          ></MypageInfoBar>
-          <MypageInfoBar
-            lefttext={"본전공"}
-            righttext={userFirstCourse}
-          ></MypageInfoBar>
-          <MypageInfoBar
-            lefttext={"이중/부전공"}
-            righttext={userSecondCourse}
-          ></MypageInfoBar>
-        </Profile>
-      </ProfileContainer>
+      {loading ? (
+        <Title>데이터 로딩중...</Title>
+      ) : (
+        <ProfileContainer>
+          <Profile>
+            <CustomSpace height="40px"></CustomSpace>
+            <ProfileImg src={mypage_progile} alt="user profile img" />
+            <STDName>{data.profile_name}님</STDName>
+            <STDNum>{data.profile_student_number}학번</STDNum>
+            <CustomSpace height="30px"></CustomSpace>
+            <MypageInfoBar
+              lefttext={"내 성적"}
+              righttext={data.profile_grade}
+              isscore={true}
+            ></MypageInfoBar>
+            <MypageInfoBar
+              lefttext={"본전공"}
+              righttext={data.major}
+              isscore={false}
+            ></MypageInfoBar>
+            <MypageInfoBar
+              lefttext={"이중/부전공"}
+              righttext={data.double_major}
+              isscore={false}
+            ></MypageInfoBar>
+          </Profile>
+        </ProfileContainer>
+      )}
       <CustomSpace height="50px"></CustomSpace>
       <LinkContainer>
         <MyPageLinks text={"회원정보 수정"} link="/editmypage" />
