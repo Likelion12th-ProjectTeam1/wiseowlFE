@@ -112,7 +112,7 @@ export default function Shopping() {
         <>
           <HeaderHorizontalBox>
             <FaChevronLeft size="22px" />
-            <NameText>{data.facility_name}</NameText>
+            <NameText>던킨도너츠</NameText>
             <ShopLocation>
               {data.builidng_name} {data.facility_loc}
             </ShopLocation>
