@@ -21,7 +21,7 @@ const ProductImage = styled.img`
 `;
 
 const TextBox = styled.div`
-  width: 35%;
+  width: 40%;
   height: 30%;
 `;
 
