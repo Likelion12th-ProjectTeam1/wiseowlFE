@@ -137,6 +137,9 @@ export default function Notice() {
             } catch (err) {
                 setError("데이터를 불러오는 중 오류가 발생했습니다.");
                 console.error("Error fetching data:", err);
+                console.error("Error details:", error.response); // 서버에서 반환한 응답
+                console.error("Config details:", error.config);   // 요청 설정
+                console.error("Request details:", error.request); // 요청 자체
             } finally {
                 setLoading(false);
             }

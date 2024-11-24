@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Select } from "antd";
+import axiosInstance from "../../auth/axiosInstance";
 
 const Container = styled.div`
     width : 390px;
@@ -224,15 +225,125 @@ export default function EditMypage(){
     const [oldpassword, setOldpassword] = useState();
     const [newpassword, setNewpassword] = useState();
     const [gubun, setGubun] = useState("");
+    const [data , setData] = useState(null);
+    const [prevgubun , setPrevgubun] = useState(null);
+    const [prevdata ,setPrevdata] = useState(null);
+    const [error, setError] = useState(null);
+    const [colleges, setColleges] = useState([]); // 전체 단과대 데이터
+    const [selectedCollege, setSelectedCollege] = useState(null); // 선택된 단과대 ID를 저장
+    const [selectedCollegeData, setSelectedCollegeData] = useState(null); // 선택된 단과대 데이터를 저장
+    const [majors, setMajors] = useState([]); // 선택된 단과대의 학과 데이터
+    const [major , setMajor] = useState("");
+    const [doublecollege , setDoublecollege] = useState(null);
+    const [doublemajor , setDoublemajor] = useState("");
+    const [changecollege , setChangeCollege] = useState(null);
+    const [changemajor , setChangemajor] = useState(null);
 
     const handleGubunChange = (value) => {
         setGubun(value);
     };
 
-    const mockpassword = {
-        "old_password": {oldpassword},
-        "new_password": {newpassword}
-    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axiosInstance.get(
+                    `/api/requirements/colleges/`
+                );
+                setData(response.data); // 데이터 저장
+                console.log(response.data); // 데이터 출력
+            } catch (err) {
+                setError("데이터를 불러오는 중 오류가 발생했습니다.");
+                console.error("Error fetching data:", err);
+            }
+        };
+
+        const fetchPrevData = async () => {
+            try {
+                const response = await axiosInstance.get(
+                    `/api/notices/mypage/myinfo-edit/`
+                );
+                setPrevdata(response.data); // 데이터 저장
+                console.log(response.data); // 데이터 출력
+            } catch (err) {
+                setError("데이터를 불러오는 중 오류가 발생했습니다.");
+                console.error("Error fetching data:", err);
+            }
+        };
+    
+        fetchData();
+        fetchPrevData();
+
+    }, []);
+
+    const PostData = async () => {
+        try {
+          const requestBody = {
+            "college":selectedCollege,
+            "major": major,
+            "profile_gubn": doublecollege,
+            "second_college": gubun,
+            "second_major": doublemajor
+        };
+      
+        console.log("패치 성공:", requestBody);
+      
+            // PATCH 요청 보내기
+            const response = await axiosInstance.patch(
+                "/api/notices/mypage/myinfo-edit/major/",
+                requestBody
+            );
+      
+            console.log("패치 성공:", response.data);
+        } catch (err) {
+            setError("데이터를 업데이트하는 중 오류가 발생했습니다.");
+            console.error("Error updating data:", err);
+        }
+      };
+
+      const PatchData = async () => {
+        try {
+            const password = {
+                "old_password": oldpassword,
+                "new_password": newpassword
+            };
+      
+        console.log("패치 성공:", password);
+      
+            // PATCH 요청 보내기
+            const response = await axiosInstance.patch(
+                "/api/account/edit/password",
+                password
+            );
+      
+            console.log("패치 성공:", response.data);
+        } catch (err) {
+            setError("데이터를 업데이트하는 중 오류가 발생했습니다.");
+            console.error("Error updating data:", err);
+        }
+      };
+
+      const PatchGubun = async () => {
+        try {
+            const gubundata = {
+                "profile_gubun": gubun, 
+                "changed_college":changecollege,
+                "changed_major": changemajor
+            }
+        console.log("데이터 확인:", gubundata);
+      
+            // PATCH 요청 보내기
+            const response = await axiosInstance.patch(
+                "/api/notices/mypage/myinfo-edit/double-to-minor/",
+                gubundata
+            );
+      
+            console.log("패치 성공:", response.data);
+        } catch (err) {
+            setError("데이터를 업데이트하는 중 오류가 발생했습니다.");
+            console.error("Error updating data:", err);
+        }
+      };
 
 
 
@@ -252,7 +363,7 @@ export default function EditMypage(){
                         <PasswordText>변경할 비밀번호</PasswordText>
                         <InputBox placeholder="새 비밀번호를 입력해주세요" value = {newpassword}></InputBox>
                         <ButtonContainer>
-                            <PasswordButton>비밀번호 변경하기</PasswordButton>
+                            <PasswordButton onClick={PatchData}>비밀번호 변경하기</PasswordButton>
                         </ButtonContainer>
                     </ContainerHeader>
                 </PasswordContainer>
@@ -267,20 +378,121 @@ export default function EditMypage(){
                             <MajorText>본전공</MajorText>
                         </SelectHeader>
                         <ChooseContainer>
-                            <CollegeSelect></CollegeSelect>
-                            <CollegeSelect></CollegeSelect>
+                        <CollegeSelect
+                            placeholder="단과대를 선택하세요"
+                            style={{ width: "300px" }}
+                            onChange={(value) => {
+                                // 선택된 단과대 객체를 찾음
+                                const selectedCollege = data.colleges.find(college => college.college_name === value);
+
+                                // 선택된 단과대 이름 저장
+                                setSelectedCollege(selectedCollege ? selectedCollege.college_name : null);
+
+                                // 선택된 단과대의 데이터 저장
+                                setSelectedCollegeData(selectedCollege);
+
+                                // 선택된 단과대의 전공 목록 업데이트
+                                setMajors(selectedCollege ? selectedCollege.majors : []);
+
+                                // 선택된 단과대 출력
+                                console.log("선택된 단과대 이름:", selectedCollege ? selectedCollege.college_name : null);
+                            }}
+                        >
+                            {data && data.colleges && data.colleges.map((college) => (
+                                <Select.Option key={college.college_id} value={college.college_name}>
+                                    {college.college_name}
+                                </Select.Option>
+                            ))}
+                        </CollegeSelect>
+                        <CollegeSelect
+                            placeholder="전공을 선택하세요"
+                            style={{ width: "300px" }}
+                            onChange={(value) => {
+                                // 선택된 전공 이름 저장
+                                setMajor(value);
+
+                                // 선택된 전공 출력
+                                console.log("선택된 전공 이름:", value);
+                            }}
+                        >
+                            {majors && majors.map((major) => (
+                                <Select.Option key={major.department_id} value={major.department_name}>
+                                    {major.department_name}
+                                </Select.Option>
+                            ))}
+                        </CollegeSelect>
                         </ChooseContainer>
-                        <SelectHeader>
-                            <MajorText>이중전공 단과대</MajorText>
-                            <MajorText>이중전공</MajorText>
-                        </SelectHeader>
-                        <ChooseContainer>
-                            <CollegeSelect></CollegeSelect>
-                            <CollegeSelect></CollegeSelect>
-                        </ChooseContainer>
+                        {prevdata && prevdata.profile_gubun !== "전공심화" && (
+                            <>
+                                <ChooseContainer>
+                                    <SelectHeader>
+                                        <MajorText>{prevdata.profile_gubun} 단과대</MajorText>
+                                        <MajorText>{prevdata.profile_gubun}</MajorText>
+                                    </SelectHeader>
+                                </ChooseContainer>
+                                <ChooseContainer>
+                                    <CollegeSelect
+                                        placeholder="단과대를 선택하세요"
+                                        style={{ width: "300px" }}
+                                        onChange={(value) => {
+                                            // 선택된 단과대 객체 찾기
+                                            const selectedCollege = data.colleges.find(
+                                                (college) => college.college_name === value
+                                            );
+
+                                            // 단과대 이름 저장
+                                            setDoublecollege(
+                                                selectedCollege ? selectedCollege.college_name : null
+                                            );
+
+                                            // 해당 단과대의 전공 목록 업데이트
+                                            setMajors(selectedCollege ? selectedCollege.majors : []);
+
+                                            // 선택된 단과대 출력
+                                            console.log(
+                                                "선택된 이중전공 단과대 이름:",
+                                                selectedCollege ? selectedCollege.college_name : null
+                                            );
+                                        }}
+                                    >
+                                        {data &&
+                                            data.colleges &&
+                                            data.colleges.map((college) => (
+                                                <Select.Option
+                                                    key={college.college_id}
+                                                    value={college.college_name}
+                                                >
+                                                    {college.college_name}
+                                                </Select.Option>
+                                            ))}
+                                    </CollegeSelect>
+                                    <CollegeSelect
+                                        placeholder="전공을 선택하세요"
+                                        style={{ width: "300px" }}
+                                        onChange={(value) => {
+                                            // 전공 이름 저장
+                                            setDoublemajor(value);
+
+                                            // 선택된 전공 출력
+                                            console.log("선택된 이중전공 이름:", value);
+                                        }}
+                                    >
+                                        {majors &&
+                                            majors.map((major) => (
+                                                <Select.Option
+                                                    key={major.department_id}
+                                                    value={major.department_name}
+                                                >
+                                                    {major.department_name}
+                                                </Select.Option>
+                                            ))}
+                                    </CollegeSelect>
+                                </ChooseContainer>
+                            </>
+                        )}
                     </SelectContainer>
                     <ButtonContainer>
-                        <MajorButton>수정완료</MajorButton>
+                        <MajorButton onClick = {PostData}>수정완료</MajorButton>
                     </ButtonContainer>
                 </MajorContainer>
                 <GubunContainer>
@@ -302,12 +514,53 @@ export default function EditMypage(){
                             <MajorText>{gubun}</MajorText>
                         </SelectHeader>
                         <ChooseContainer>
-                            <CollegeSelect></CollegeSelect>
-                            <CollegeSelect></CollegeSelect>
+                        <CollegeSelect
+                            placeholder="단과대를 선택하세요"
+                            style={{ width: "300px" }}
+                            onChange={(value) => {
+                                // 선택된 단과대 객체를 찾음
+                                const selectedCollege = data.colleges.find(college => college.college_name === value);
+
+                                // 선택된 단과대 이름 저장
+                                setSelectedCollege(selectedCollege ? selectedCollege.college_name : null);
+
+                                // 선택된 단과대의 데이터 저장
+                                setChangeCollege(selectedCollege);
+
+                                // 선택된 단과대의 전공 목록 업데이트
+                                setMajors(selectedCollege ? selectedCollege.majors : []);
+
+                                // 선택된 단과대 출력
+                                console.log("선택된 단과대 이름:", selectedCollege ? selectedCollege.college_name : null);
+                            }}
+                        >
+                            {data && data.colleges && data.colleges.map((college) => (
+                                <Select.Option key={college.college_id} value={college.college_name}>
+                                    {college.college_name}
+                                </Select.Option>
+                            ))}
+                        </CollegeSelect>
+                        <CollegeSelect
+                            placeholder="전공을 선택하세요"
+                            style={{ width: "300px" }}
+                            onChange={(value) => {
+                                // 선택된 전공 이름 저장
+                                setChangemajor(value);
+
+                                // 선택된 전공 출력
+                                console.log("선택된 전공 이름:", value);
+                            }}
+                        >
+                            {majors && majors.map((major) => (
+                                <Select.Option key={major.department_id} value={major.department_name}>
+                                    {major.department_name}
+                                </Select.Option>
+                            ))}
+                        </CollegeSelect>
                         </ChooseContainer>
                     </LowContainer>)}
                     <ButtonContainer>
-                        <GubunButton>구분 변경하기</GubunButton>
+                        <GubunButton onClick={PatchGubun}>구분 변경하기</GubunButton>
                     </ButtonContainer>
                 </GubunContainer>
         </div>
