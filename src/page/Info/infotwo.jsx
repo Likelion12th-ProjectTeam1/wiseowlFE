@@ -33,6 +33,12 @@ const FormArea = styled.div`
   overflow: auto;
   padding: 10px;
   transition: max-height 0.3s ease;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
 `;
 
 const DropdownContainer = styled.div`
@@ -232,170 +238,172 @@ const GradeSelect = styled(Select)` // antd의 Select로 사용
 `;
 
 export default function InfoTwo() {
-    const [forms, setForms] = useState([<FormComponent key={0} semester="1학년 1학기" />]); // Initial semester for first form
-    const [formsyear, setFormsyear] = useState([
-      { key: 0, year: "1학년 1학기" },
-      { key: 1, year: "1학년 2학기" },
-      { key: 2, year: "2학년 1학기" },
-      { key: 3, year: "2학년 2학기" },
-      { key: 4, year: "3학년 1학기" },
-      { key: 5, year: "3학년 2학기" },
-      { key: 6, year: "4학년 1학기" },
-      { key: 7, year: "4학년 2학기" },
-    ]);
-  
-    const addForm = () => {
-      const newKey = forms.length;
-      setForms([...forms, <FormComponent key={newKey} semester={formsyear[newKey].year} />]); // Pass new semester year to FormComponent
-    };
-  
-    return (
-      <div className="page-container">
-        <InfoHeader2 />
-        <CautionText>미입력시 해당 학기는 미이수로 인정됩니다.</CautionText>
-        <FormArea>
-          {forms}
-          <AddFormButton onClick={addForm}>학기 추가하기</AddFormButton>
-          <EnterButton>시작하기</EnterButton>
-        </FormArea>
-      </div>
-    );
-  }
+  const [forms, setForms] = useState([<FormComponent subjectkey={1} semester="1학년 1학기" />]); // Initial semester for first form
+  const [formsyear, setFormsyear] = useState([
+    { key: 1, year: "1학년 1학기" },
+    { key: 2, year: "1학년 2학기" },
+    { key: 3, year: "2학년 1학기" },
+    { key: 4, year: "2학년 2학기" },
+    { key: 5, year: "3학년 1학기" },
+    { key: 6, year: "3학년 2학기" },
+    { key: 7, year: "4학년 1학기" },
+    { key: 8, year: "4학년 2학기" },
+  ]);
 
-  const FormComponent = ({ semester }) => { // Accept semester as prop
-    const [selectedSemester, setSelectedSemester] = useState(null);
-    const navigate = useNavigate();
-    const [courses, setCourses] = useState([
-      {
-        id: 0,
-        subject_name: "컴퓨터사고",
-        grade: "",
-        credits: "3",
-        retry_yn: false,
-      },
-    ]);
+  const addForm = () => {
+    const newKey = forms.length;
+    setForms([...forms, <FormComponent subjectkey={formsyear[newKey].key} semester={formsyear[newKey].year} />]); // Pass new semester year to FormComponent
+  };
+
+  return (
+    <div className="page-container">
+      <InfoHeader2 />
+      <CautionText>미입력시 해당 학기는 미이수로 인정됩니다.</CautionText>
+      <FormArea>
+        {forms}
+        <AddFormButton onClick={addForm}>학기 추가하기</AddFormButton>
+        <EnterButton>시작하기</EnterButton>
+      </FormArea>
+    </div>
+  );
+}
+
+const FormComponent = ({ semester, subjectkey }) => {  // Changed 'key' to 'subjectkey'
+  const [selectedSemester, setSelectedSemester] = useState(null);
+  const navigate = useNavigate();
   
-    const addClass = () => {
-      const newCourse = {
-        id: courses.length,
-        subject_name: "",
-        grade: "",
-        credits: "",
-        retry_yn: false,
-      };
-      setCourses([...courses, newCourse]);
-      console.log(selectedSemester);
-      navigate("/subjectmodal", { state: { selectedSemester } });
+  const [courses, setCourses] = useState([
+    {
+      id: 0,
+      subject_name: "컴퓨터사고",
+      grade: "",
+      credits: "3",
+      retry_yn: false,
+    },
+  ]);
+
+  const addClass = () => {  // You no longer need to pass semester to addClass
+    const newCourse = {
+      id: courses.length,
+      subject_name: "",
+      grade: "",
+      credits: "",
+      retry_yn: false,
     };
-  
-    const handleDelete = (id) => {
-      setCourses((prevCourses) => prevCourses.filter((course) => course.id !== id));
-    };
-  
-    const handleCheckboxChange = (id) => {
-      setCourses((prevCourses) =>
-        prevCourses.map((course) =>
-          course.id === id ? { ...course, retry_yn: !course.retry_yn } : course
-        )
-      );
-    };
-  
-    const handleFieldChange = (id, field, value) => {
-      setCourses((prevCourses) =>
-        prevCourses.map((course) =>
-          course.id === id ? { ...course, [field]: value } : course
-        )
-      );
-    };
-  
-    return (
-      <FormContainer>
-        <DropdownContainer>
-        <CustomSelect
-        value={selectedSemester}
-        onChange={(value) => setSelectedSemester(value)}
-        placeholder="학기 선택"
-        >
-            {/* Hardcoded years for now */}
-            <Select.Option value="2021 1학기">2021 1학기</Select.Option>
-            <Select.Option value="2021 2학기">2021 2학기</Select.Option>
-            <Select.Option value="2022 1학기">2022 1학기</Select.Option>
-            <Select.Option value="2022 2학기">2022 2학기</Select.Option>
-          </CustomSelect>
-          <SemesterContainer>
-            <SemesterText>{semester}</SemesterText> {/* Display the passed semester */}
-          </SemesterContainer>
-        </DropdownContainer>
-        <Form>
-          <FormHeader>
-            <ClassText>재수강</ClassText>
-            <ClassText>과목명</ClassText>
-            <GradeText>성적</GradeText>
-            <GradeText>학점</GradeText>
-          </FormHeader>
-          <FormBody>
-            {courses.map((course) => (
-              <ClassRow
-                key={course.id}
-                course={course}
-                onFieldChange={handleFieldChange}
-                onDelete={handleDelete}
-                onCheckboxChange={handleCheckboxChange}
-              />
-            ))}
-            <AddClassButton onClick={addClass}>수강과목 추가</AddClassButton>
-          </FormBody>
-          <FormFooter>
-            <FooterText>학기평점</FooterText>
-            <AvgText>4.2</AvgText>
-            <TotalText>/4.5</TotalText>
-          </FormFooter>
-        </Form>
-      </FormContainer>
+    setCourses([...courses, newCourse]);
+    navigate("/subjectmodal", { state: { selectedSemester, semester, subjectkey } });  // Pass correct data
+    console.log(semester);
+    console.log(subjectkey);  // Use subjectkey here
+  };
+
+  const handleDelete = (id) => {
+    setCourses((prevCourses) => prevCourses.filter((course) => course.id !== id));
+  };
+
+  const handleCheckboxChange = (id) => {
+    setCourses((prevCourses) =>
+      prevCourses.map((course) =>
+        course.id === id ? { ...course, retry_yn: !course.retry_yn } : course
+      )
     );
   };
 
-  const ClassRow = ({ course, onFieldChange, onDelete, onCheckboxChange }) => (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        marginTop: "10px",
-        alignItems: "center",
-      }}
-    >
-      <input
-        type="checkbox"
-        style={{ marginLeft: "15px" }}
-        checked={course.retry_yn}
-        onChange={() => onCheckboxChange(course.id)}
-      />
-      <FormText>{course.subject_name || "과목명"}</FormText>
-      <GradeSelect
-        value={course.grade} // bind the select value to course grade
-        onChange={(value) => onFieldChange(course.id, "grade", value)} // update grade
-        placeholder="성적 선택"
-      >
-        <Select.Option value="A+">A+</Select.Option>
-        <Select.Option value="A">A</Select.Option>
-        <Select.Option value="B+">B+</Select.Option>
-        <Select.Option value="B">B</Select.Option>
-        <Select.Option value="C+">C+</Select.Option>
-        <Select.Option value="C">C</Select.Option>
-        <Select.Option value="D+">D+</Select.Option>
-        <Select.Option value="D">D</Select.Option>
-        <Select.Option value="F">F</Select.Option>
-      </GradeSelect>
-      <FormText>{course.credits}</FormText>
-      <LuMinusCircle
-        onClick={() => onDelete(course.id)}
-        style={{
-          width: "40px",
-          cursor: "pointer",
-          color: "#B1B0B0",
-          marginLeft: "20px",
-          paddingRight: "20px",
-        }}
-      />
-    </div>
+  const handleFieldChange = (id, field, value) => {
+    setCourses((prevCourses) =>
+      prevCourses.map((course) =>
+        course.id === id ? { ...course, [field]: value } : course
+      )
+    );
+  };
+
+  return (
+    <FormContainer>
+      <DropdownContainer>
+        <CustomSelect
+          value={selectedSemester}
+          onChange={(value) => setSelectedSemester(value)}
+          placeholder="학기 선택"
+        >
+          <Select.Option value="2021 1학기">2021 1학기</Select.Option>
+          <Select.Option value="2021 2학기">2021 2학기</Select.Option>
+          <Select.Option value="2022 1학기">2022 1학기</Select.Option>
+          <Select.Option value="2022 2학기">2022 2학기</Select.Option>
+        </CustomSelect>
+        <SemesterContainer>
+          <SemesterText>{semester}</SemesterText> {/* Display the passed semester */}
+        </SemesterContainer>
+      </DropdownContainer>
+      <Form>
+        <FormHeader>
+          <ClassText>재수강</ClassText>
+          <ClassText>과목명</ClassText>
+          <GradeText>성적</GradeText>
+          <GradeText>학점</GradeText>
+        </FormHeader>
+        <FormBody>
+          {courses.map((course) => (
+            <ClassRow
+              key={course.id}
+              course={course}
+              onFieldChange={handleFieldChange}
+              onDelete={handleDelete}
+              onCheckboxChange={handleCheckboxChange}
+            />
+          ))}
+          <AddClassButton onClick={addClass}>수강과목 추가</AddClassButton>
+        </FormBody>
+        <FormFooter>
+          <FooterText>학기평점</FooterText>
+          <AvgText>4.2</AvgText>
+          <TotalText>/4.5</TotalText>
+        </FormFooter>
+      </Form>
+    </FormContainer>
   );
+};
+
+const ClassRow = ({ course, onFieldChange, onDelete, onCheckboxChange }) => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "row",
+      marginTop: "10px",
+      alignItems: "center",
+    }}
+  >
+    <input
+      type="checkbox"
+      style={{ marginLeft: "15px" }}
+      checked={course.retry_yn}
+      onChange={() => onCheckboxChange(course.id)}
+    />
+    <FormText>{course.subject_name || "과목명"}</FormText>
+    <GradeSelect
+      value={course.grade} // bind the select value to course grade
+      onChange={(value) => onFieldChange(course.id, "grade", value)} // update grade
+      placeholder="성적 선택"
+    >
+      <Select.Option value="A+">A+</Select.Option>
+      <Select.Option value="A">A</Select.Option>
+      <Select.Option value="B+">B+</Select.Option>
+      <Select.Option value="B">B</Select.Option>
+      <Select.Option value="C+">C+</Select.Option>
+      <Select.Option value="C">C</Select.Option>
+      <Select.Option value="D+">D+</Select.Option>
+      <Select.Option value="D">D</Select.Option>
+      <Select.Option value="F">F</Select.Option>
+    </GradeSelect>
+    <FormText>{course.credits}</FormText>
+    <LuMinusCircle
+      onClick={() => onDelete(course.id)}
+      style={{
+        width: "40px",
+        cursor: "pointer",
+        color: "#B1B0B0",
+        marginLeft: "20px",
+        paddingRight: "20px",
+      }}
+    />
+  </div>
+);
+

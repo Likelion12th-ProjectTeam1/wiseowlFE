@@ -155,6 +155,8 @@ export default function SubjectModal() {
     const navigate = useNavigate();
     const location = useLocation();
     const selectedSemester = location?.state?.selectedSemester || "defaultSemester";
+    const subjectyear = location?.state?.semester || "defaultsubjectyear";
+    const subjectkey = location?.state?.subjectkey || "defaultsubjectkey";
 
     const handlebigClick = (textType) => {
         setActivebigText(textType);
@@ -165,7 +167,9 @@ export default function SubjectModal() {
         setActivesmallText(textType);
         console.log("Selected Semester:", selectedSemester);
         console.log(textType);
-        navigate("/subjectmodal2", { state: { selectedSemester ,textType } });
+        console.log("key" ,subjectkey);
+        
+        navigate("/subjectmodal2", { state: { selectedSemester ,textType, subjectyear, subjectkey } });
         
     };
 

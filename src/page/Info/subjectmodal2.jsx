@@ -148,11 +148,15 @@ const DayText = styled.h4`
 export default function SubjectModal2() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [subjectdata , setSubjectdata] = useState({});
   const selectedSemester = location?.state?.selectedSemester || "defaultSemester";
-  const onevalue = location?.state?.textType || "defaulttextType";
+  const subjectyear = location?.state?.subjectyear || "defaultsubjectyear";
+  const onevalue = location?.state?.textType || "defaulttextType";  
+  const subjectkey = location?.state?.subjectkey || "defaultsubjectkey";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState({ subject_department: [], subject_generation: [] });
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -162,6 +166,8 @@ export default function SubjectModal2() {
         );
         setData(response.data); // 데이터를 state에 저장
         console.log(response.data); // 가져온 데이터 출력
+        console.log(subjectkey);
+        
       } catch (err) {
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
         console.error("Error fetching data:", err);
@@ -172,6 +178,31 @@ export default function SubjectModal2() {
 
     fetchData();
   }, [selectedSemester]);
+
+  const fetchsubjectData = async ({subjectid}) => {
+    try {
+
+        const requestBody = {
+              "school_year": subjectkey
+        }
+
+        const response = await axiosInstance.post(
+            `/api/requirements/colleges/${subjectid}/department/subjects/add/`,
+            requestBody
+        );
+
+
+        setSubjectdata(response.data); // 데이터 저장
+        console.log(response.data); // 데이터 출력
+    } catch (err) {
+        setError("데이터를 불러오는 중 오류가 발생했습니다.");
+        console.error("Error fetching data:", err);
+        console.log(subjectkey);
+        
+    } finally {
+        setLoading(false);
+    }
+};
 
   // `onevalue`에 해당하는 데이터를 `subject_department` 또는 `subject_generation`에서 찾음
   const department = data.subject_department.find(
@@ -189,6 +220,12 @@ export default function SubjectModal2() {
   const handleback = () => {
     navigate("/infotwo");
 }
+
+const handlesubject = (subjectid) => {
+  navigate("/infotwo", { state: { subjectid } });
+  fetchsubjectData({subjectid});
+  console.log(subjectid);
+};
 
   return (
     <Container>
@@ -212,7 +249,8 @@ export default function SubjectModal2() {
           <ClassContainer>
             {currentData && currentData.courses ? (
               currentData.courses.map((course) => (
-                <ClassButton key={course.subject_department_id || course.gened_id}>
+                <ClassButton key={course.subject_department_id || course.subject_gened_id} 
+                onClick={() => handlesubject(course.subject_department_id || course.subject_gened_id)}>
                   <ClassTitle>
                     {course.subject_department_name || course.subject_gened_name}
                   </ClassTitle>

@@ -232,6 +232,7 @@ export default function Main() {
             console.log(response.data);  // 받은 데이터 출력 (이제 응답 데이터를 정상적으로 확인 가능)
             console.log(fulldata);
             
+            
             setLoading(false);  // 데이터가 로드되면 로딩 상태 false로 설정
           } catch (err) {
             setError('데이터를 불러오는 중 오류가 발생했습니다.');  // 에러 처리
