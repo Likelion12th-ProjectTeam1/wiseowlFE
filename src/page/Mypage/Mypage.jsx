@@ -76,6 +76,7 @@ export default function Mypage() {
       try {
         const response = await axiosInstance.get("/api/notices/mypage/");
         setData(response.data);
+        console.log(data);
       } catch (err) {
         console.error("Error fetching data:", err);
       } finally {
@@ -83,7 +84,6 @@ export default function Mypage() {
       }
     };
     fetchData();
-    console.log(data);
   }, []);
 
   return (
