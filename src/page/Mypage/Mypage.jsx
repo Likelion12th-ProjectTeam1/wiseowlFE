@@ -71,6 +71,7 @@ const LinkContainer = styled.div`
 export default function Mypage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  //api 연동
   useEffect(() => {
     const fetchData = async () => {
       try {

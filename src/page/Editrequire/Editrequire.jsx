@@ -309,7 +309,8 @@ export default function EditRequire() {
         setForeignbtn([false, false, false, false, true]);
         break;
       default:
-        console.log("무언가의 오류");
+        console.log("무언가의 오류"); //null 값이 들어올 시
+        setForeignbtn([false, false, false, false, false]);
         break;
     }
 

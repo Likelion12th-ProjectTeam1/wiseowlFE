@@ -267,6 +267,7 @@ export default function EditRequire() {
   function switchCompletebtn() {
     setIscomplete(!iscomplete);
   }
+
   //api 연동
   useEffect(() => {
     const fetchData = async () => {
@@ -313,7 +314,7 @@ export default function EditRequire() {
     }
 
     // 점수 설정 및 외국어 완료 여부
-    setScore(data[6].for_language_score);
+    setScore(data[6].for_language_score); //이후 null 이면 paceholder에는 0으로 표기
     setIscomplete(data[7].setIscomplete === "완료");
 
     // 졸업 논문 ~ 자격증 인증 상태 설정
