@@ -71,11 +71,13 @@ const LinkContainer = styled.div`
 export default function Mypage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  //api 연동
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get("/api/notices/mypage/");
         setData(response.data);
+        console.log(data);
       } catch (err) {
         console.error("Error fetching data:", err);
       } finally {
@@ -83,7 +85,6 @@ export default function Mypage() {
       }
     };
     fetchData();
-    console.log(data);
   }, []);
 
   return (
