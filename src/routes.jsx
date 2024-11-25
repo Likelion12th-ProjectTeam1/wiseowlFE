@@ -14,14 +14,14 @@ import NoticeModal from './page/Notice/NoticeModal';
 import Mypage from './page/Mypage';
 import EditMypage from './page/Editmypage/Editmypage';
 import EditCourse from './page/Editcourse/Editcourse';
-import EditcourseModal from './page/Editcourse/EditcourseModal';
+import EditcourseModal2 from './page/Editcourse/EditcourseModal2';
 import EditRequire from './page/Editrequire/Editrequire';
 import SubjectModal from './page/Info/subjectmodal1';
 import SubjectModal2 from './page/Info/subjectmodal2';
 import Request from './page/request.jsx/request';
 import RequestAccept from './page/request.jsx/requestaccept';
 import MainNotice from './page/Mypage/mainnotice';
-
+import EditcourseModal1 from './page/Editcourse/EditcourseModal1';
 const routes = [
   {
     path: '/landing',
@@ -114,9 +114,9 @@ const routes = [
     name: '졸업요건수정페이지'
   },
   {
-    path: '/editcoursemodal',
+    path: '/editcoursemodal2',
     exact: true,
-    element: <EditcourseModal />,
+    element: <EditcourseModal2 />,
     name: '졸업요건수정모달'
   },
   {
@@ -160,6 +160,12 @@ const routes = [
     exact: true,
     element: <MainNotice />,
     name: '이수과목입력'
+  },
+  {
+    path: '/editcoursemodal1',
+    exact: true,
+    element: <EditcourseModal1 />,
+    name: '이수과목입력모딸'
   }];
 
 export default routes;

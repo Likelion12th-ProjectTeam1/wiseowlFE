@@ -146,7 +146,7 @@ const ClassText = styled.h4`
     }
 `;
 
-export default function SubjectModal() {
+export default function EditcourseModal1() {
     const [activebigText, setActivebigText] = useState(null);
     const [activesmallText, setActivesmallText] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -171,12 +171,12 @@ export default function SubjectModal() {
         console.log(textType);
         console.log("key" ,subjectkey);
         
-        navigate("/subjectmodal2", { state: { selectedSemester ,textType, subjectyear, subjectkey } });
+        navigate("/editcoursemodal2", { state: { selectedSemester ,textType, subjectyear, subjectkey } });
         
     };
 
     const handlebackClick = () => {
-        navigate("/infotwo");
+        navigate("/editcoursepage");
     }
 
     useEffect(() => {

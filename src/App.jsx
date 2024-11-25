@@ -17,7 +17,7 @@ import NoticeModal from "./page/Notice/NoticeModal";
 import Mypage from "./page/Mypage/Mypage";
 import EditMypage from "./page/Editmypage/Editmypage";
 import EditCourse from "./page/Editcourse/Editcourse";
-import EditcourseModal from "./page/Editcourse/EditcourseModal";
+import EditcourseModal2 from "./page/Editcourse/EditcourseModal2";
 import EditRequire from "./page/Editrequire/Editrequire";
 import EditSecondRequire from "./page/Editrequire/EditSecondrequire";
 import SubjectModal from "./page/Info/subjectmodal1";
@@ -26,6 +26,7 @@ import Navigatebar from "./component/Navigatebar";
 import Request from "./page/request.jsx/request";
 import RequestAccept from "./page/request.jsx/requestaccept";
 import MainNotice from "./page/Mypage/mainnotice";
+import EditcourseModal1 from "./page/Editcourse/EditcourseModal1";
 import { ThemeProvider } from "styled-components";
 import GoogleLoginRedirection from "./page/Login/GoogleLoginRedirection";
 
@@ -63,13 +64,12 @@ function App() {
           <Route path="/noticemodal" element={<NoticeModal />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/editmypage" element={<EditMypage />} />
-          <Route path="/editcourse" element={<EditCourse />} />
-          <Route path="/editcoursemodal" element={<EditcourseModal />} />
+          <Route path="/editcoursepage" element={<EditCourse />} />
+          <Route path="/editcoursemodal2" element={<EditcourseModal2 />} />
           <Route path="/editrequire" element={<EditRequire />} />
           <Route path="/editsecondrequire" element={<EditSecondRequire />} />
           <Route path="/googleLogin" element={<GoogleLoginRedirection/>} />
-          
-          
+          <Route path="/editcoursemodal1" element={<EditcourseModal1/>} />       
         </Routes>
         <Navigatebar />
       </ThemeProvider>
