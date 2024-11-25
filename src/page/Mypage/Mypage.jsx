@@ -122,7 +122,7 @@ export default function Mypage() {
       <CustomSpace height="50px"></CustomSpace>
       <LinkContainer>
         <MyPageLinks text={"회원정보 수정"} link="/editmypage" />
-        <MyPageLinks text={"수강정보 수정"} link="/editcourse" />
+        <MyPageLinks text={"수강정보 수정"} link="/editcoursepage" />
         <MyPageLinks text={"졸업요건"} link="/editrequire" />
       </LinkContainer>
     </Container>

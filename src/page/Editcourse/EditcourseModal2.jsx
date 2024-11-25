@@ -145,7 +145,7 @@ const DayText = styled.h4`
   font-weight: 500;
   margin-top: 5px;
 `;
-export default function SubjectModal2() {
+export default function EditcourseModal2() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -184,7 +184,7 @@ export default function SubjectModal2() {
         requestBody
       );
       setSubjectdata(response.data);
-      navigate("/infotwo", { state: { subjectid, subjectdata: response.data } });
+      navigate("/editcoursepage", { state: { subjectid, subjectdata: response.data } });
     } catch (err) {
       setError("데이터를 불러오는 중 오류가 발생했습니다.");
       console.error("Error fetching data:", err);
@@ -204,7 +204,7 @@ export default function SubjectModal2() {
   const isDepartment = !!department;
 
   const handleBack = () => {
-    navigate("/infotwo");
+    navigate("/editcoursepage");
   };
 
   const handleSubject = (subjectid) => {

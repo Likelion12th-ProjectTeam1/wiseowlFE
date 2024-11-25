@@ -205,7 +205,7 @@ const PostData = async () => {
   console.log("패치 성공:", requestBody);
 
       // PATCH 요청 보내기
-      const response = await axiosInstance.patch(
+      const response = await axiosInstance.post(
           "/api/accounts/department-info/",
           requestBody
       );
