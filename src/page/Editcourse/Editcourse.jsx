@@ -555,19 +555,48 @@ export default function EditCourse() {
           flexDirection: "row",
           marginTop: "10px",
           alignItems: "center",
+          justifyContent: "space-between", // 각 요소가 균등하게 배치되도록
+          width: "100%", // 고정된 넓이
+          minHeight: "40px", // 고정된 높이
+          padding: "5px 10px", // 좌우 여백 추가
+          boxSizing: "border-box", // padding 포함하여 크기 계산
         }}
       >
+        {/* Checkbox */}
         <input
           type="checkbox"
-          style={{ marginLeft: "15px" }}
-          checked={course.retry_yn || false} // retry_yn이 없을 경우 false로 설정
-          onChange={() => onCheckboxChange(index)}  // Use index instead of id
+          style={{
+            width: "20px",
+            height: "20px",
+            marginRight: "10px",
+            flexShrink: 0, // 크기 고정
+          }}
+          checked={course.retry_yn || false}
+          onChange={() => onCheckboxChange(index)}
         />
-        <FormText>{subjectName}</FormText>
+  
+        {/* 과목명 */}
+        <FormText
+          style={{
+            flexBasis: "40%", // 고정된 비율로 넓이 설정
+            whiteSpace: "nowrap", // 텍스트 줄바꿈 방지
+            overflow: "hidden", // 넘치는 텍스트 숨기기
+            textOverflow: "ellipsis", // 넘치는 텍스트에 '...' 추가
+            textAlign: "left",
+          }}
+        >
+          {subjectName}
+        </FormText>
+  
+        {/* 성적 선택 */}
         <GradeSelect
-          value={grade} // bind the select value to course grade
-          onChange={(value) => onFieldChange(index, "grade", value)} // update grade
+          value={grade}
+          onChange={(value) => onFieldChange(index, "grade", value)}
           placeholder="성적 선택"
+          style={{
+            flexBasis: "20%", // 고정된 비율로 넓이 설정
+            marginLeft: "10px",
+          }}
         >
           <Select.Option value="A+">A+</Select.Option>
           <Select.Option value="A">A</Select.Option>
@@ -579,15 +608,26 @@ export default function EditCourse() {
           <Select.Option value="D">D</Select.Option>
           <Select.Option value="F">F</Select.Option>
         </GradeSelect>
-        <FormText>{credit}</FormText>
-        <LuMinusCircle
-          onClick={() => onDelete(index)}  // Use index instead of id
+  
+        {/* 학점 */}
+        <FormText
           style={{
-            width: "40px",
+            flexBasis: "10%", // 고정된 비율로 넓이 설정
+            textAlign: "center", // 텍스트 가운데 정렬
+          }}
+        >
+          {credit}
+        </FormText>
+  
+        {/* 삭제 버튼 */}
+        <LuMinusCircle
+          onClick={() => onDelete(index)}
+          style={{
+            width: "24px",
+            height: "24px",
             cursor: "pointer",
             color: "#B1B0B0",
-            marginLeft: "20px",
-            paddingRight: "20px",
+            flexShrink: 0, // 크기 고정
           }}
         />
       </div>
