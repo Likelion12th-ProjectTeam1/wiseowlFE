@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
   background-color: #FFFFFF;
-  height: 100vh;
+  height: 110vh;
   width: 390px;
   padding: 0 20px;
   padding-top: 200px;
@@ -553,8 +553,8 @@ function ProgressBox({ title }) {
         throw new Error('필수 데이터가 없습니다');
       }
 
-      const completedCredits = data.completed_credits[0] || {}; // completed_credits 배열이 비어 있을 수 있으므로 안전하게 접근
-      const requiredCredits = data.required_credits[0] || {}; // required_credits 배열이 비어 있을 수 있으므로 안전하게 접근
+      const completedCredits = data.completed_credits || {}; 
+      const requiredCredits = data.required_credits || {}; 
 
       let completionRate = 0;
       let totalCredits = 0;
@@ -566,7 +566,7 @@ function ProgressBox({ title }) {
           const mainMajorGraduationCredits = requiredCredits.main_major_graduation_credits || 0;
           if (mainMajorGraduationCredits > 0) {
             completionRate = (mainMajorCredits / mainMajorGraduationCredits) * 100;
-            totalCredits = mainMajorGraduationCredits; // 총 이수해야 하는 학점
+            totalCredits = mainMajorGraduationCredits;
           }
           break;
         case "이중전공\n이수율":
@@ -574,7 +574,7 @@ function ProgressBox({ title }) {
           const doubleMajorGraduationCredits = requiredCredits.double_minor_major_graduation_credits || 0;
           if (doubleMajorGraduationCredits > 0) {
             completionRate = (doubleMajorCredits / doubleMajorGraduationCredits) * 100;
-            totalCredits = doubleMajorGraduationCredits; // 이중전공 이수 학점
+            totalCredits = doubleMajorGraduationCredits;
           }
           break;
         case "교양\n이수율":
@@ -582,7 +582,7 @@ function ProgressBox({ title }) {
           const liberalGraduationCredits = requiredCredits.liberal_graduation_credits || 0;
           if (liberalGraduationCredits > 0) {
             completionRate = (liberalCredits / liberalGraduationCredits) * 100;
-            totalCredits = liberalGraduationCredits; // 교양 이수 학점
+            totalCredits = liberalGraduationCredits;
           }
           break;
         case "자율선택\n이수학점":
@@ -590,15 +590,16 @@ function ProgressBox({ title }) {
           const totalElectiveCredits = requiredCredits.liberal_graduation_credits + electiveCredits;
           if (totalElectiveCredits > 0) {
             completionRate = (electiveCredits / totalElectiveCredits) * 100;
-            totalCredits = totalElectiveCredits; // 자율선택 학점
+            totalCredits = totalElectiveCredits;
           }
           break;
         default:
           completionRate = 0;
       }
 
-      setProgress(completionRate); // 계산된 이수율 저장
-      setTotal(totalCredits); // total 값 업데이트
+      // 완료율(progress) 및 총 학점(total) 상태 값 업데이트
+      setProgress(completionRate); 
+      setTotal(totalCredits); 
     } catch (error) {
       console.error('API 요청 실패:', error);
     }
@@ -608,10 +609,11 @@ function ProgressBox({ title }) {
     fetchCompletionData(); // 컴포넌트가 처음 렌더링될 때 API 호출
   }, [title]); // title이 변경될 때마다 다시 호출
 
-  // total이 업데이트 될 때마다 실행
   useEffect(() => {
-    console.log('Updated Total:', total); // total 값이 변경될 때마다 로그 출력
-  }, [total]); // total이 변경될 때마다 실행
+    console.log('Progress:', progress); // progress 상태 확인
+    console.log('Total:', total); // total 상태 확인
+  }, [progress, total]);
+  
 
   const current = Math.floor(progress * total / 100); // 완료된 학점 계산
   const isElective = title === "자율선택\n이수학점"; // 자율선택 학점은 별도 처리

@@ -304,27 +304,18 @@ const StyledP2 = styled.p`
 
 
 const StyledP3 = styled.p`
-  font-size: 8px;
-  color: #000000;
+  font-size: 8px; 
+  color: #000000; 
   margin: 0;
-  padding: 0;
   white-space: nowrap;
 `;
 
 const StyledP4 = styled.p`
-  font-size: 7px;
-  color: #A5A2A2;
+  font-size: 7px; 
+  color: #A5A2A2; 
   margin: 0;
-  padding: 0;
-  white-space: nowrap;
-  display: inline-block;  // 또는 display: inline;
+  white-space: normal; 
 `;
-
-const ParentDiv = styled.div`
-  display: flex;
-  gap: 10px; /* 항목 간 간격 */
-`;
-
 
 const StyledP5 = styled.p`
   font-size: 10px; 
@@ -333,6 +324,14 @@ const StyledP5 = styled.p`
   white-space: normal; 
   font-family: Inter;
   font-weight: 600;
+`;
+
+const StyledP6 = styled.p`
+  font-size: 7px; 
+  color: #A5A2A2; 
+  margin: 0;
+  white-space: normal; 
+  margin-top: -5px;
 `;
 
 export default function Require() {
@@ -559,9 +558,9 @@ useEffect(() => {
                 <BigCheckbox />
               </BigCheckboxContainer>
             ) : (
-              <XboxContainer>
+              <BigCheckboxContainer>
                 <Xbox />
-              </XboxContainer>
+                </BigCheckboxContainer>
             )}
             <RequirementContainer>
               <RequirementTitle>졸업 자격증</RequirementTitle>
@@ -668,11 +667,11 @@ useEffect(() => {
         <WrapperRow>
          <StyledP3>대체 가능 시험:</StyledP3>
         {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {modalContent.lang_test.etc.map((test, index) => (
-            <StyledP4 key={index} style={{ marginRight: '10px' }}>
-              {test.test_name} : {test.test_basic_score}점
-            </StyledP4>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
+            {modalContent.lang_test.etc.map((test, index) => (
+              <StyledP4 key={index}>
+                {test.test_name} : {test.test_basic_score} </StyledP4>
+              
           ))}
         </div>
         )}
@@ -681,9 +680,9 @@ useEffect(() => {
   <>
           <StyledP5>추가 어학 시험:</StyledP5>
           {modalContent.extra_foreign_test.map((extraTest, index) => (
-            <StyledP4 key={index}>
+            <StyledP6 key={index}>
               {extraTest.extra_test_name}: {extraTest.extra_test_basic_score}
-            </StyledP4>
+            </StyledP6>
           ))}
         </>
       )}
@@ -691,7 +690,7 @@ useEffect(() => {
         {modalContent.requirement_description && (
           <>
             <StyledP5>기타</StyledP5>
-            <StyledP4>{modalContent.requirement_description}</StyledP4>
+            <StyledP6>{modalContent.requirement_description}</StyledP6>
           </>
         )}
 
@@ -723,8 +722,8 @@ function ProgressBox({ title }) {
         throw new Error('필수 데이터가 없습니다');
       }
 
-      const completedCredits = data.completed_credits[0] || {}; // completed_credits 배열이 비어 있을 수 있으므로 안전하게 접근
-      const requiredCredits = data.required_credits[0] || {}; // required_credits 배열이 비어 있을 수 있으므로 안전하게 접근
+      const completedCredits = data.completed_credits || {}; 
+      const requiredCredits = data.required_credits || {}; 
 
       let completionRate = 0;
       let totalCredits = 0;
@@ -736,7 +735,7 @@ function ProgressBox({ title }) {
           const mainMajorGraduationCredits = requiredCredits.main_major_graduation_credits || 0;
           if (mainMajorGraduationCredits > 0) {
             completionRate = (mainMajorCredits / mainMajorGraduationCredits) * 100;
-            totalCredits = mainMajorGraduationCredits; // 총 이수해야 하는 학점
+            totalCredits = mainMajorGraduationCredits;
           }
           break;
         case "이중전공\n이수율":
@@ -744,7 +743,7 @@ function ProgressBox({ title }) {
           const doubleMajorGraduationCredits = requiredCredits.double_minor_major_graduation_credits || 0;
           if (doubleMajorGraduationCredits > 0) {
             completionRate = (doubleMajorCredits / doubleMajorGraduationCredits) * 100;
-            totalCredits = doubleMajorGraduationCredits; // 이중전공 이수 학점
+            totalCredits = doubleMajorGraduationCredits;
           }
           break;
         case "교양\n이수율":
@@ -752,7 +751,7 @@ function ProgressBox({ title }) {
           const liberalGraduationCredits = requiredCredits.liberal_graduation_credits || 0;
           if (liberalGraduationCredits > 0) {
             completionRate = (liberalCredits / liberalGraduationCredits) * 100;
-            totalCredits = liberalGraduationCredits; // 교양 이수 학점
+            totalCredits = liberalGraduationCredits;
           }
           break;
         case "자율선택\n이수학점":
@@ -760,15 +759,16 @@ function ProgressBox({ title }) {
           const totalElectiveCredits = requiredCredits.liberal_graduation_credits + electiveCredits;
           if (totalElectiveCredits > 0) {
             completionRate = (electiveCredits / totalElectiveCredits) * 100;
-            totalCredits = totalElectiveCredits; // 자율선택 학점
+            totalCredits = totalElectiveCredits;
           }
           break;
         default:
           completionRate = 0;
       }
 
-      setProgress(completionRate); // 계산된 이수율 저장
-      setTotal(totalCredits); // total 값 업데이트
+      // 완료율(progress) 및 총 학점(total) 상태 값 업데이트
+      setProgress(completionRate); 
+      setTotal(totalCredits); 
     } catch (error) {
       console.error('API 요청 실패:', error);
     }
@@ -778,10 +778,11 @@ function ProgressBox({ title }) {
     fetchCompletionData(); // 컴포넌트가 처음 렌더링될 때 API 호출
   }, [title]); // title이 변경될 때마다 다시 호출
 
-  // total이 업데이트 될 때마다 실행
   useEffect(() => {
-    console.log('Updated Total:', total); // total 값이 변경될 때마다 로그 출력
-  }, [total]); // total이 변경될 때마다 실행
+    console.log('Progress:', progress); // progress 상태 확인
+    console.log('Total:', total); // total 상태 확인
+  }, [progress, total]);
+  
 
   const current = Math.floor(progress * total / 100); // 완료된 학점 계산
   const isElective = title === "자율선택\n이수학점"; // 자율선택 학점은 별도 처리
