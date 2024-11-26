@@ -11,7 +11,7 @@ const PageContainer = styled.div`
   width: 390px;
   padding: 0 20px;
   padding-top: 60px;
-  padding-bottom: 30px;
+  padding-bottom: 65px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,10 +22,11 @@ const PageContainer = styled.div`
 
 const Title = styled.h1`
   font-size: 19.71px;
+  font-family: Inter;
   color: #333;
   text-align: left;
   margin-bottom: 40px;
-  font-weight: 700;
+  font-weight: bold;
   position: relative;
   left: 20px;
   top: 30px;
@@ -70,6 +71,7 @@ const ProgressContainer = styled.div`
   padding: 10px;
   width: auto;
 `;
+
 
 const Section1 = styled.div`
   width: 390px;
@@ -159,16 +161,18 @@ const ProgressBoxContainer = styled.div`
   align-items: center;
   width: 150px;
   padding: 20px;
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #fff;
   flex-shrink: 0;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  /* 기본적인 그림자 추가 */
 `;
 
 const TitleBox = styled.div`
   font-size: 10px;
+  font-family: Inter;
   margin-bottom: 29px;
-  font-weight: 400;
+  font-weight: 500;
   white-space: pre-line;
   text-align: left;
   width: 100%;
@@ -206,19 +210,25 @@ const ProgressText = styled.div`
 const CurrentText = styled.span`
   font-size: 20.94px;
   color: #000000;
-  font-weight: 700;
+  font-weight: 400;
+  font-family: Roboto;
 `;
 
 const TotalText = styled.span`
   font-size: 14.04px;
   color: #737373;
   margin-left: 4px;
+  font-family: Roboto;
+  font-weight: 400;
+
 `;
 
 const PercentageText = styled.div`
   font-size: 10px;
   color: #A5A2A2;
   margin-top: 20px;
+  font-family: Inter;
+  font-weight: 500;
 `;
 
 
@@ -234,7 +244,12 @@ const TitleWithArrow2 = styled.div`
   align-items: center; 
   gap: 5px;  
   margin-left: 10px;
+  cursor: pointer;
+  pointer-events: auto;  // 클릭이 가능하도록 설정
+
 `;
+
+
 
 const NoticeModal = styled.div`
   position: fixed;
@@ -284,20 +299,40 @@ const StyledP2 = styled.p`
   margin: 0;
   padding: 0;
   white-space: nowrap;
+  margin-left: 25px;
 `;
 
+
 const StyledP3 = styled.p`
-  font-size: 8px; 
-  color: #000000; 
+  font-size: 8px;
+  color: #000000;
   margin: 0;
+  padding: 0;
   white-space: nowrap;
 `;
 
 const StyledP4 = styled.p`
-  font-size: 7px; 
-  color: #A5A2A2; 
+  font-size: 7px;
+  color: #A5A2A2;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  display: inline-block;  // 또는 display: inline;
+`;
+
+const ParentDiv = styled.div`
+  display: flex;
+  gap: 10px; /* 항목 간 간격 */
+`;
+
+
+const StyledP5 = styled.p`
+  font-size: 10px; 
+  color: #000000; 
   margin: 0;
   white-space: normal; 
+  font-family: Inter;
+  font-weight: 600;
 `;
 
 export default function Require() {
@@ -305,6 +340,7 @@ export default function Require() {
   const [completeRequirement, setCompleteRequirement] = useState(null);
   const [profileGibun, setProfileGibun] = useState(null); 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [viewType, setViewType] = useState(null);  // Add this line
   const [modalContent, setModalContent] = useState(null);
   const navigate = useNavigate(); 
   const handleNoticeClick = async (type, e) => {
@@ -344,6 +380,11 @@ export default function Require() {
     }
   });
 
+  const Image = styled.img`
+  max-width: 100%;
+  height: auto;
+  margin-top: -5px;
+`;
 
   const ModalBackground = styled.div`
   position: fixed;
@@ -358,10 +399,20 @@ export default function Require() {
   z-index: 1000;
 `;
 
+const handleClick = () => {
+  navigate('/depthrequire', { state: { viewType: 'double_or_minor' } });  // viewType을 'double_or_minor'로 설정하여 이동
+};
 
+useEffect(() => {
+  if (viewType === 'double_or_minor') {
+    navigate('/depthrequire');  // 상태가 변경되면 해당 페이지로 이동
+  }
+}, [viewType, navigate]);  // viewType 변경 시 effect 실행
 
 
   useEffect(() => {
+    // navigate 함수는 페이지를 이동시키는 역할을 합니다.
+    
     // API 호출하여 졸업 요건과 조건 충족 여부 가져오기
     const fetchRequirements = async () => {
       try {
@@ -572,7 +623,14 @@ export default function Require() {
       {/* 이중전공 섹션 */}
       
       {profileGibun && (
-  <> <TitleWithArrow2 onClick={() => navigate('/depthrequire')}>
+        <> 
+
+        
+        <TitleWithArrow2 onClick={handleClick}>
+        
+
+
+
       <Title4>{profileGibun}</Title4>
       <DeepArrow />
       <NoticeContainer2 onClick={(e) => { handleNoticeClick('double_or_minor', e); }}>
@@ -596,31 +654,32 @@ export default function Require() {
     <ModalTitle>어학시험</ModalTitle>
     <ModalContent>
       <WrapperRow>
-        <FaBookOpen color="#BE63F9" size="20px" />
+      <Image src="/img/Book.svg" alt="Request" />
         {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 && (
           modalContent.lang_test.basic.map((test, index) => (
             <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-              <StyledP style={{ marginRight: '10px' }}>{test.test_name} :</StyledP>
-              <StyledP2>{test.test_basic_score}</StyledP2>
+              <StyledP style={{ marginRight: '10px' }}>{test.test_name} </StyledP>
+              <StyledP2>{test.test_basic_score}점 이상</StyledP2>
             </div>
           ))
         )}
       </WrapperRow>
 
+        <WrapperRow>
          <StyledP3>대체 가능 시험:</StyledP3>
         {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
-            {modalContent.lang_test.etc.map((test, index) => (
-              <StyledP4 key={index}>
-                {test.test_name} : {test.test_basic_score},
-              </StyledP4>
-            ))}
-          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          {modalContent.lang_test.etc.map((test, index) => (
+            <StyledP4 key={index} style={{ marginRight: '10px' }}>
+              {test.test_name} : {test.test_basic_score}점
+            </StyledP4>
+          ))}
+        </div>
         )}
-
+          </WrapperRow>
         {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 && (
   <>
-          <StyledP3>추가 어학 시험:</StyledP3>
+          <StyledP5>추가 어학 시험:</StyledP5>
           {modalContent.extra_foreign_test.map((extraTest, index) => (
             <StyledP4 key={index}>
               {extraTest.extra_test_name}: {extraTest.extra_test_basic_score}
@@ -631,7 +690,7 @@ export default function Require() {
 
         {modalContent.requirement_description && (
           <>
-            <StyledP3>기타</StyledP3>
+            <StyledP5>기타</StyledP5>
             <StyledP4>{modalContent.requirement_description}</StyledP4>
           </>
         )}

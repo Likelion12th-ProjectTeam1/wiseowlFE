@@ -19,6 +19,7 @@ const Text = styled.p`
     color: #535353; 
     margin: 0; 
     font-family: Inter;
+    font-weight: 500;
 `;
 
 const GoogleButton = styled.button`
@@ -33,6 +34,7 @@ const GoogleButton = styled.button`
     font-family: 'Inter';
     display: flex;
     align-items: center;
+    font-weight: 600;
 
     &:hover {
         background-color: #cccccc;
