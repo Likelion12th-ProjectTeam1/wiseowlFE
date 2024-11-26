@@ -165,6 +165,8 @@ export default function SubjectModal2() {
           `/api/requirements/colleges/${selectedSemester}/subjects/`
         );
         setData(response.data);
+        console.log("가져오는 데이터" ,data);
+        
       } catch (err) {
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
         console.error("Error fetching data:", err);
@@ -183,6 +185,8 @@ export default function SubjectModal2() {
         `/api/requirements/colleges/${subjectid}/department/subjects/add/`,
         requestBody
       );
+      console.log("보내는 전공 데이터", requestBody);
+      
       setSubjectdata(response.data);
       navigate("/infotwo", { state: { subjectid, subjectdata: response.data } });
     } catch (err) {
@@ -207,8 +211,40 @@ export default function SubjectModal2() {
     navigate("/infotwo");
   };
 
-  const handleSubject = (subjectid) => {
-    fetchsubjectData(subjectid);
+  const fetchgenedData = async (subjectid, subjectName, subjectKey) => {
+    try {
+      setLoading(true);
+      const requestBody = { "school_year": parseInt(subjectkey) }
+      
+      // 요청 전 로그 출력
+      console.log("교양 과목 PATCH 요청 시작");
+      console.log("과목 ID:", subjectid);
+      console.log("과목 이름:", subjectKey);
+      console.log("요청 바디:", requestBody);
+  
+      const response = await axiosInstance.post(
+        `/api/requirements/colleges/${subjectid}/gened/subjects/add/`, // endpoint 수정
+        requestBody
+      );
+  
+      console.log("응답 데이터:", response.data);
+      setSubjectdata(response.data);
+      navigate("/infotwo", { state: { subjectid, subjectdata: response.data } });
+    } catch (err) {
+      setError("데이터를 불러오는 중 오류가 발생했습니다.");
+      console.error("Error fetching data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  
+  const handleSubject = (subjectid, isGened, subjectName) => {
+    if (isGened) {
+      fetchgenedData(subjectid, subjectName); // 선택된 데이터가 일반 교양 과목일 경우
+    } else {
+      fetchsubjectData(subjectid); // 전공 과목일 경우
+    }
   };
 
   return (
@@ -230,14 +266,16 @@ export default function SubjectModal2() {
           </BarContainer>
         </BigContainer>
         <MajorContainer>
-          <ClassContainer>
-            {currentData && currentData.courses ? (
-              currentData.courses.map((course) => (
+        <ClassContainer>
+          {currentData && currentData.courses ? (
+            currentData.courses.map((course) => {
+              const isGened = !!course.subject_gened_id; // 일반 교양 여부 확인
+              const subjectid = course.subject_department_id || course.subject_gened_id; // id 추출
+
+              return (
                 <ClassButton
-                  key={course.subject_department_id || course.subject_gened_id}
-                  onClick={() =>
-                    handleSubject(course.subject_department_id || course.subject_gened_id)
-                  }
+                  key={subjectid}
+                  onClick={() => handleSubject(subjectid, isGened)}
                 >
                   <ClassTitle>
                     {course.subject_department_name || course.subject_gened_name}
@@ -254,11 +292,12 @@ export default function SubjectModal2() {
                     {course.subject_department_room_date || course.subject_gened_room_date}
                   </DayText>
                 </ClassButton>
-              ))
-            ) : (
-              <p>이 카테고리에 수업이 없습니다.</p>
-            )}
-          </ClassContainer>
+              );
+            })
+          ) : (
+            <p>이 카테고리에 수업이 없습니다.</p>
+          )}
+        </ClassContainer>
         </MajorContainer>
       </ModalContainer>
     </Container>
