@@ -483,7 +483,7 @@ export default function EditRequire() {
               placeholder={
                 data[6].for_language_score ? data[6].for_language_score : 0
               }
-              value={foreignscore}
+              value={foreignscore ?? 0}
               onChange={handleChange}
             ></ScoreInput>
             <Completebtn

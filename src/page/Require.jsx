@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axiosInstance from '../auth/axiosInstance';
 import styled from 'styled-components';
-import { DeepArrow, BigCheckbox, Xbox, Notice } from '../img/Logo';
-import { useState, useEffect } from 'react'; 
-import { useNavigate } from 'react-router-dom'; 
+import { BigCheckbox, Xbox, DeepArrow, Notice } from '../img/Logo'; 
 import { FaBookOpen } from "react-icons/fa";
-
+import { useNavigate } from 'react-router-dom'; 
 
 const PageContainer = styled.div`
   background-color: #FFFFFF;
   height: 100vh;
   width: 390px;
   padding: 0 20px;
-  padding-bottom: 60px;
+  padding-top: 60px;
+  padding-bottom: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,6 +50,17 @@ const Title3 = styled.h1`
   font-weight: 700;
   margin-top: 5px;  /* 상단 여백 추가 */
   margin-bottom: 0;  /* 불필요한 아래 여백 제거 */
+`;
+
+const Title4 = styled.h1`
+  font-size: 18.72px;
+  color: #333;
+  text-align: left;
+  margin-bottom: 17px;
+  font-weight: 700;
+  margin-top: 5px;  /* 상단 여백 추가 */
+  margin-bottom: 0;  /* 불필요한 아래 여백 제거 */
+
 `;
 
 const ProgressContainer = styled.div`
@@ -97,10 +108,9 @@ const RequirementBox = styled.div`
 
 const RequirementRow = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  margin: 5px 0;
+  justify-content: space-between;  /* 좌우로 공간을 분배 */
+  align-items: center;             /* 세로 중앙 정렬 */
+  width: 100%;                     /* 전체 너비를 차지하게 설정 */
 `;
 
 const BigCheckboxContainer = styled.div`
@@ -109,7 +119,15 @@ const BigCheckboxContainer = styled.div`
 `;
 
 const NoticeContainer = styled.div`
-  margin-left: auto; /* 오른쪽으로 밀어 배치 */
+  cursor: pointer;
+  display: flex;
+  margin-left: 240px;
+`;
+
+const NoticeContainer2 = styled.div`
+  cursor: pointer;
+  display: flex;
+  margin-left: 230px;
 `;
 
 const RequirementContainer = styled.div`
@@ -211,6 +229,13 @@ const TitleWithArrow = styled.div`
   margin-left: 10px;
 `;
 
+const TitleWithArrow2 = styled.div`
+  display: flex;
+  align-items: center; 
+  gap: 5px;  
+  margin-left: 10px;
+`;
+
 const NoticeModal = styled.div`
   position: fixed;
   top: 50%;
@@ -246,15 +271,19 @@ const WrapperRow = styled.div`
 
 
 const StyledP = styled.p`
-  font-size: 10px; 
+  font-size: 14px; 
   color: #000000;
   margin: 0;
+  padding: 0;
+  white-space: nowrap;
 `;
 
 const StyledP2 = styled.p`
   font-size: 10px; 
   color: #A5A2A2; 
   margin: 0;
+  padding: 0;
+  white-space: nowrap;
 `;
 
 const StyledP3 = styled.p`
@@ -271,17 +300,50 @@ const StyledP4 = styled.p`
   white-space: normal; 
 `;
 
-
 export default function Require() {
-  const navigate = useNavigate(); 
+  const [requirements, setRequirements] = useState(null);
+  const [completeRequirement, setCompleteRequirement] = useState(null);
+  const [profileGibun, setProfileGibun] = useState(null); 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const navigate = useNavigate(); 
+  const handleNoticeClick = async (type, e) => {
+    // 클릭 이벤트 전파 방지
+    e.stopPropagation();
 
-  const completionRates = {
-    major: 0.75,
-    doubleMajor: 0.60,
-    liberalArts: 0.85,
-    elective: 0.50
+    
+    try {
+      const response = await axiosInstance.get('/api/requirements/i/');
+      const data = response.data;
+
+      // 타입에 따라 모달 내용 설정
+      if (type === 'major') {
+        setModalContent(data.major);
+      } else if (type === 'double_or_minor') {
+        setModalContent(data.double_or_minor);
+      }
+
+      openModal(); // 모달 열기
+    } catch (error) {
+      console.error('Error fetching modal data:', error);
+    }
   };
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const [completionRates, setCompletionRates] = useState({
+    major: 0,
+    doubleMajor: 0,
+    liberalArts: 0,
+    elective: 0,
+    total: {
+      major: 54, 
+      doubleMajor: 42,
+      liberalArts: 32,
+      elective: 54
+    }
+  });
+
 
   const ModalBackground = styled.div`
   position: fixed;
@@ -296,151 +358,379 @@ export default function Require() {
   z-index: 1000;
 `;
 
-  const openModal = () => setIsModalOpen(true);
 
+
+
+  useEffect(() => {
+    // API 호출하여 졸업 요건과 조건 충족 여부 가져오기
+    const fetchRequirements = async () => {
+      try {
+        const response = await axiosInstance.get('/api/requirements/');
+        setRequirements(response.data);
+
+        // 본전공은 main_major_conditions 사용
+        if (response.data.main_major_conditions && response.data.main_major_conditions.complete_requirment) {
+          setCompleteRequirement(response.data.main_major_conditions.complete_requirment[0]);
+        }
+
+        /// 'profile_gibun' 값에 "이중전공" 또는 "부전공"이 포함되었는지 확인
+        if (response.data.profile_gibun) {
+          if (response.data.profile_gibun.includes('이중전공')) {
+            setProfileGibun('이중전공');
+          } else if (response.data.profile_gibun.includes('부전공')) {
+            setProfileGibun('부전공');
+          }
+        }
+        // 이수율 계산
+        if (response.data.completed_credits && response.data.required_credits) {
+          const completedCredits = response.data.completed_credits[0];
+          const requiredCredits = response.data.required_credits[0];
+
+          // 본전공 이수율 계산
+          const mainMajorCompletion = (completedCredits.main_major_credits / requiredCredits.main_major_graduation_credits) * 100;
+          // 이중전공 이수율 계산
+          const doubleMajorCompletion = (completedCredits.double_minor_major_credits / requiredCredits.double_minor_major_graduation_credits) * 100;
+          // 교양 이수율 계산
+          const liberalArtsCompletion = (completedCredits.liberal_credits / requiredCredits.liberal_graduation_credits) * 100;
+          // 자율선택 이수율 계산
+          const electiveCompletion = (completedCredits.elective_credits / (requiredCredits.liberal_graduation_credits + completedCredits.elective_credits)) * 100;
+
+          // 졸업 요건 총 학점도 계산
+          setCompletionRates({
+            major: mainMajorCompletion,
+            doubleMajor: doubleMajorCompletion,
+            liberalArts: liberalArtsCompletion,
+            elective: electiveCompletion,
+            total: {
+              major: requiredCredits.main_major_graduation_credits,
+              doubleMajor: requiredCredits.double_minor_major_graduation_credits,
+              liberalArts: requiredCredits.liberal_graduation_credits,
+              elective: requiredCredits.liberal_graduation_credits + completedCredits.elective_credits,
+            }
+          });
+        }
+
+      } catch (error) {
+        console.error("API 요청 실패:", error);
+      }
+    };
+
+
+    fetchRequirements();
+  }, []);
+
+  if (!requirements || !completeRequirement) return <div>로딩 중...</div>;
+
+  // 졸업 요건을 출력하는 함수
+  const renderRequirements = (requirements, completeRequirement) => {
+    return requirements.map((req, index) => (
+      <RequirementBox key={index}>
+        {/* 졸업 요건에 따라 '본전공' 또는 '이중전공'을 렌더링 */}
+        {req.graduation_foreign && (
+          
+          <RequirementRow>
+            {completeRequirement.for_langauge ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <BigCheckboxContainer>
+                <Xbox />
+              </BigCheckboxContainer>
+            )}
+              <RequirementContainer>
+              <RequirementTitle>어학시험 PASS</RequirementTitle>
+              </RequirementContainer>
+
+
+          </RequirementRow>
+        )}
+
+        {/* 졸업 프로젝트 */}
+        {req.graduation_project && (
+          <RequirementRow>
+            {completeRequirement.grad_pro ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <XboxContainer>
+                <Xbox />
+              </XboxContainer>
+            )}
+            <RequirementContainer>
+              <RequirementTitle>졸업프로젝트 PASS</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
+        
+        {/* 졸업 시험 */}
+        {req.graduation_exam && (
+          <RequirementRow>
+            {completeRequirement.grad_exam ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <XboxContainer>
+                <Xbox />
+              </XboxContainer>
+            )}
+            <RequirementContainer>
+              <RequirementTitle>졸업시험 PASS</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
+        
+        {/* 졸업 논문 */}
+        {req.graduation_thesis && (
+          <RequirementRow>
+            {completeRequirement.grad_research ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <BigCheckboxContainer>
+                <Xbox />
+              </BigCheckboxContainer>
+            )}
+              <RequirementContainer>
+              <RequirementTitle>졸업논문 제출</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
+
+        {/* 졸업 자격증 */}
+        {req.graduation_qualifications && (
+          <RequirementRow>
+            {completeRequirement.grad_certificate ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <XboxContainer>
+                <Xbox />
+              </XboxContainer>
+            )}
+            <RequirementContainer>
+              <RequirementTitle>졸업 자격증</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
+
+        {/* 졸업 필수과목 이수 */}
+        {req.graduation_requirments && (
+          <RequirementRow>
+            {completeRequirement.grad_requirments ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <BigCheckboxContainer>
+                <Xbox />
+              </BigCheckboxContainer>
+            )}
+            <RequirementContainer>
+              <RequirementTitle>졸업 필수과목 이수</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
+      </RequirementBox>
+    ));
+  };
 
   return (
     <PageContainer>
+    {/* 졸업 진행도 섹션 */}
       <Section1>
         <Title>졸업진행도</Title>
         <ProgressContainer>
-          <ProgressBox title={"본전공\n이수율"} progress={completionRates.major} />
-          <ProgressBox title={"이중전공\n이수율"} progress={completionRates.doubleMajor} />
-          <ProgressBox title={"교양\n이수율"} progress={completionRates.liberalArts} />
-          <ProgressBox title={"자율선택\n이수학점"} progress={completionRates.elective} />
+        <ProgressBox title={"본전공\n이수율"} progress={completionRates.major} total={completionRates.total.major} />
+          <ProgressBox title={"이중전공\n이수율"} progress={completionRates.doubleMajor} total={completionRates.total.doubleMajor} />
+          <ProgressBox title={"교양\n이수율"} progress={completionRates.liberalArts} total={completionRates.total.liberalArts} />
+          <ProgressBox title={"자율선택\n이수학점"} progress={completionRates.elective} total={completionRates.total.elective} />
         </ProgressContainer>
       </Section1>
-
       <SectionDivider>
         <Title2>내 졸업 요건</Title2>
       </SectionDivider>
-
       <Section2>
-
+      {/* 본전공 섹션 */}
+      
       <TitleWithArrow onClick={() => navigate('/depthrequire')}>
+        
         <Title3>본전공</Title3>
-        <DeepArrow />
+        <DeepArrow />      
+        <NoticeContainer onClick={(e) => { handleNoticeClick('major', e);}}>
+          <Notice />
+          </NoticeContainer>
       </TitleWithArrow>
-        <RequirementBox>
-          <RequirementRow>
-            <BigCheckboxContainer>
-              <BigCheckbox /> 
-            </BigCheckboxContainer>
-            <RequirementContainer>
-              <RequirementTitle>어학시험</RequirementTitle>
-              <RequirementText>토익 700점 이상</RequirementText>
-            </RequirementContainer>
-            <NoticeContainer onClick={openModal}>
-              <Notice />
-              </NoticeContainer>
-          </RequirementRow>
 
-          <RequirementRow>
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-            <RequirementContainer>
-              <RequirementTitle>졸업프로젝트 PASS</RequirementTitle>
-            </RequirementContainer>
-          </RequirementRow>
+      
+      {requirements.main_major_conditions && renderRequirements(requirements.main_major_conditions.requirement, completeRequirement)}
 
-          <RequirementRow>
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-            <RequirementContainer>
-              <RequirementTitle>졸업필수과목</RequirementTitle>
-            </RequirementContainer>
-          </RequirementRow>
-        </RequirementBox>
-
-        <TitleWithArrow onClick={() => navigate('/depthrequire')}>
-          <Title3>이중전공</Title3>
-          <DeepArrow />
-        </TitleWithArrow>
-        <RequirementBox>
-          <RequirementRow>
-            <BigCheckboxContainer>
-              <BigCheckbox />
-            </BigCheckboxContainer>
-            <RequirementContainer>
-              <RequirementTitle>어학시험</RequirementTitle>
-              <RequirementText>토익 700점 이상</RequirementText>
-            </RequirementContainer>
-            <NoticeContainer onClick={openModal}>
-              <Notice />
-              </NoticeContainer>
-          </RequirementRow>
-
-          <RequirementRow>
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-            <RequirementContainer>
-              <RequirementTitle>졸업프로젝트 PASS</RequirementTitle>
-            </RequirementContainer>
-          </RequirementRow>
-
-          <RequirementRow>
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-            <RequirementContainer>
-              <RequirementTitle>졸업필수과목</RequirementTitle>
-            </RequirementContainer>
-          </RequirementRow>
-        </RequirementBox>
+      {/* 이중전공 섹션 */}
+      
+      {profileGibun && (
+  <> <TitleWithArrow2 onClick={() => navigate('/depthrequire')}>
+      <Title4>{profileGibun}</Title4>
+      <DeepArrow />
+      <NoticeContainer2 onClick={(e) => { handleNoticeClick('double_or_minor', e); }}>
+          <Notice />
+        </NoticeContainer2>
+      </TitleWithArrow2>
+      {profileGibun === '이중전공' && requirements.double_minor_major_conditions && (
+      renderRequirements(requirements.double_minor_major_conditions.requirement, completeRequirement)
+    )}
+    
+    {profileGibun === '부전공' && requirements.sub_major_conditions && (
+      renderRequirements(requirements.sub_major_conditions.requirement, completeRequirement)
+    )}
+  </>
+)}
       </Section2>
-  {isModalOpen && (
-    <ModalBackground onClick={() => setIsModalOpen(false)}>
-      <NoticeModal onClick={(e) => e.stopPropagation()}>  {/* 모달 자체 클릭은 이벤트 전파 방지 */}
-        <ModalTitle>어학시험</ModalTitle>
-        <ModalContent>
-          <WrapperRow>
-            <FaBookOpen color="#BE63F9" size="20px" />
-            <StyledP>TOEIC</StyledP>
-            <StyledP2>700점 이상</StyledP2>
-          </WrapperRow>
-          <WrapperRow>
-            <StyledP3>대체가능시험</StyledP3>
-            <StyledP4>
-              OPIc, TOEIC SPEAKING,{"\n"}
-              FLEX, TOFEL, FLEX SPEAKING
+      {isModalOpen && modalContent && (
+  <ModalBackground onClick={closeModal}>
+    <NoticeModal onClick={(e) => e.stopPropagation()}>
+        
+    <ModalTitle>어학시험</ModalTitle>
+    <ModalContent>
+      <WrapperRow>
+        <FaBookOpen color="#BE63F9" size="20px" />
+        {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 && (
+          modalContent.lang_test.basic.map((test, index) => (
+            <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+              <StyledP style={{ marginRight: '10px' }}>{test.test_name} :</StyledP>
+              <StyledP2>{test.test_basic_score}</StyledP2>
+            </div>
+          ))
+        )}
+      </WrapperRow>
+
+         <StyledP3>대체 가능 시험:</StyledP3>
+        {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
+            {modalContent.lang_test.etc.map((test, index) => (
+              <StyledP4 key={index}>
+                {test.test_name} : {test.test_basic_score},
+              </StyledP4>
+            ))}
+          </div>
+        )}
+
+        {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 && (
+  <>
+          <StyledP3>추가 어학 시험:</StyledP3>
+          {modalContent.extra_foreign_test.map((extraTest, index) => (
+            <StyledP4 key={index}>
+              {extraTest.extra_test_name}: {extraTest.extra_test_basic_score}
             </StyledP4>
-          </WrapperRow>
-        </ModalContent>
-      </NoticeModal>
-    </ModalBackground>
+          ))}
+        </>
+      )}
+
+        {modalContent.requirement_description && (
+          <>
+            <StyledP3>기타</StyledP3>
+            <StyledP4>{modalContent.requirement_description}</StyledP4>
+          </>
+        )}
+
+
+
+
+      </ModalContent>
+    </NoticeModal>
+  </ModalBackground>
 )}
     </PageContainer>
   );
 }
-   
-function ProgressBox({ title, progress }) {
-  const [total, setTotal] = useState(54); // 기본값 설정
-  
-  // API로부터 total 값을 가져오는 함수
-  const fetchTotal = async () => {
+
+
+
+function ProgressBox({ title }) {
+  const [progress, setProgress] = useState(0); // 이수율
+  const [total, setTotal] = useState(54); // 기본 학점 총합, API에서 가져온 값으로 변경됨
+
+  // API 호출하여 졸업 요건과 완료 학점 정보 가져오기
+  const fetchCompletionData = async () => {
     try {
-      const response = await fetch('API_ENDPOINT'); // 실제 API 주소로 변경
-      const data = await response.json();
-      setTotal(data.total || 54); // total 값이 없으면 기본값 54
+      const response = await axiosInstance.get('/api/requirements/graph/');
+      const data = response.data;
+      console.log('API Response:', data);
+
+      if (!data.completed_credits || !data.required_credits) {
+        throw new Error('필수 데이터가 없습니다');
+      }
+
+      const completedCredits = data.completed_credits[0] || {}; // completed_credits 배열이 비어 있을 수 있으므로 안전하게 접근
+      const requiredCredits = data.required_credits[0] || {}; // required_credits 배열이 비어 있을 수 있으므로 안전하게 접근
+
+      let completionRate = 0;
+      let totalCredits = 0;
+
+      // 제목에 따라 적절한 값을 선택하여 이수율 계산
+      switch (title) {
+        case "본전공\n이수율":
+          const mainMajorCredits = completedCredits.main_major_credits || 0;
+          const mainMajorGraduationCredits = requiredCredits.main_major_graduation_credits || 0;
+          if (mainMajorGraduationCredits > 0) {
+            completionRate = (mainMajorCredits / mainMajorGraduationCredits) * 100;
+            totalCredits = mainMajorGraduationCredits; // 총 이수해야 하는 학점
+          }
+          break;
+        case "이중전공\n이수율":
+          const doubleMajorCredits = completedCredits.double_minor_major_credits || 0;
+          const doubleMajorGraduationCredits = requiredCredits.double_minor_major_graduation_credits || 0;
+          if (doubleMajorGraduationCredits > 0) {
+            completionRate = (doubleMajorCredits / doubleMajorGraduationCredits) * 100;
+            totalCredits = doubleMajorGraduationCredits; // 이중전공 이수 학점
+          }
+          break;
+        case "교양\n이수율":
+          const liberalCredits = completedCredits.liberal_credits || 0;
+          const liberalGraduationCredits = requiredCredits.liberal_graduation_credits || 0;
+          if (liberalGraduationCredits > 0) {
+            completionRate = (liberalCredits / liberalGraduationCredits) * 100;
+            totalCredits = liberalGraduationCredits; // 교양 이수 학점
+          }
+          break;
+        case "자율선택\n이수학점":
+          const electiveCredits = completedCredits.elective_credits || 0;
+          const totalElectiveCredits = requiredCredits.liberal_graduation_credits + electiveCredits;
+          if (totalElectiveCredits > 0) {
+            completionRate = (electiveCredits / totalElectiveCredits) * 100;
+            totalCredits = totalElectiveCredits; // 자율선택 학점
+          }
+          break;
+        default:
+          completionRate = 0;
+      }
+
+      setProgress(completionRate); // 계산된 이수율 저장
+      setTotal(totalCredits); // total 값 업데이트
     } catch (error) {
-      console.error('Failed to fetch total value:', error);
+      console.error('API 요청 실패:', error);
     }
   };
 
   useEffect(() => {
-    fetchTotal();
-  }, []); // 컴포넌트가 처음 렌더링될 때 호출됨
+    fetchCompletionData(); // 컴포넌트가 처음 렌더링될 때 API 호출
+  }, [title]); // title이 변경될 때마다 다시 호출
 
-  const current = Math.floor(progress * total);
-  const isElective = title === "자율선택\n이수학점";
+  // total이 업데이트 될 때마다 실행
+  useEffect(() => {
+    console.log('Updated Total:', total); // total 값이 변경될 때마다 로그 출력
+  }, [total]); // total이 변경될 때마다 실행
+
+  const current = Math.floor(progress * total / 100); // 완료된 학점 계산
+  const isElective = title === "자율선택\n이수학점"; // 자율선택 학점은 별도 처리
 
   return (
     <ProgressBoxContainer>
       <TitleBox>{title}</TitleBox>
-      <ProgressCircleContainer progress={progress}>
+      <ProgressCircleContainer progress={progress / 100}>
         <ProgressCircleInner>
           <ProgressText>
             <CurrentText>{current}</CurrentText>
@@ -449,11 +739,10 @@ function ProgressBox({ title, progress }) {
         </ProgressCircleInner>
       </ProgressCircleContainer>
       {!isElective ? (
-        <PercentageText>{`${(progress * 100).toFixed(0)}%`}</PercentageText>
+        <PercentageText>{`${progress.toFixed(0)}%`}</PercentageText> // 퍼센트 표시
       ) : (
-        <PercentageText>자율선택</PercentageText>
+        <PercentageText>자율선택</PercentageText> // 자율선택인 경우 다른 표시
       )}
     </ProgressBoxContainer>
   );
 }
-

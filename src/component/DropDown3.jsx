@@ -55,30 +55,25 @@ const IconWrapper = styled.span`
   align-items: center;
 `;
 
-export default function DropDown() {
+export default function DropDown3({ selectedYear, setSelectedYear }) {
   const [view, setView] = useState(false);
-  const [major, setMajor] = useState("21학번");
-
-  const BoxContent = () => (
-    <>
-      <DropDownItem onClick={() => handleItemClick("21학번")}>21학번</DropDownItem>
-      <DropDownItem onClick={() => handleItemClick("22학번")}>22학번</DropDownItem>
-      <DropDownItem onClick={() => handleItemClick("23학번")}>23학번</DropDownItem>
-    </>
-  );
 
   const handleItemClick = (item) => {
-    setMajor(item);
+    setSelectedYear(item); // 부모로 선택된 학번 값을 전달
     setView(false);
+    console.log('선택된 학번:', item); // 선택된 학번 로그
   };
 
   return (
     <DropDownContainer onClick={() => setView(!view)}>
-      {major} 
+      {selectedYear || '학번 선택'} {/* 기본값 */}
       <IconWrapper>{view ? <FaChevronUp /> : <FaChevronDown />}</IconWrapper>
       {view && (
         <DropDownContent>
-          <BoxContent />
+          <DropDownItem onClick={() => handleItemClick('17학번')}>17학번</DropDownItem>
+          <DropDownItem onClick={() => handleItemClick('18학번')}>18학번</DropDownItem>
+          <DropDownItem onClick={() => handleItemClick('19학번')}>19학번</DropDownItem>
+          <DropDownItem onClick={() => handleItemClick('20학번')}>20학번</DropDownItem>
         </DropDownContent>
       )}
     </DropDownContainer>

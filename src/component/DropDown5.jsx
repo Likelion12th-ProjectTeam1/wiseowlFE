@@ -39,6 +39,8 @@ const DropDownContent = styled.div`
   font-family: Inter;
   font-weight: 500;
   line-height: normal;
+  max-height: 200px; /* 최대 높이를 설정하여 그 이상일 경우 스크롤이 생기도록 */
+  overflow-y: auto; /* 세로로 스크롤이 생기도록 설정 */
 `;
 
 const DropDownItem = styled.li`
@@ -55,30 +57,25 @@ const IconWrapper = styled.span`
   align-items: center;
 `;
 
-export default function DropDown() {
+export default function DropDown5({ majors, selectedMajor, setSelectedMajor }) {
   const [view, setView] = useState(false);
-  const [major, setMajor] = useState("Global Businesss");
-
-  const BoxContent = () => (
-    <>
-      <DropDownItem onClick={() => handleItemClick("Global Businesss")}>Global Businesss</DropDownItem>
-      <DropDownItem onClick={() => handleItemClick("컴퓨터공학부")}>컴퓨터공학부</DropDownItem>
-      <DropDownItem onClick={() => handleItemClick("통계학과")}>통계학과</DropDownItem>
-    </>
-  );
 
   const handleItemClick = (item) => {
-    setMajor(item);
+    setSelectedMajor(item);
     setView(false);
+    console.log('선택된 전공:', item); // 선택된 전공 로그
   };
-
   return (
     <DropDownContainer onClick={() => setView(!view)}>
-      {major} 
+      {selectedMajor || "전공을 선택하세요"} 
       <IconWrapper>{view ? <FaChevronUp /> : <FaChevronDown />}</IconWrapper>
       {view && (
         <DropDownContent>
-          <BoxContent />
+          {majors.map(major => (
+            <DropDownItem key={major.department_id} onClick={() => handleItemClick(major.department_name)}>
+              {major.department_name}
+            </DropDownItem>
+          ))}
         </DropDownContent>
       )}
     </DropDownContainer>
