@@ -6,6 +6,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
+  
   async (config) => {
     const cookies = new Cookies();
     const accessToken = cookies.get('accessToken'); // 쿠키에서 accessToken 가져오기

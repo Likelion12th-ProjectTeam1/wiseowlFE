@@ -23,13 +23,13 @@ const MapImage = styled.div`
 const BuildingZero = styled.div`
   position: absolute;
   background-image: url("/img/building0.png");
-  top: 40%;
-  left: 14%;
+  top: 45%;
+  left: 0%;
   width: 9vh;
   height: 9vh;
   background-size: cover;
   &:hover {
-    transform: scale(1.3);
+    transform: scale(1.1);
   }
 `;
 
@@ -37,13 +37,111 @@ const BuildingOne = styled.div`
   position: absolute;
   background-image: url("/img/building1.png");
   top: 18%;
-  left: 71%;
+  left: 80%;
   width: 9.5vh;
   height: 12vh;
+  background-size: cover;
+  transform: scale(0.8);
+  &:hover {
+    transform: scale(0.9);
+  }
+`;
+
+const BuildingTwo = styled.div`
+  position: absolute;
+  background-image: url("/img/building2.png");
+  top: -2%;
+  left: 48%;
+  width: 15vh;
+  height: 11vh;
   background-size: cover;
   transform: scale(0.9);
   &:hover {
     transform: scale(1.1);
+  }
+`;
+
+const BuildingThree = styled.div`
+  position: absolute;
+  background-image: url("/img/building3.png");
+  top: 10%;
+  left: -15%;
+  width: 24vh;
+  height: 12vh;
+  background-size: cover;
+  transform: scale(0.7);
+  &:hover {
+    transform: scale(0.8);
+  }
+`;
+
+const BuildingFour = styled.div`
+  position: absolute;
+  background-image: url("/img/building4.png");
+  top: -10%;
+  left: 71%;
+  width: 15vh;
+  height: 12vh;
+  background-size: cover;
+  transform: scale(0.7);
+  &:hover {
+    transform: scale(0.8);
+  }
+`;
+
+const BuildingFive = styled.div`
+  position: absolute;
+  background-image: url("/img/building5.png");
+  top: 33%;
+  left: 16%;
+  width: 16vh;
+  height: 12vh;
+  background-size: cover;
+  transform: scale(0.7);
+  &:hover {
+    transform: scale(0.8);
+  }
+`;
+
+const BuildingSix = styled.div`
+  position: absolute;
+  background-image: url("/img/building6.png");
+  top: 35%;
+  left: 49%;
+  width: 15vh;
+  height: 13vh;
+  background-size: cover;
+  transform: scale(0.7);
+  &:hover {
+    transform: scale(0.8);
+  }
+`;
+
+const BuildingSeven = styled.div`
+  position: absolute;
+  background-image: url("/img/building7.png");
+  top: 60%;
+  left: 28%;
+  width: 15vh;
+  height: 12vh;
+  background-size: cover;
+  transform: scale(0.7);
+  &:hover {
+    transform: scale(0.8);
+  }
+`;
+
+const BuildingEight = styled.div`
+  position: absolute;
+  background-image: url("/img/building8.png");
+  top: -2%;
+  left: 30%;
+  width: 18vh;
+  height: 20vh;
+  background-size: cover;
+  transform: scale(0.5);
+  &:hover {
+    transform: scale(0.6);
   }
 `;
 
@@ -231,7 +329,14 @@ const Map = ({ data }) => {
         {/* 각 건물의 클릭 이벤트에서 인덱스를 사용 */}
         <BuildingZero onClick={() => handleBuildingClick(0)} />
         <BuildingOne onClick={() => handleBuildingClick(1)} />
-  
+        <BuildingTwo onClick={() => handleBuildingClick(2)} />
+        <BuildingThree onClick={() => handleBuildingClick(3)} />
+        <BuildingFour onClick={() => handleBuildingClick(4)} />
+        <BuildingFive onClick={() => handleBuildingClick(5)} />
+        <BuildingSix onClick={() => handleBuildingClick(6)} />
+        <BuildingSeven onClick={() => handleBuildingClick(7)} />
+        <BuildingEight onClick={() => handleBuildingClick(8)} />
+
         {/* 활성화된 건물에 대해서만 모달을 표시 */}
         {activeBuilding !== null && (
           <TotalModal>
