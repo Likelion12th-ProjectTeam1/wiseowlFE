@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axiosInstance from '../../auth/axiosInstance';
+import { useNavigate } from 'react-router-dom'; 
 
 const PageContainer = styled.div`
   background-color: #FFFFFF;
   height: 100vh;
   width: 390px;
   padding: 0 20px;
-  padding-top: 100px;
-  padding-bottom: 400px; //30px;
+  padding-top: 200px;
+  padding-bottom: 72px; //30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,10 +20,11 @@ const PageContainer = styled.div`
 
 const Title = styled.h1`
   font-size: 19.71px;
+  font-family: Inter;
   color: #333;
   text-align: left;
   margin-bottom: 40px;
-  font-weight: 700;
+  font-weight: bold;
   position: relative;
   left: 20px;
   top: 30px;
@@ -41,8 +43,9 @@ const Title2 = styled.h1`
 
 const Title3 = styled.h1`
   font-size: 18.72px;
-  font-weight: 300; 
-  color: #333;
+  font-family: Inter;
+  font-weight: 320; 
+  color: #00191F;
   text-align: left;
   margin-bottom: 17px;
   position: relative;
@@ -118,10 +121,11 @@ const ProgressBoxContainer = styled.div`
   align-items: center;
   width: 150px;
   padding: 20px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8.81;
   background-color: #fff;
   flex-shrink: 0;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  /* 기본적인 그림자 추가 */
 `;
 
 const TitleBox = styled.div`
@@ -165,20 +169,27 @@ const ProgressText = styled.div`
 const CurrentText = styled.span`
   font-size: 20.94px;
   color: #000000;
-  font-weight: 700;
+  font-weight: 400;
+  font-family: Roboto;
 `;
 
 const TotalText = styled.span`
   font-size: 14.04px;
   color: #737373;
   margin-left: 4px;
+  font-family: Roboto;
+  font-weight: 400;
+
 `;
 
 const PercentageText = styled.div`
   font-size: 10px;
   color: #A5A2A2;
   margin-top: 20px;
+  font-family: Inter;
+  font-weight: 500;
 `;
+
 
 const Title3Container = styled.div`
   display: flex;
@@ -198,9 +209,10 @@ const MajorBox = styled.div`
 `;
 
 const MajorText = styled.span`
-  font-size: 10.35px;  
-  color: #333;
-  font-weight: 300;
+  font-size: 10.35px; 
+  font-family: Inter; 
+  color: #000000;
+  font-weight: 303;
   text-align: center;
 `;
 
@@ -315,7 +327,9 @@ const Button = styled.button`
 export default function DepthRequire() {
   const [data, setData] = useState(null); 
   const [loading, setLoading] = useState(true);
+  const [filteredCourses, setFilteredCourses] = useState([]);  
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const [viewType, setViewType] = useState('main');  // 'main' -> 본전공, 'double_or_minor' -> 이중전공/부전공
   const [completionRates, setCompletionRates] = useState({
     major: 0,
@@ -330,8 +344,7 @@ export default function DepthRequire() {
     }
   });
 
-
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -375,8 +388,15 @@ export default function DepthRequire() {
   
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (viewType === 'double_or_minor') {
+      navigate('/depthrequire');  // 상태가 'double_or_minor'일 때만 이동
+    }
+  }, [viewType, navigate]);
   
-  
+if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>{error}</div>;
 
   if (!data) {
     return <div>Loading...</div>;
@@ -384,9 +404,10 @@ export default function DepthRequire() {
 
 // 데이터가 정상적으로 로드되었을 때에만 처리하도록 조건 추가
 const { main_major, main_major_required_courses, liberal_required_courses, double_major, profile_gibun, double_or_minor_required_courses } = data || {};
+const majorType = main_major?.[0]?.department_name || '본전공';
 
 // profile_gibun이 있으면 join으로 이중전공/부전공 구분
-const majorType = profile_gibun ? profile_gibun.join(' / ') : '';
+// const majorType = profile_gibun ? profile_gibun.join(' / ') : '';
 
 // double_major가 없을 경우 빈 배열로 초기화
 const doubleMajor = double_major || []; // 이중전공 정보
@@ -404,15 +425,19 @@ const handleToggleView = () => {
 
 // 이중전공/부전공 보기일 때, 전공명은 상관없이 처리
 const isDoubleOrMinorView = viewType === 'double_or_minor';
+const handleClick = () => {
+    setViewType('double_or_minor');  // 상태 변경
+    navigate('/depth');  // 'depth' 페이지로 이동
+  };
 
 
    
 
 
    // 이중전공/부전공 과목 필터링 (이중전공 / 부전공에 해당하는 과목만)
-   const filteredCourses = double_or_minor_required_courses.filter(course => {
-     return course.subject_department_name; // 여기에 더 구체적인 조건을 추가할 수 있음
-   });
+   //const filteredCourses = double_or_minor_required_courses.filter(course => {
+    // return course.subject_department_name; // 여기에 더 구체적인 조건을 추가할 수 있음
+   //});
 
 
 

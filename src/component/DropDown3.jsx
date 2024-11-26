@@ -12,7 +12,7 @@ const DropDownContainer = styled.ul`
   display: inline-block;
   position: relative;
   width: auto; /* 너비를 auto로 설정하여 텍스트 길이에 맞게 조정 */
-  font-size: 11.5px;
+  font-size: 11.49px;
   color: #A09F9F;
   min-width: 73px; /* 최소 너비를 설정하여 너무 좁아지지 않도록 */
   text-align: center; /* 텍스트를 가운데 정렬 */
@@ -23,6 +23,8 @@ const DropDownContainer = styled.ul`
   padding-top: 8px; /* 패딩을 통해 높이를 조정 */
   padding-bottom: 8px; /* 패딩을 통해 높이를 조정 */
   box-sizing: border-box; /* 패딩이 포함된 전체 크기 계산 */
+  font-family: Inter;
+  font-weight: 600;
 `;
 
 const DropDownContent = styled.div`

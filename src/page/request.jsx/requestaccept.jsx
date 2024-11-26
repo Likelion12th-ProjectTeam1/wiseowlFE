@@ -23,7 +23,10 @@ const Image = styled.img`
 const Title = styled.h1`
   margin-top: 20px; /* 제목과 이미지 사이 간격 */
   font-size: 22px;
-  font-weight: 300;
+  font-weight: 350;
+  color: #000000;
+  font-family: Inter;
+
 `;
 
 const Text = styled.p`
@@ -32,13 +35,15 @@ const Text = styled.p`
   line-height: 1.5;
   max-width: 600px; /* 텍스트 길이를 제한하여 너무 길어지지 않게 */
   color: #5D96E8;
+  font-family: Inter;
+  font-weight: 500;
   
 `;
 
 export default function RequestAccept() {
   return (
     <Container>
-      <Image src="/img/request.jpg" alt="Request" />
+      <Image src="/img/accept2.svg" alt="Request" />
       <Title>요청완료</Title>
       <Text>
         해당 학과 학번 추가 이후에 알림과 메일을 통해 <br />

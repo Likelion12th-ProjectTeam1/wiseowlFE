@@ -41,6 +41,8 @@ const DropDownContent = styled.div`
   line-height: normal;
   max-height: 200px; /* 최대 높이를 설정하여 그 이상일 경우 스크롤이 생기도록 */
   overflow-y: auto; /* 세로로 스크롤이 생기도록 설정 */
+  font-family: Inter;
+  font-weight: 600;
 `;
 
 const DropDownItem = styled.li`

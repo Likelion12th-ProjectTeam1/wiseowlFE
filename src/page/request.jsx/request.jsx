@@ -4,7 +4,7 @@ import DropDown3 from '../../component/DropDown3';
 import DropDown4 from '../../component/DropDown4';
 import DropDown5 from '../../component/DropDown5';
 import axiosInstance from '../../auth/axiosInstance';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -31,35 +31,40 @@ const Image = styled.img`
 
 const HighlightedText = styled.p`
   font-size: 22px;
-  font-weight: 100;
   color: #000000;
   margin-top: -60px;
   text-align: left; 
+  font-weight: 500;
+  font-family: Inter;
 `;
 
 const InstructionText = styled.p`
   font-size: 11px;
-  font-weight: 300;
+  font-weight: 500;
   margin-top: 20px;
   max-width: 600px;
   white-space: pre-line;
   color: #A3A3A3;
   text-align: left;
+  font-family: Inter;
 `;
 
 const RequestText = styled.p`
   font-size: 13px;
-  font-weight: 300;
+  font-weight: 600;
   margin-top: 20px;
   margin-bottom: 20px; 
   color: #000000;
   text-align: left;
+  font-family: Inter;
 `;
 
 const PText = styled.p`
   font-size: 11.5px;
   margin-bottom: 5px; 
   color: #000000;
+  font-weight: 500;
+  font-family: Inter;
 `;
 
 const MajorDText = styled.p`
@@ -90,28 +95,28 @@ const SubmitButtonWrapper = styled.div`
   width: 100%; 
   margin-top: 200px;
   margin-bottom: 20px; 
-  margin-right: 100px;
+  margin-left: -30px;
+  
 `;
 
 const SubmitButton = styled.button`
-  background-color: #ECECEC;
-  color: #959595;
+  background-color: ${props => props.disabled ? '#ECECEC' : '#5D96E8'};
+  color: ${props => props.disabled ? '#959595' : '#FFFFFF'};
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
   font-size: 13.4px;
   font-weight: bold;
-  cursor: pointer;
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   width: 258px;
   height: 40px;
-  margin-left: -70px;
   
   &:hover {
-    background-color: rgb(169, 168, 168);
+    background-color: ${props => props.disabled ? '#ECECEC' : '#5D96E8'};
   }
 
   &:active {
-    background-color: #959595;
+    background-color: ${props => props.disabled ? '#ECECEC' : '#5D96E8'};
   }
 `;
 
@@ -121,6 +126,7 @@ export default function Request() {
   const [majors, setMajors] = useState([]); // 전공 목록 상태
   const [selectedMajor, setSelectedMajor] = useState(""); // 선택된 전공 상태
   const [selectedYear, setSelectedYear] = useState(''); // 학번 선택 상태
+  const [isAllRequiredChecked, setIsAllRequiredChecked] = useState(false); // 모든 선택이 완료되었는지 확인
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
@@ -146,6 +152,15 @@ export default function Request() {
     }
   }, [selectedCollege, colleges]);
 
+  useEffect(() => {
+    // 모든 드롭다운이 선택되었는지 체크
+    if (selectedYear && selectedCollege && selectedMajor) {
+      setIsAllRequiredChecked(true); // 모든 값이 선택되었으면 버튼 활성화
+    } else {
+      setIsAllRequiredChecked(false); // 하나라도 선택되지 않으면 버튼 비활성화
+    }
+  }, [selectedYear, selectedCollege, selectedMajor]);
+
   const handleSubmit = async () => {
     // 학번에서 숫자만 추출하여 `request_number`에 보내기
     const requestNumber = parseInt(selectedYear, 10); // 숫자만 추출
@@ -157,7 +172,7 @@ export default function Request() {
     };
 
     // 요청 데이터를 콘솔에 출력
-  console.log("보내는 데이터:", requestData); 
+    console.log("보내는 데이터:", requestData); 
 
     try {
       // API에 POST 요청 보내기
@@ -172,7 +187,7 @@ export default function Request() {
   return (
     <Container>
       <ImageWrapper>
-        <Image src="/img/request2.jpg" alt="Request" />
+        <Image src="/img/accept.svg" alt="Request" />
       </ImageWrapper>
 
       <HighlightedText>
@@ -205,7 +220,7 @@ export default function Request() {
       </MajorWrapper>
 
       <SubmitButtonWrapper>
-        <SubmitButton onClick={handleSubmit}>
+        <SubmitButton onClick={handleSubmit} disabled={!isAllRequiredChecked}>
           신청 하기
         </SubmitButton>
       </SubmitButtonWrapper>
