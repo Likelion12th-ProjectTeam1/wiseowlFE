@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DropDown3 from '../../component/DropDown3';
 import DropDown4 from '../../component/DropDown4';
 import DropDown5 from '../../component/DropDown5';
+import axiosInstance from '../../auth/axiosInstance';
+import { useNavigate } from 'react-router-dom'; 
 
 const Container = styled.div`
   display: flex;
@@ -114,14 +116,61 @@ const SubmitButton = styled.button`
 `;
 
 export default function Request() {
-  // 버튼 클릭 시 수행할 작업 (예시)
-  const handleSubmit = () => {
-    alert("신청이 완료되었습니다!");
+  const [colleges, setColleges] = useState([]); // 단과대 목록 상태
+  const [selectedCollege, setSelectedCollege] = useState(null); // 선택된 단과대 상태
+  const [majors, setMajors] = useState([]); // 전공 목록 상태
+  const [selectedMajor, setSelectedMajor] = useState(""); // 선택된 전공 상태
+  const [selectedYear, setSelectedYear] = useState(''); // 학번 선택 상태
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
+  useEffect(() => {
+    // 단과대 목록을 가져오는 API 호출
+    const fetchColleges = async () => {
+      try {
+        const response = await axiosInstance.get('/api/requirements/colleges/');
+        setColleges(response.data.colleges); // API 응답에서 단과대 목록 설정
+      } catch (error) {
+        console.error("단과대 목록을 가져오는 데 오류가 발생했습니다:", error);
+      }
+    };
+
+    fetchColleges();
+  }, []);
+
+  useEffect(() => {
+    // 선택된 단과대에 따라 전공 목록 업데이트
+    if (selectedCollege) {
+      const selected = colleges.find(college => college.college_name === selectedCollege);
+      setMajors(selected ? selected.majors : []);
+      setSelectedMajor(""); // 전공 초기화
+    }
+  }, [selectedCollege, colleges]);
+
+  const handleSubmit = async () => {
+    // 학번에서 숫자만 추출하여 `request_number`에 보내기
+    const requestNumber = parseInt(selectedYear, 10); // 숫자만 추출
+
+    const requestData = {
+      request_number: requestNumber, // 숫자형으로 학번을 전달
+      request_college: selectedCollege,
+      request_department: selectedMajor
+    };
+
+    // 요청 데이터를 콘솔에 출력
+  console.log("보내는 데이터:", requestData); 
+
+    try {
+      // API에 POST 요청 보내기
+      const response = await axiosInstance.post('/api/accounts/request/student-number/', requestData);
+      console.log("API 응답:", response.data); // API 응답을 로그로 출력
+      navigate("/requestaccept"); // 성공적으로 요청 후 페이지 이동
+    } catch (error) {
+      console.error("요청을 보내는 데 오류가 발생했습니다:", error);
+    }
   };
 
   return (
     <Container>
-
       <ImageWrapper>
         <Image src="/img/request2.jpg" alt="Request" />
       </ImageWrapper>
@@ -142,22 +191,22 @@ export default function Request() {
       </RequestText>
 
       <PText>학번</PText>
-      <DropDown3 />
+      <DropDown3 selectedYear={selectedYear} setSelectedYear={setSelectedYear} />
 
       <MajorWrapper>
         <div>
           <MajorDText>본전공 단과대</MajorDText>
-          <DropDown4 />
+          <DropDown4 colleges={colleges} selectedCollege={selectedCollege} setSelectedCollege={setSelectedCollege} />
         </div>
         <div>
           <MajorText>본전공</MajorText>
-          <DropDown5 />
+          <DropDown5 majors={majors} selectedMajor={selectedMajor} setSelectedMajor={setSelectedMajor} />
         </div>
       </MajorWrapper>
 
       <SubmitButtonWrapper>
         <SubmitButton onClick={handleSubmit}>
-          신청 완료
+          신청 하기
         </SubmitButton>
       </SubmitButtonWrapper>
     </Container>

@@ -39,6 +39,8 @@ const DropDownContent = styled.div`
   font-family: Inter;
   font-weight: 500;
   line-height: normal;
+  max-height: 200px; /* 최대 높이를 설정하여 그 이상일 경우 스크롤이 생기도록 */
+  overflow-y: auto; /* 세로로 스크롤이 생기도록 설정 */
 `;
 
 const DropDownItem = styled.li`
@@ -55,30 +57,26 @@ const IconWrapper = styled.span`
   align-items: center;
 `;
 
-export default function DropDown() {
+export default function DropDown4({ colleges, selectedCollege, setSelectedCollege }) {
   const [view, setView] = useState(false);
-  const [major, setMajor] = useState("인문경상대");
-
-  const BoxContent = () => (
-    <>
-      <DropDownItem onClick={() => handleItemClick("인문경상대")}>인문경상대</DropDownItem>
-      <DropDownItem onClick={() => handleItemClick("자연대")}>자연대</DropDownItem>
-      <DropDownItem onClick={() => handleItemClick("공과대")}>공과대</DropDownItem>
-    </>
-  );
 
   const handleItemClick = (item) => {
-    setMajor(item);
+    setSelectedCollege(item);
     setView(false);
+    console.log('선택된 단과대:', item); // 선택된 단과대 로그
   };
 
   return (
     <DropDownContainer onClick={() => setView(!view)}>
-      {major} 
+      {selectedCollege || "단과대를 선택하세요"} 
       <IconWrapper>{view ? <FaChevronUp /> : <FaChevronDown />}</IconWrapper>
       {view && (
         <DropDownContent>
-          <BoxContent />
+          {colleges.map(college => (
+            <DropDownItem key={college.college_id} onClick={() => handleItemClick(college.college_name)}>
+              {college.college_name}
+            </DropDownItem>
+          ))}
         </DropDownContent>
       )}
     </DropDownContainer>
