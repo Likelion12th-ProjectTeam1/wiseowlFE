@@ -57,7 +57,8 @@ const Divider = styled.div`
     height: 1px;
     background-color: #ccc;
     margin-bottom: 10px;
-    width: 100%;
+    width: 90%;
+    margin-left: 20px;
 `;
 
 const AgreementItem = styled.div`
@@ -70,10 +71,6 @@ const AgreementItem = styled.div`
     
 `;
 
-const Hi= styled.div`
-    margin-left: 10px;
-    
-`;
 
 const ArrowContainer = styled.div`
     margin-left: auto;
