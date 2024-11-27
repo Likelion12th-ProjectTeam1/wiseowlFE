@@ -2,7 +2,7 @@ import axios from "axios";
 import { Cookies } from "react-cookie";
 
 const axiosInstance = axios.create({
-  baseURL: `http://ec2-43-201-90-146.ap-northeast-2.compute.amazonaws.com:8000`, // 기본 URL
+  baseURL: `https://largeredjade.site`, // 기본 URL
 });
 
 axiosInstance.interceptors.request.use(
