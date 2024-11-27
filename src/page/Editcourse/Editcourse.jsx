@@ -471,6 +471,7 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
   const [averageGrade, setAverageGrade] = useState(0); // 평균 학점 상태 추가
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const forms = [
@@ -543,6 +544,7 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
     setTimeout(() => setIsUpdating(false), 500); // 100ms 후 로딩 상태 해제
   };
 
+  
   const addClass = () => {
     const newCourse = {
       subject_name: "",
@@ -555,18 +557,18 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
       state: { selectedSemester, semester, subjectKey },
     });
   };
-
   const DeleteData = async (course) => {
     try {
       const requestBody = {
         complete_year: selectedSemester,
         school_year: subjectKey,
         subject_name: course.subject_name,
+        subject_code: course.subject_code,
       };
+      console.log(requestBody);
+      
 
-      await axiosInstance.delete("/api/notices/mypage/course-edit/", {
-        data: requestBody,
-      });
+      await axiosInstance.delete("/api/notices/mypage/course-edit/", { data: requestBody });
       handleUpdate(() => {
         setCourses((prevCourses) =>
           prevCourses.filter((c) => c.subject_name !== course.subject_name)
@@ -584,24 +586,61 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
   };
 
   const handleCheckboxChange = (index) => {
-    handleUpdate(() =>
-      setCourses((prevCourses) =>
-        prevCourses.map((course, i) =>
-          i === index ? { ...course, retry_yn: !course.retry_yn } : course
-        )
-      )
+    const updatedCourses = courses.map((course, i) =>
+      i === index ? { ...course, retry_yn: !course.retry_yn } : course
     );
+  
+    handleUpdate(() => setCourses(updatedCourses));
+  
+    // FixData 호출을 상태가 업데이트된 이후로 지연
+    setTimeout(() => {
+      const courseToUpdate = updatedCourses[index];
+      console.log("Updated Course:", courseToUpdate);
+      FixData(courseToUpdate);
+    }, 0); // 상태가 업데이트된 후 다음 이벤트 루프로 이동
   };
 
-  const handleFieldChange = (index, field, value) => {
-    handleUpdate(() =>
-      setCourses((prevCourses) =>
-        prevCourses.map((course, i) =>
-          i === index ? { ...course, [field]: value } : course
-        )
-      )
+  const FixData = async (course) => {
+  try {
+    setLoading(true);
+    const requestBody = {
+      "complete_year": selectedSemester, 
+      "school_year": subjectKey, 
+      "subject_name": course.subject_name,
+      "grade": course.grade,
+      "retry_yn": course.retry_yn,
+      "subject_code": course.subject_code,
+    };
+    
+    console.log("PATCH 요청:", requestBody);
+
+    const response = await axiosInstance.patch(
+      `/api/notices/mypage/course-edit/`, 
+      requestBody
     );
-  };
+
+    console.log("응답 데이터:", response.data);
+    // 필요시 응답 데이터 처리
+  } catch (err) {
+    console.error("데이터 업데이트 중 오류:", err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+const handleFieldChange = (index, field, value) => {
+  const updatedCourses = courses.map((course, i) =>
+    i === index ? { ...course, [field]: value } : course
+  );
+
+  // 상태 업데이트
+  setCourses(updatedCourses);
+
+  // FixData 호출 시 즉시 최신 데이터 전달
+  FixData(updatedCourses[index]);
+};
 
   return (
     <FormContainer>
@@ -615,6 +654,12 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
           <Select.Option value="2021 2학기">2021 2학기</Select.Option>
           <Select.Option value="2022 1학기">2022 1학기</Select.Option>
           <Select.Option value="2022 2학기">2022 2학기</Select.Option>
+          <Select.Option value="2023 1학기">2023 1학기</Select.Option>
+          <Select.Option value="2023 2학기">2023 2학기</Select.Option>
+          <Select.Option value="2024 1학기">2024 1학기</Select.Option>
+          <Select.Option value="2024 2학기">2024 2학기</Select.Option>
+          <Select.Option value="2025 1학기">2025 1학기</Select.Option>
+          <Select.Option value="2025 2학기">2025 2학기</Select.Option>
         </CustomSelect>
         <SemesterContainer>
           <SemesterText>

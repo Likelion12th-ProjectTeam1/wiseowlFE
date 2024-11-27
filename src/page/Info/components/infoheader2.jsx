@@ -33,7 +33,6 @@ export default function InfoHeader2(){
     return(
         <HeaderContainer>
             <InfoTitle>이수과목정보를 <br/>입력해주세요.</InfoTitle>
-            <JumpInfo>건너뛰기</JumpInfo>
         </HeaderContainer>
     );
 }

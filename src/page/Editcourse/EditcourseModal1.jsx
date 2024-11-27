@@ -4,12 +4,18 @@ import axiosInstance from "../../auth/axiosInstance";
 import { useNavigate ,useLocation } from "react-router-dom";
 
 const Container = styled.div`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
     width: 390px;
     height: 500px;
     display: flex;
     flex-direction: column;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `
+
+
 
 const ModalContainer = styled.div`
     width: 100%;
