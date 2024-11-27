@@ -6,6 +6,8 @@ import { FaChevronLeft } from "react-icons/fa";
 import MenuCard from "./components/MenuCard";
 import MenuCategory from "./components/MenuCategory";
 
+import { useNavigate } from "react-router-dom";
+
 const Container = styled.div`
   width: 390px;
   margin: 0 auto;
@@ -75,10 +77,16 @@ const MenuCardContainer = styled.div`
   }
 `;
 const BottomBox = styled.div``;
+
 export default function Shopping() {
   const facility_num = "0dk";
   const [data, setdata] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/main");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,7 +112,7 @@ export default function Shopping() {
       ) : data ? (
         <>
           <HeaderHorizontalBox>
-            <FaChevronLeft size="22px" />
+            <FaChevronLeft size="22px" onClick={handleClick} />
             <NameText>던킨도너츠</NameText>
             <ShopLocation>
               {data.builidng_name} {data.facility_loc}

@@ -41,7 +41,6 @@ export default function MainNotice() {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/main");
-    console.log("클릭!");
   };
 
   useEffect(() => {
