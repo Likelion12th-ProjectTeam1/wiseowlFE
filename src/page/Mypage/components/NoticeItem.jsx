@@ -9,6 +9,7 @@ const Container = styled.div`
   border-radius: 9.85px;
   box-shadow: 0px 0.49px 0.91px 0.99px rgba(0, 0, 0, 0.09);
   margin-bottom: 15px;
+  cursor: pointer;
 `;
 const TopBox = styled.div`
   width: 330px;
@@ -76,9 +77,12 @@ const Text = styled.p`
   font-size: 10.1px;
   color: #000;
 `;
-function NoticeItem({ organization, min, text, isread }) {
+function NoticeItem({ organization, min, text, isread, link }) {
+  function handleClick() {
+    window.location.href = link;
+  }
   return (
-    <Container>
+    <Container onClick={handleClick}>
       <TopBox>
         <Dot isread={isread} />
       </TopBox>

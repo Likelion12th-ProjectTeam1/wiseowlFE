@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import NoticeItem from "./components/NoticeItem";
 import axiosInstance from "../../auth/axiosInstance";
+import { useNavigate } from "react-router-dom";
 const Container = styled.div`
   width: 390px;
   min-height: 570px;
@@ -36,6 +37,13 @@ const NameText = styled.p`
 export default function MainNotice() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/main");
+    console.log("클릭!");
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -62,7 +70,8 @@ export default function MainNotice() {
       ) : (
         <>
           <HeaderHorizontalBox>
-            <FaChevronLeft size="22px" />
+            <FaChevronLeft size="22px" onClick={handleClick} />
+
             <NameText>알림</NameText>
           </HeaderHorizontalBox>
           <CustomSpace height="20px" />
@@ -72,6 +81,7 @@ export default function MainNotice() {
               min={data.notice_date}
               text={data.notice_title}
               isread={data.notice_read}
+              link={data.notice_link}
             />
           ))}
         </>
