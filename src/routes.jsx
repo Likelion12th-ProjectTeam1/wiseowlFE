@@ -1,4 +1,4 @@
-import Landing from './page/landing';
+import Landing from './page/Landing';
 import Require from './page/Require';
 import Login from './page/Login/Login';
 import LoginModal from './page/Login/LoginModal';
