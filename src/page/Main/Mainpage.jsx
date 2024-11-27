@@ -301,6 +301,9 @@ export default function Main() {
     navigate("/shopping");
 };
 
+const goToshoppingtwo = () => {
+  navigate("/shoppingtwo");
+};
 
   const halfIndex = Math.ceil(facilityList.length / 2); // 리스트를 반으로 나누는 인덱스
   const firstHalf = facilityList.slice(0, halfIndex); // 첫 번째 절반
@@ -363,7 +366,10 @@ export default function Main() {
                           // "던킨도넛"인 경우에만 handleGo 함수 호출
                           if (facility.facility_name === "던킨") {
                             goToshopping();
-                          }
+                          }else if (facility.facility_name === "그라찌에") {
+                            console.log("그라찌에 버튼 클릭");
+                            // "그라찌에"일 경우 goToshoppingtwo 함수 호출
+                            goToshoppingtwo();}
                         }}
                       >
                           <ContentText>{facility.facility_name}</ContentText>
@@ -383,7 +389,10 @@ export default function Main() {
                           // "던킨도넛"인 경우에만 handleGo 함수 호출
                           if (facility.facility_name === "던킨") {
                             goToshopping();
-                          }
+                          }else if (facility.facility_name === "그라찌에") {
+                            console.log("그라찌에 버튼 클릭");
+                            // "그라찌에"일 경우 goToshoppingtwo 함수 호출
+                            goToshoppingtwo();}
                         }}
                       >
                           <ContentText>{facility.facility_name}</ContentText>
