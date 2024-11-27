@@ -7,6 +7,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axiosInstance from "../../auth/axiosInstance";
 import { useRef } from "react";
 
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 const CautionText = styled.h5`
   color: #a3a3a3;
   font-family: Inter;
@@ -176,12 +183,12 @@ const AddFormButton = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-top: 16px;
+  margin-top: 10px;
 `;
 
 const EnterButton = styled.div`
-  width: 80%;
-  min-height: 40px;
+  width: 260px;
+  height: 37px;
   border-radius: 33px;
   border: 1px solid #5D96E8;
   background: #FFF;
@@ -191,6 +198,7 @@ const EnterButton = styled.div`
   align-items: center;
   cursor: pointer;
   margin-top: 51px;
+  margin-bottom: 54px;
 `;
 
 const SemesterContainer = styled.div`
@@ -319,7 +327,7 @@ export default function InfoTwo() {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="page-container">
+    <PageContainer>
       <InfoHeader2 />
       <CautionText>미입력시 해당 학기는 미이수로 인정됩니다.</CautionText>
       <FormArea>
@@ -331,10 +339,10 @@ export default function InfoTwo() {
             data={courses[index]}
           />
         ))}
+      </FormArea>
         <AddFormButton onClick={addForm}>학기 추가하기</AddFormButton>
         <EnterButton onClick={goToMainpage}>시작하기</EnterButton>
-      </FormArea>
-    </div>
+    </PageContainer>
   );
 }
 const FormComponent = ({ semester, subjectKey, data }) => {

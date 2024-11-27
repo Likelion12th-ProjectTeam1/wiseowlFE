@@ -35,12 +35,9 @@ const DayText = styled.h1`
     margin-top: 70px;
 `
 
-const NoticeImg = styled.div`
+const NoticeImg = styled.img`
     width: 150px;
     height: 150px;
-    background-image: url("/img/NoticeIcon.png"); 
-    background-size: contain;
-    background-repeat: no-repeat;
     display: flex;
     position : relative;
     left : 160px;
@@ -58,15 +55,21 @@ const NoticeText = styled.h3`
 `
 
 const Countnotice = styled.div`
-    width: 35px;
-    height : 15px;
+    width: 41px;
+    height: 17px;
     border-radius: 9.855px;
     background: #5D96E8;
-    color : #FFF;
-    display: flex;
-    justify-content: center;
-    text-align: center;
+    display: flex; /* 플렉스 컨테이너 활성화 */
+    align-items: center; /* 수직 정렬 */
+    justify-content: center; /* 수평 정렬 */
+    text-align: center; /* 텍스트 정렬 (플렉스 컨테이너 외 추가 안전성) */
     margin-left: 15px;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 10.101px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 `
 
 export default function NoticeHeader({sum}){
@@ -82,7 +85,7 @@ export default function NoticeHeader({sum}){
                 <DayText>
                     {formattedYear}<br/>
                     {formattedDate}
-                    <NoticeImg/>
+                    <NoticeImg src="/img/NoticeIcon.svg" alt="noticeIcon" />
                 </DayText>
             </DayContainer>
             <CountContainer>

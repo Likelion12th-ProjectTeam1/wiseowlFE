@@ -51,12 +51,9 @@ const TitleImg = styled.div`
     top: 30px;
 `;
 
-const CancleImg = styled.div`
+const CancleImg = styled.img`
     width: 17px;
     height: 20px;
-    background-image: url("/img/cancle.png");
-    background-size: contain;
-    background-repeat: no-repeat;
     position: relative;
     left: 55px;
     top: 30px;
@@ -87,6 +84,12 @@ const ButtonBox1 = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    color: #000;
+    font-family: Inter;
+    font-size: 10.101px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 `;
 
 const ButtonBox2 = styled.div`
@@ -96,11 +99,20 @@ const ButtonBox2 = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    color: #000;
+    font-family: Inter;
+    font-size: 10.101px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 `;
 
 const CenterButton = styled.div`
     width: 80px;
     height: 25px;
+    white-space: nowrap; /* 수정: whiteSpace -> white-space */
+    text-overflow: ellipsis; /* 수정: textOverflow -> text-overflow */
+    overflow: hidden; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -109,6 +121,11 @@ const CenterButton = styled.div`
     background: #fff;
     margin-bottom: 10px; // Add space between buttons
     font-size: 7px;
+    color: #000;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
     cursor: pointer;
     border: ${(props) => (props.isSubscribed ? "2px solid #5d96e8" : "none")};
     &:hover {
@@ -116,6 +133,14 @@ const CenterButton = styled.div`
         background: #fff;
         color: #000;
     }
+`;
+
+const Image = styled.img`
+   width: 40px;
+    height: 40px;
+    position: relative;
+    left: 20px;
+    top: 30px;
 `;
 
 // Main Component
@@ -215,9 +240,9 @@ export default function NoticeModal() {
         <PageContainer>
             <ModalContainer>
                 <TitleContainer>
-                    <TitleImg />
+                    <Image src="/img/stopwatch.svg" alt="stopwatch" />
                     <ModalTitle>알림 선택</ModalTitle>
-                    <CancleImg onClick={goToNoticepage} />
+                    <CancleImg src="/img/cancle.svg" alt="cancle" onClick={goToNoticepage} />
                 </TitleContainer>
                 <NoticeText>알림을 받아보실 기관을 선택해주세요</NoticeText>
                 <ButtonContainer>
