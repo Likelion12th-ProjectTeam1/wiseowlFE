@@ -6,7 +6,7 @@ import { FaBookOpen } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom'; 
 
 const PageContainer = styled.div`
-  background-color: #FFFFFF;
+  background-color: #F6F6F6;
   height: 100vh;
   width: 390px;
   padding: 0 20px;
@@ -23,12 +23,12 @@ const PageContainer = styled.div`
 const Title = styled.h1`
   font-size: 19.71px;
   font-family: Inter;
-  color: #333;
+  color: #00191F;
   text-align: left;
   margin-bottom: 40px;
   font-weight: bold;
   position: relative;
-  left: 20px;
+  left: 12px;
   top: 30px;
 `;
 
@@ -78,15 +78,17 @@ const Section1 = styled.div`
   padding: 20px;
   background-color: #F6F6F6;
   margin-bottom: 20px;
+  margin-top: 120px;
 `;
 
 const SectionDivider = styled.div`
   width: 390px;
-  height: 40px;
+  height: 78px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 10px;
+  background-color: #fff;
 `;
 
 const Section2 = styled.div`
@@ -118,6 +120,7 @@ const RequirementRow = styled.div`
 const BigCheckboxContainer = styled.div`
   margin-right: 10px;
   margin-left: 15px;
+  margin-bottom: 15px;
 `;
 
 const NoticeContainer = styled.div`
@@ -146,7 +149,7 @@ const RequirementTitle = styled.h2`
   font-size: 10.35px;
   color: #333;
   font-weight: 700;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 `;
 
 const RequirementText = styled.div`
@@ -249,8 +252,6 @@ const TitleWithArrow2 = styled.div`
 
 `;
 
-
-
 const NoticeModal = styled.div`
   position: fixed;
   top: 50%;
@@ -269,7 +270,7 @@ const ModalTitle = styled.h2`
   font-size: 16px;
   color: #333;
   font-weight: 700;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 `;
 
 const ModalContent = styled.div`
@@ -346,7 +347,7 @@ export default function Require() {
     // 클릭 이벤트 전파 방지
     e.stopPropagation();
 
-    
+
     try {
       const response = await axiosInstance.get('/api/requirements/i/');
       const data = response.data;
@@ -411,7 +412,7 @@ useEffect(() => {
 
   useEffect(() => {
     // navigate 함수는 페이지를 이동시키는 역할을 합니다.
-    
+
     // API 호출하여 졸업 요건과 조건 충족 여부 가져오기
     const fetchRequirements = async () => {
       try {
@@ -477,7 +478,7 @@ useEffect(() => {
       <RequirementBox key={index}>
         {/* 졸업 요건에 따라 '본전공' 또는 '이중전공'을 렌더링 */}
         {req.graduation_foreign && (
-          
+
           <RequirementRow>
             {completeRequirement.for_langauge ? (
               <BigCheckboxContainer>
@@ -513,7 +514,7 @@ useEffect(() => {
             </RequirementContainer>
           </RequirementRow>
         )}
-        
+
         {/* 졸업 시험 */}
         {req.graduation_exam && (
           <RequirementRow>
@@ -531,7 +532,7 @@ useEffect(() => {
             </RequirementContainer>
           </RequirementRow>
         )}
-        
+
         {/* 졸업 논문 */}
         {req.graduation_thesis && (
           <RequirementRow>
@@ -606,9 +607,9 @@ useEffect(() => {
       </SectionDivider>
       <Section2>
       {/* 본전공 섹션 */}
-      
+
       <TitleWithArrow onClick={() => navigate('/depthrequire')}>
-        
+
         <Title3>본전공</Title3>
         <DeepArrow />      
         <NoticeContainer onClick={(e) => { handleNoticeClick('major', e);}}>
@@ -616,20 +617,14 @@ useEffect(() => {
           </NoticeContainer>
       </TitleWithArrow>
 
-      
+
       {requirements.main_major_conditions && renderRequirements(requirements.main_major_conditions.requirement, completeRequirement)}
 
       {/* 이중전공 섹션 */}
-      
+
       {profileGibun && (
         <> 
-
-        
         <TitleWithArrow2 onClick={handleClick}>
-        
-
-
-
       <Title4>{profileGibun}</Title4>
       <DeepArrow />
       <NoticeContainer2 onClick={(e) => { handleNoticeClick('double_or_minor', e); }}>
@@ -639,9 +634,9 @@ useEffect(() => {
       {profileGibun === '이중전공' && requirements.double_minor_major_conditions && (
       renderRequirements(requirements.double_minor_major_conditions.requirement, completeRequirement)
     )}
-    
-    {profileGibun === '부전공' && requirements.sub_major_conditions && (
-      renderRequirements(requirements.sub_major_conditions.requirement, completeRequirement)
+
+    {profileGibun === '부전공' && requirements.double_minor_major_conditions && (
+      renderRequirements(requirements.double_minor_major_conditions.requirement, completeRequirement)
     )}
   </>
 )}
@@ -649,58 +644,64 @@ useEffect(() => {
       {isModalOpen && modalContent && (
   <ModalBackground onClick={closeModal}>
     <NoticeModal onClick={(e) => e.stopPropagation()}>
-        
-    <ModalTitle>어학시험</ModalTitle>
-    <ModalContent>
-      <WrapperRow>
-      <Image src="/img/Book.svg" alt="Request" />
+
+      <ModalContent>
+        {/* lang_test.basic이 있을 때만 ModalTitle과 Image를 렌더링 */}
         {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 && (
-          modalContent.lang_test.basic.map((test, index) => (
-            <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-              <StyledP style={{ marginRight: '10px' }}>{test.test_name} </StyledP>
-              <StyledP2>{test.test_basic_score}점 이상</StyledP2>
-            </div>
-          ))
-        )}
-      </WrapperRow>
+          <>
+            <ModalTitle>어학시험</ModalTitle>
+            <WrapperRow>
+              <Image src="/img/Book.svg" alt="Request" />
 
-        <WrapperRow>
-         <StyledP3>대체 가능 시험:</StyledP3>
+              {modalContent.lang_test.basic.map((test, index) => (
+                <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                  <StyledP style={{ marginRight: '10px' }}>{test.test_name}</StyledP>
+                  <StyledP2>{test.test_basic_score}점 이상</StyledP2>
+                </div>
+              ))}
+            </WrapperRow>
+          </>
+        )}
+
+        {/* 대체 가능한 시험이 있을 때만 렌더링 */}
         {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
-            {modalContent.lang_test.etc.map((test, index) => (
-              <StyledP4 key={index}>
-                {test.test_name} : {test.test_basic_score} </StyledP4>
-              
-          ))}
-        </div>
-        )}
+          <WrapperRow>
+            <StyledP3>대체 가능 시험 </StyledP3>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
+              {modalContent.lang_test.etc.map((test, index) => (
+                <StyledP4 key={index}>
+                  {test.test_name} : {test.test_basic_score}
+                </StyledP4>
+              ))}
+            </div>
           </WrapperRow>
-        {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 && (
-  <>
-          <StyledP5>추가 어학 시험:</StyledP5>
-          {modalContent.extra_foreign_test.map((extraTest, index) => (
-            <StyledP6 key={index}>
-              {extraTest.extra_test_name}: {extraTest.extra_test_basic_score}
-            </StyledP6>
-          ))}
-        </>
-      )}
+        )}
 
+        {/* 추가 어학 시험이 있을 때만 렌더링 */}
+        {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 && (
+          <>
+            <StyledP5>추가 어학 시험:</StyledP5>
+            {modalContent.extra_foreign_test.map((extraTest, index) => (
+              <StyledP6 key={index}>
+                {extraTest.extra_test_name}: {extraTest.extra_test_basic_score}
+              </StyledP6>
+            ))}
+          </>
+        )}
+
+        {/* 기타 정보가 있을 때만 렌더링 */}
         {modalContent.requirement_description && (
           <>
             <StyledP5>기타</StyledP5>
             <StyledP6>{modalContent.requirement_description}</StyledP6>
           </>
         )}
-
-
-
-
       </ModalContent>
+
     </NoticeModal>
   </ModalBackground>
 )}
+
     </PageContainer>
   );
 }
@@ -776,8 +777,10 @@ function ProgressBox({ title }) {
 
   useEffect(() => {
     fetchCompletionData(); // 컴포넌트가 처음 렌더링될 때 API 호출
-  }, [title]); // title이 변경될 때마다 다시 호출
+  }, [title]); 
 
+
+  // total이 업데이트 될 때마다 실행
   useEffect(() => {
     console.log('Progress:', progress); // progress 상태 확인
     console.log('Total:', total); // total 상태 확인

@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axiosInstance from '../../auth/axiosInstance';
-import { useNavigate } from 'react-router-dom'; 
+import { createGlobalStyle } from 'styled-components';
+import { useLocation } from 'react-router-dom';
+
+
+// 전역 스타일 정의
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: #FFFFFF;  /* body의 배경색을 흰색으로 설정 */
+    margin: 0;                   /* 기본 마진 초기화 */
+    font-family: Inter, sans-serif; /* 기본 폰트 설정 */
+  }
+`;
 
 const PageContainer = styled.div`
-  background-color: #FFFFFF;
-  height: 110vh;
+  background-color: #F6F6F6;
+  height: auto;
   width: 390px;
   padding: 0 20px;
-  padding-top: 200px;
-  padding-bottom: 72px; //30px;
+  padding-top: 60px;
+  padding-bottom: 85px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,15 +29,16 @@ const PageContainer = styled.div`
   overflow-x: hidden;
 `;
 
+
 const Title = styled.h1`
   font-size: 19.71px;
   font-family: Inter;
-  color: #333;
+  color: #00191F;
   text-align: left;
   margin-bottom: 40px;
   font-weight: bold;
   position: relative;
-  left: 20px;
+  left: 12px;
   top: 30px;
 `;
 
@@ -98,15 +110,17 @@ const Section1 = styled.div`
   padding: 20px;
   background-color: #F6F6F6;
   margin-bottom: 20px;
+  margin-top: -60px;
 `;
 
 const SectionDivider = styled.div`
   width: 390px;
-  height: 40px;
+  height: 78px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 10px;
+  background-color: #FFFFFF;
 `;
 
 const Section2 = styled.div`
@@ -237,7 +251,7 @@ const SubjectItem2 = styled.div`
   text-overflow: ellipsis; /* 텍스트가 넘칠 경우 '...'으로 표시 */
   overflow: hidden; /* 넘친 텍스트 숨기기 */
   white-space: nowrap; /* 텍스트가 한 줄로 설정 */
-  margin-right: -29px;
+  margin-right: -30px;
 `;
 
 const MajorSubjectItem = styled.div`
@@ -249,6 +263,7 @@ const MajorSubjectItem = styled.div`
   white-space: nowrap; /* 텍스트가 한 줄로 설정 */
   overflow: hidden; /* 넘친 텍스트 숨기기 */
   text-overflow: ellipsis; /* 넘칠 경우 '...'으로 표시 */
+  margin-left: 15px;
 `;
 
 const SubjectBox = styled.div`
@@ -256,7 +271,7 @@ const SubjectBox = styled.div`
   padding: 10px;
   background-color: #fff;
   border-radius: 5px;
-  margin-top: 15px;
+  margin-top: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex; /* flexbox로 설정 */
   flex-direction: column; /* 세로 방향으로 설정 */
@@ -265,8 +280,9 @@ const SubjectBox = styled.div`
 const DataRow = styled.div`
   display: flex; /* 가로 방향으로 설정 */
   justify-content: space-between; /* 항목 간의 간격을 균등하게 분배 */
-  margin-bottom: 5px; /* 각 행 간의 간격 추가 */
+  margin-bottom: 13px; /* 각 행 간의 간격 추가 */
   width: 100%; /* 전체 너비 사용 */
+  margin-left: 5px;
 `;
 
 const TitleRow = styled.div`
@@ -274,10 +290,11 @@ const TitleRow = styled.div`
   justify-content: space-between;
   margin-top: 15px;  
   margin-bottom: 5px; 
-  margin-left: -14px;
+  margin-left: -8px;
   width: 100%;
   color: #868686;
   font-weight: bold; 
+  gap: 1px;
 `;
 
 const TitleRow2 = styled.div`
@@ -324,13 +341,12 @@ const Button = styled.button`
   padding: 0; 
 `;
 
+
 export default function DepthRequire() {
   const [data, setData] = useState(null); 
   const [loading, setLoading] = useState(true);
-  const [filteredCourses, setFilteredCourses] = useState([]);  
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const [viewType, setViewType] = useState('main');  // 'main' -> 본전공, 'double_or_minor' -> 이중전공/부전공
+  // const [viewType, setViewType] = useState('main');  // 'main' -> 본전공, 'double_or_minor' -> 이중전공/부전공
   const [completionRates, setCompletionRates] = useState({
     major: 0,
     doubleMajor: 0,
@@ -344,25 +360,27 @@ export default function DepthRequire() {
     }
   });
 
-  
+  // useLocation을 사용하여 `viewType` 값을 받아옵니다.
+  const location = useLocation();
+  const viewTypeFromRoute = location.state?.viewType || 'main';  // 'state'에 'viewType'이 없으면 'main'으로 기본값 설정
+
+  const [viewType, setViewType] = useState(viewTypeFromRoute);  // 받아온 `viewType`을 상태에 설정
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get('/api/requirements/required-subject/');
         console.log('응답 데이터:', response.data); // 응답 데이터 확인
         setData(response.data);
-
         // 졸업 이수율 및 총 이수 학점 계산
       if (response.data.completed_credits && response.data.required_credits) {
         const completedCredits = response.data.completed_credits[0];
         const requiredCredits = response.data.required_credits[0];
-
         // 각 항목의 졸업 이수율 계산
         const mainMajorCompletion = (completedCredits.main_major_credits / requiredCredits.main_major_graduation_credits) * 100;
         const doubleMajorCompletion = (completedCredits.double_minor_major_credits / requiredCredits.double_minor_major_graduation_credits) * 100;
         const liberalArtsCompletion = (completedCredits.liberal_credits / requiredCredits.liberal_graduation_credits) * 100;
         const electiveCompletion = (completedCredits.elective_credits / (requiredCredits.liberal_graduation_credits + completedCredits.elective_credits)) * 100;
-
         // 졸업 요건 총 학점
         setCompletionRates({
           major: mainMajorCompletion,
@@ -377,7 +395,6 @@ export default function DepthRequire() {
           }
         });
       }
-
       } catch (err) {
         setError('데이터를 가져오는 중 오류가 발생했습니다.');
         console.error('데이터 가져오기 오류:', err);
@@ -388,64 +405,40 @@ export default function DepthRequire() {
   
     fetchData();
   }, []);
-
-  useEffect(() => {
-    if (viewType === 'double_or_minor') {
-      navigate('/depthrequire');  // 상태가 'double_or_minor'일 때만 이동
-    }
-  }, [viewType, navigate]);
   
-if (loading) return <div>로딩 중...</div>;
-  if (error) return <div>{error}</div>;
-
+  
   if (!data) {
     return <div>Loading...</div>;
   }
-
 // 데이터가 정상적으로 로드되었을 때에만 처리하도록 조건 추가
 const { main_major, main_major_required_courses, liberal_required_courses, double_major, profile_gibun, double_or_minor_required_courses } = data || {};
-const majorType = main_major?.[0]?.department_name || '본전공';
-
 // profile_gibun이 있으면 join으로 이중전공/부전공 구분
-// const majorType = profile_gibun ? profile_gibun.join(' / ') : '';
+const majorType = profile_gibun ? profile_gibun.join(' / ') : '';
 
 // double_major가 없을 경우 빈 배열로 초기화
 const doubleMajor = double_major || []; // 이중전공 정보
-
 // majortype을 정의: profile_gibun의 첫 번째 값을 기준으로
 const majortype = profile_gibun?.[0] || '이중전공/부전공';
-
 // double_major에서 부서명이 있는 데이터를 찾아서 첫 번째 항목만 사용
 const doubleMajorDepartment = doubleMajor?.[0]?.department_name || '이중전공/부전공';
-
 // 상태 설정
 const handleToggleView = () => {
-  setViewType(viewType === 'main' ? 'double_or_minor' : 'main');
+  setViewType(prevViewType => prevViewType === 'main' ? 'double_or_minor' : 'main');
 };
 
 // 이중전공/부전공 보기일 때, 전공명은 상관없이 처리
 const isDoubleOrMinorView = viewType === 'double_or_minor';
-const handleClick = () => {
-    setViewType('double_or_minor');  // 상태 변경
-    navigate('/depth');  // 'depth' 페이지로 이동
-  };
-
-
    
-
-
    // 이중전공/부전공 과목 필터링 (이중전공 / 부전공에 해당하는 과목만)
-   //const filteredCourses = double_or_minor_required_courses.filter(course => {
-    // return course.subject_department_name; // 여기에 더 구체적인 조건을 추가할 수 있음
-   //});
-
-
-
+   const filteredCourses = double_or_minor_required_courses.filter(course => {
+     return course.subject_department_name; // 여기에 더 구체적인 조건을 추가할 수 있음
+   });
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>{error}</div>;
-
   
   return (
+    <div>
+    <GlobalStyle /> 
     <PageContainer>
       <Section1>
         <Title>졸업진행도</Title>
@@ -493,7 +486,6 @@ const handleClick = () => {
             <SubjectItem>{course.subject_department_name}</SubjectItem>
           </DataRow>
         ))}
-
         {viewType === 'double_or_minor' && filteredCourses && filteredCourses.map((course) => (
           <DataRow key={course.subject_department_code}>
             <CompletionStatus isCompleted={course.completion_status}>
@@ -527,7 +519,6 @@ const handleClick = () => {
             </DataRow>
           ))}
         </SubjectBox>
-
         <ButtonContainer>
         <Button onClick={handleToggleView}>
         {viewType === 'main' ? `${majortype} 보기` : '본전공 보기'}
@@ -535,6 +526,7 @@ const handleClick = () => {
         </ButtonContainer>
       </Section2>
     </PageContainer>
+  </div>
   );
 }
 
