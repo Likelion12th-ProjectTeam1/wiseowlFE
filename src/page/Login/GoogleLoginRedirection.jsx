@@ -37,7 +37,7 @@ function GoogleLoginRedirection() {
           console.log("[DEBUG] Timeout complete, navigating to /agree.");
           setLoading(false); // 로딩 상태 해제
           navigate('/agree'); // 페이지 이동
-        }, 2000);
+        }, 1500);
       } else {
         throw new Error('Tokens not received in response.');
       }
