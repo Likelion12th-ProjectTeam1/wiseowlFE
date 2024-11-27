@@ -221,7 +221,7 @@ export default function Request() {
 
       <SubmitButtonWrapper>
         <SubmitButton onClick={handleSubmit} disabled={!isAllRequiredChecked}>
-          신청 하기
+          신청하기
         </SubmitButton>
       </SubmitButtonWrapper>
     </Container>

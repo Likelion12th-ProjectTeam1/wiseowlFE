@@ -2,17 +2,6 @@ import styled, { ThemeProvider } from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import TabShape from "./TabShape";
 
-import Main_btn from "../img/Home_btn.png";
-import Require_btn from "../img/Require_btn.png";
-import Middle_btn from "../img/Middle_btn.png";
-import Notice_btn from "../img/Notice_btn.png";
-import Mypage_btn from "../img/Mypage_btn.png";
-
-import Off_Home_btn from "../img/Off_Home_btn.png";
-import Off_Require_btn from "../img/Off_Require_btn.png";
-import Off_mypage_btn from "../img/Off_mypage_btn.png";
-import Off_Notice_btn from "../img/Off_Notice_btn.png";
-
 const theme = {
   colors: {
     primary: "rgba(0, 0, 0, 0.0)",
@@ -34,6 +23,7 @@ const Container = styled.div`
   z-index: 1000;
 `;
 
+
 const Background = styled.div`
   position: absolute;
   width: 100%;
@@ -53,7 +43,7 @@ const ImagesContainer = styled.div`
   z-index: 1;
 `;
 
-const Img1 = styled.img.attrs({ src: Main_btn })`
+const Img1 = styled.img`
   position: absolute;
   top: -35px;
   left: 5px;
@@ -62,7 +52,8 @@ const Img1 = styled.img.attrs({ src: Main_btn })`
   cursor: pointer;
 `;
 
-const Img2 = styled.img.attrs({ src: Require_btn })`
+
+const Img2 = styled.img`
   position: absolute;
   top: -35px;
   left: 85px;
@@ -71,7 +62,7 @@ const Img2 = styled.img.attrs({ src: Require_btn })`
   cursor: pointer;
 `;
 
-const Img3 = styled.img.attrs({ src: Notice_btn })`
+const Img3 = styled.img`
   position: absolute;
   top: -35px;
   left: 230px;
@@ -80,7 +71,7 @@ const Img3 = styled.img.attrs({ src: Notice_btn })`
   cursor: pointer;
 `;
 
-const Img4 = styled.img.attrs({ src: Mypage_btn })`
+const Img4 = styled.img`
   position: absolute;
   top: -35px;
   left: 305px;
@@ -89,7 +80,7 @@ const Img4 = styled.img.attrs({ src: Mypage_btn })`
   cursor: pointer;
 `;
 
-const OffImg1 = styled.img.attrs({ src: Off_Home_btn })`
+const OffImg1 = styled.img`
   position: absolute;
   top: -30px;
   left: 28px;
@@ -98,7 +89,7 @@ const OffImg1 = styled.img.attrs({ src: Off_Home_btn })`
   cursor: pointer;
 `;
 
-const OffImg2 = styled.img.attrs({ src: Off_Require_btn })`
+const OffImg2 = styled.img`
   position: absolute;
   top: -30px;
   left: 109px;
@@ -107,7 +98,7 @@ const OffImg2 = styled.img.attrs({ src: Off_Require_btn })`
   cursor: pointer;
 `;
 
-const OffImg3 = styled.img.attrs({ src: Off_mypage_btn })`
+const OffImg3 = styled.img`
   position: absolute;
   top: -30px;
   left: 328px;
@@ -116,7 +107,7 @@ const OffImg3 = styled.img.attrs({ src: Off_mypage_btn })`
   cursor: pointer;
 `;
 
-const OffImg4 = styled.img.attrs({ src: Off_Notice_btn })`
+const OffImg4 = styled.img`
   position: absolute;
   top: -30px;
   left: 252px;
@@ -125,7 +116,7 @@ const OffImg4 = styled.img.attrs({ src: Off_Notice_btn })`
   cursor: pointer;
 `;
 
-const MiddleImg = styled.img.attrs({ src: Middle_btn })`
+const MiddleImg = styled.img`
   position: absolute;
   top: -75px;
   left: 165.5px;
@@ -151,80 +142,81 @@ function Navigatebar() {
         <ImagesContainer>
           {location.pathname === "/main" ? (
             <>
-              <Img1 alt="main" onClick={() => handleNavigation("/main")} />
+                <Img1 src="/img/home.svg" onClick={() => handleNavigation("/main")} />
               <OffImg2
-                alt="require"
+                src="/img/require2.svg"
                 onClick={() => handleNavigation("/require")}
               />
-              <MiddleImg alt="Middle" />
+              <MiddleImg src="/img/middle.svg" />
               <OffImg4
-                alt="notice"
+                src="/img/notice2.svg"
                 onClick={() => handleNavigation("/notice")}
               />
               <OffImg3
-                alt="mypage"
+                src="/img/mypage2.svg"
                 onClick={() => handleNavigation("/mypage")}
               />
             </>
           ) : location.pathname === "/require" ? (
             <>
-              <OffImg1 alt="main" onClick={() => handleNavigation("/main")} />
+              <OffImg1 src="/img/home2.svg" onClick={() => handleNavigation("/main")} />
+              
               <Img2
-                alt="require"
+                src="/img/require.svg"
                 onClick={() => handleNavigation("/require")}
               />
-              <MiddleImg alt="Middle" />
+              <MiddleImg src="/img/middle.svg" />
               <OffImg4
-                alt="notice"
+                src="/img/notice2.svg"
                 onClick={() => handleNavigation("/notice")}
               />
               <OffImg3
-                alt="mypage"
+                src="/img/mypage2.svg"
                 onClick={() => handleNavigation("/mypage")}
               />
             </>
           ) : location.pathname === "/notice" ? (
             <>
-              <OffImg1 alt="main" onClick={() => handleNavigation("/main")} />
+              <OffImg1 src="/img/home2.svg" onClick={() => handleNavigation("/main")} />
               <OffImg2
-                alt="require"
+                src="/img/require2.svg"
                 onClick={() => handleNavigation("/require")}
               />
-              <MiddleImg alt="Middle" />
-              <Img3 alt="notice" onClick={() => handleNavigation("/notice")} />
+              <MiddleImg src="/img/middle.svg" />
+              <Img3 src="/img/notice.svg" onClick={() => handleNavigation("/notice")} />
               <OffImg3
-                alt="mypage"
+                src="/img/mypage2.svg"
                 onClick={() => handleNavigation("/mypage")}
               />
             </>
           ) : location.pathname === "/mypage" ? (
             <>
-              <OffImg1 alt="main" onClick={() => handleNavigation("/main")} />
+              <OffImg1 src="/img/home2.svg" onClick={() => handleNavigation("/main")} />
               <OffImg2
-                alt="require"
+                src="/img/require2.svg"
                 onClick={() => handleNavigation("/require")}
               />
-              <MiddleImg alt="Middle" />
+              <MiddleImg src="/img/middle.svg" />
               <OffImg4
-                alt="notice"
+                src="/img/notice2.svg"
                 onClick={() => handleNavigation("/notice")}
               />
-              <Img4 alt="mypage" onClick={() => handleNavigation("/mypage")} />
+              <Img4 src="/img/mypage.svg" onClick={() => handleNavigation("/mypage")} />
             </>
           ) : (
             <>
-              <OffImg1 alt="main" onClick={() => handleNavigation("/main")} />
+              <OffImg1 src="/img/home2.svg" onClick={() => handleNavigation("/main")} />
               <OffImg2
-                alt="require"
+                src="/img/require2.svg"
                 onClick={() => handleNavigation("/require")}
               />
-              <MiddleImg alt="Middle" />
+              <MiddleImg src="/img/middle.svg" />
               <OffImg4
-                alt="notice"
+                src="/img/notice2.svg"
                 onClick={() => handleNavigation("/notice")}
               />
               <OffImg3
-                alt="mypage"
+                src="/img/mypage2.svg"
                 onClick={() => handleNavigation("/mypage")}
               />
             </>
