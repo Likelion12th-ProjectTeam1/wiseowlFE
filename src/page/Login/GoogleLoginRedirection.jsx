@@ -47,7 +47,7 @@ function GoogleLoginRedirection() {
           console.log("Tokens saved to cookies");
 
           // 로그인 후 메인 페이지로 이동
-          navigate('/loginmodal');
+          navigate('/googleLogin');
         } else {
           throw new Error('Tokens not received in response.');
         }
