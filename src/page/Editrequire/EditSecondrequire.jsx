@@ -219,7 +219,7 @@ const CautionText = styled.div`
   width: 350px;
 `;
 
-export default function EditRequire() {
+export default function EditSecondRequire() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [foreignbtn, setForeignbtn] = useState([
