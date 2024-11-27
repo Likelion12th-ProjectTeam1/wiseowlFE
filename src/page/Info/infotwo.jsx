@@ -30,7 +30,6 @@ const FormArea = styled.div`
   max-height: 600px;
   display: flex;
   flex-direction: column;  // 폼들을 세로로 나열
-  gap: 20px;
   align-items: center;
   overflow: auto;
   padding: 10px;
@@ -144,29 +143,40 @@ const TotalText = styled.h4`
 `
 
 const AddClassButton = styled.div`
-  width: 50%;
-  min-height: 40px;
+  width: 112px;
+  height: 26px;
   border-radius: 4px;
   background: #5d96e8;
-  color: #fff;
+  color: #FFF;
+  font-family: Inter;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 60px;
+  margin-bottom: 33px;
 `;
 
 const AddFormButton = styled.div`
-  width: 60%;
-  min-height: 40px;
+  width: 177px;
+  height: 36px;
   border-radius: 4px;
   background: #5d96e8;
-  color: #fff;
+  color: #FFF;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-top: 100px;
+  margin-top: 16px;
 `;
 
 const EnterButton = styled.div`
@@ -180,7 +190,7 @@ const EnterButton = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 51px;
 `;
 
 const SemesterContainer = styled.div`
@@ -533,7 +543,7 @@ const handleFieldChange = (index, field, value) => {
               />
             ))
           )}
-          <AddClassButton onClick={addClass}>수강과목 추가</AddClassButton>
+          <AddClassButton onClick={addClass}>과목추가</AddClassButton>
         </FormBody>
         <FormFooter>
           <FooterText>학기평점</FooterText>

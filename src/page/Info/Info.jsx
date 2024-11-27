@@ -25,7 +25,7 @@ const MajorContainer = styled.div`
   height: 50px;
   display: flex;
   flex-direction: row;
-  margin-top: 35px;
+  margin-top: 50px;
   margin-left: 80px;
 `;
 
@@ -42,6 +42,7 @@ const SecondmajorContainer = styled.div`
 const DropDownContainer = styled.div`
   width: 150px;
   height: 50px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
 `;
@@ -57,11 +58,12 @@ const ContentText = styled.h4`
 `;
 
 const NameInput = styled.input`
-  width : 40%;
-  height : 25%;
+  width: 229px;
+  height: 31px;
   border-radius: 4px;
   border: 1.811px solid #D9D9D9;
   margin-bottom: 15px;
+  padding-left: 14.16px;
 `
 
 const ButtonTitle = styled.h4`
@@ -87,10 +89,10 @@ const CautionText = styled.h5`
 
 const ChooseContainer = styled.div`
   width: 390px;
-  height: 200px;
+  height: 120px;
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
+  margin-top: 52px;
 `;
 
 const ButtonContainer = styled.div`
@@ -115,7 +117,12 @@ const MajorButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  color: #5D96E8;
+  font-family: Inter;
+  font-size: 14.486px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
   margin-left: 10px;
   margin-top: 10px;
   text-overflow: ellipsis;
@@ -138,7 +145,12 @@ const MajorButton2 = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  color: #5D96E8;
+  font-family: Inter;
+  font-size: 14.486px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
   margin-left: 10px;
   margin-top: 10px;
   text-overflow: ellipsis;
@@ -170,8 +182,8 @@ const CustomSelect = styled(Select)` // antd의 Select로 사용
 `;
 
 const NextButton = styled.div`
-  width: 150px;
-  height: 50px;
+  width: 239px;
+  height: 49px;
   border-radius: 4px;
   background: #5d96e8;
   color: #fff;
@@ -181,6 +193,7 @@ const NextButton = styled.div`
   align-items: center;
   margin-top: 30px;
 `;
+
 export default function Info() {
   const [choose, setChoose] = useState("이중전공");
   const [data , setData] = useState(null);
@@ -205,11 +218,7 @@ export default function Info() {
 
 
     const HandleChoose = (value) => {
-      if (value === "전공심화 + 부전공") {
-        setChoose("부전공"); // 데이터 처리용으로는 부전공으로 설정
-      } else {
         setChoose(value);
-      }
       setActiveButton(value); // 버튼 스타일용으로는 클릭된 버튼을 활성화
     };
 
@@ -252,6 +261,7 @@ const PostData = async () => {
 
       console.log("패치 성공:", response.data);
   } catch (err) {
+
       setError("데이터를 업데이트하는 중 오류가 발생했습니다.");
       console.error("Error updating data:", err);
   }
@@ -284,7 +294,7 @@ const PostData = async () => {
         </CustomSelect>
       </NameContainer>
       <MajorContainer>
-      <DropDownContainer>
+        <DropDownContainer>
           <ContentText>단과대</ContentText>
             <CustomSelect
               placeholder="단과대를 선택하세요"
@@ -329,40 +339,47 @@ const PostData = async () => {
         </DropDownContainer>
       </MajorContainer>
       <ChooseContainer>
-      <ButtonTitle>이중전공 및 부전공</ButtonTitle>
-      <ButtonContainer>
-        <MajorButton
-          isActive={activeButton === "이중전공"}
-          onClick={() => HandleChoose("이중전공")}
-        >
-          이중전공
-        </MajorButton>
-        <MajorButton
-          isActive={activeButton === "부전공"}
-          onClick={() => HandleChoose("부전공")}
-        >
-          부전공
-        </MajorButton>
-        <MajorButton
-          isActive={activeButton === "전공심화"}
-          onClick={() => HandleChoose("전공심화")}
-        >
-          전공심화
-        </MajorButton>
-      </ButtonContainer>
-      <ButtonContainer2>
-        <MajorButton2
-          isActive={activeButton === "전공심화 + 부전공"}
-          onClick={() => HandleChoose("전공심화 + 부전공")}
-        >
-          전공심화 + 부전공
-        </MajorButton2>
-      </ButtonContainer2>
+        <ButtonTitle>이중전공 및 부전공</ButtonTitle>
+        <ButtonContainer>
+          <MajorButton
+            isActive={activeButton === "이중전공"}
+            onClick={() => HandleChoose("이중전공")}
+          >
+            이중전공
+          </MajorButton>
+          <MajorButton
+            isActive={activeButton === "부전공"}
+            onClick={() => HandleChoose("부전공")}
+          >
+            부전공
+          </MajorButton>
+          <MajorButton
+            isActive={activeButton === "전공심화"}
+            onClick={() => HandleChoose("전공심화")}
+          >
+            전공심화
+          </MajorButton>
+        </ButtonContainer>
+        <ButtonContainer2>
+          <MajorButton2
+            isActive={activeButton === "전공심화+부전공"}
+            onClick={() => HandleChoose("전공심화+부전공")}
+          >
+            전공심화+부전공
+          </MajorButton2>
+        </ButtonContainer2>
       </ChooseContainer>
       {choose !== "전공심화" && (
         <SecondmajorContainer>
           <DropDownContainer>
-            <ContentText>{choose} 단과대</ContentText>
+          <ContentText>
+                {(() => {
+                  if (choose === "전공심화+부전공") {
+                    return "부전공";
+                  }
+                  return `${choose} 단과대`;
+                })()}
+          </ContentText>
             <CustomSelect
               placeholder="단과대를 선택하세요"
               style={{ width: "300px" }}
@@ -387,7 +404,6 @@ const PostData = async () => {
               ))}
             </CustomSelect>
           </DropDownContainer>
-
           <DropDownContainer>
             <ContentText>전공</ContentText>
             <CustomSelect
