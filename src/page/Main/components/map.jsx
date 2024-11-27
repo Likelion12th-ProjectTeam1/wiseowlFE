@@ -352,6 +352,10 @@ const Map = ({ data }) => {
     navigate("/shopping");
 };
 
+const goToshoppingtwo = () => {
+  navigate("/shoppingtwo");
+};
+
   return (
     <ImageContainer>
       <MapImage ref={mapRef} onClick={handleMapClick}>
@@ -435,13 +439,17 @@ const Map = ({ data }) => {
               {facilityList.length > 0 ? (
                 facilityList.map((facility, index) => (
                   <ContentButton
-                    key={index}
-                    onClick={() => {
-                      // "던킨도넛"인 경우에만 handleGo 함수 호출
-                      if (facility.facility_name === "던킨") {
-                        goToshopping();
-                      }
-                    }}>
+                        key={index}
+                        onClick={() => {
+                          // "던킨도넛"인 경우에만 handleGo 함수 호출
+                          if (facility.facility_name === "던킨") {
+                            goToshopping();
+                          }else if (facility.facility_name === "그라찌에") {
+                            console.log("그라찌에 버튼 클릭");
+                            // "그라찌에"일 경우 goToshoppingtwo 함수 호출
+                            goToshoppingtwo();}
+                        }}
+                      >
                     <ContentText>{facility.facility_name}</ContentText>
                     <InfoContainer>
                       <InfoText>{facility.building_name}</InfoText>
