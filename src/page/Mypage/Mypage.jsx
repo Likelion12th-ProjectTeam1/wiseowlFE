@@ -11,6 +11,7 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 20px;
   margin-bottom: 80px;
+  background: linear-gradient(to bottom, white 61%, #f9f9f9 61%);
 `;
 const CustomSpace = styled.div`
   height: ${(props) => props.height || "0px"};
@@ -35,13 +36,13 @@ const Profile = styled.div`
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 0.74px 1.01px 0.25px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 1px 3.8px 0.25px rgba(0, 0, 0, 0.25);
 `;
 const ProfileImg = styled.img`
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background-color: #5d96e8; /* Placeholder for avatar */
+  background-color: #5d96e8;
   margin-bottom: 10px;
 `;
 
