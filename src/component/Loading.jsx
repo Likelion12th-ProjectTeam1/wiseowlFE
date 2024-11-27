@@ -76,15 +76,9 @@ const Owl = styled.div`
   }
 `;
 
-const OwlEye = styled.div`
-  width: 10px;
-  height: 10px;
-  background-color: white;
-  border-radius: 50%;
-  position: absolute;
-`;
 
-const OwlFamily = () => {
+
+const Loading = () => {
   return (
     <Container>
       <Section bgColor="#EEEEEE" height="70vh">
@@ -106,4 +100,4 @@ const OwlFamily = () => {
   );
 };
 
-export default OwlFamily;
+export default Loading;

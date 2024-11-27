@@ -13,18 +13,19 @@ const ImageContainer = styled.div`
 const MapImage = styled.div`
   width: 100%;
   height: 100%;
-  background-image: url("/img/mainmap.png");
+  background-image: url("/img/mainmap.svg");
   background-size: cover;
   background-position: center;
   position: relative;
   z-index: 0;
+
 `;
 
 const BuildingZero = styled.div`
   position: absolute;
-  background-image: url("/img/building0.png");
-  top: 45%;
-  left: 0%;
+  background-image: url("/img/building0.svg");
+  left: 15px;
+  bottom: 40px;
   width: 9vh;
   height: 9vh;
   background-size: cover;
@@ -35,9 +36,9 @@ const BuildingZero = styled.div`
 
 const BuildingOne = styled.div`
   position: absolute;
-  background-image: url("/img/building1.png");
-  top: 18%;
-  left: 80%;
+  background-image: url("/img/building1.svg");
+  top: 15%;
+  left: 75%;
   width: 9.5vh;
   height: 12vh;
   background-size: cover;
@@ -49,8 +50,8 @@ const BuildingOne = styled.div`
 
 const BuildingTwo = styled.div`
   position: absolute;
-  background-image: url("/img/building2.png");
-  top: -2%;
+  background-image: url("/img/building2.svg");
+  top: 2%;
   left: 48%;
   width: 15vh;
   height: 11vh;
@@ -63,9 +64,9 @@ const BuildingTwo = styled.div`
 
 const BuildingThree = styled.div`
   position: absolute;
-  background-image: url("/img/building3.png");
-  top: 10%;
-  left: -15%;
+  background-image: url("/img/building3.svg");
+  top: 70px;
+  left: -7%;
   width: 24vh;
   height: 12vh;
   background-size: cover;
@@ -77,9 +78,9 @@ const BuildingThree = styled.div`
 
 const BuildingFour = styled.div`
   position: absolute;
-  background-image: url("/img/building4.png");
+  background-image: url("/img/building4.svg");
   top: -10%;
-  left: 71%;
+  left: 70%;
   width: 15vh;
   height: 12vh;
   background-size: cover;
@@ -91,7 +92,7 @@ const BuildingFour = styled.div`
 
 const BuildingFive = styled.div`
   position: absolute;
-  background-image: url("/img/building5.png");
+  background-image: url("/img/building5.svg");
   top: 33%;
   left: 16%;
   width: 16vh;
@@ -105,9 +106,9 @@ const BuildingFive = styled.div`
 
 const BuildingSix = styled.div`
   position: absolute;
-  background-image: url("/img/building6.png");
-  top: 35%;
-  left: 49%;
+  background-image: url("/img/building6.svg");
+  top: 33%;
+  left: 45%;
   width: 15vh;
   height: 13vh;
   background-size: cover;
@@ -119,9 +120,9 @@ const BuildingSix = styled.div`
 
 const BuildingSeven = styled.div`
   position: absolute;
-  background-image: url("/img/building7.png");
+  background-image: url("/img/building7.svg");
   top: 60%;
-  left: 28%;
+  left: 20%;
   width: 15vh;
   height: 12vh;
   background-size: cover;
@@ -133,8 +134,8 @@ const BuildingSeven = styled.div`
 
 const BuildingEight = styled.div`
   position: absolute;
-  background-image: url("/img/building8.png");
-  top: -2%;
+  background-image: url("/img/building8.svg");
+  top: 2%;
   left: 30%;
   width: 18vh;
   height: 20vh;
