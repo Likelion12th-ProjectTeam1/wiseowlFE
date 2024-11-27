@@ -1,43 +1,43 @@
 import styled from "styled-components";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import { useState } from "react";
 
 const CarouselWrapper = styled.div`
-  width: 100%;
-  max-width: 350px; /* 전체 크기 줄이기 */
+  width: 380px;
   height: 250px; /* 높이 조정 */
   overflow: hidden;
   margin: 0 auto;
 `;
 
 const StyledSlider = styled(Slider)`
-  width: 100%;
-  height: 100%;
+  width: 370px;
+  height: 230px;
   .slick-slide div {
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .slick-dots {
-    bottom: 10px; /* 슬라이더 아래에 위치 */
+    bottom: 5px; /* 슬라이더 아래에 위치 */
   }
 
   .slick-dots li button:before {
     font-size: 10px; /* 점의 크기 조정 */
-    color: #D9D9D9; /* 비활성 점 색상 */
+    color: #d9d9d9; /* 비활성 점 색상 */
   }
 
   .slick-dots li.slick-active button:before {
-    color: #94B7BF; /* 활성 점 색상 */
+    color: #94b7bf; /* 활성 점 색상 */
   }
+  padding-left: 15px;
 `;
 
 const Board = styled.div`
-  width: 100%;
+  width: 370px;
   height: 90%;
   display: flex;
   flex-direction: column;
@@ -58,25 +58,26 @@ const InfoContainer = styled.div`
 `;
 
 const UserContainer = styled.div`
-  width :100%;
-  height : 100%;
-  display : flex;
+  width: 100%;
+  height: 100%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-top : 20px;
+  margin-top: 20px;
   margin-left: 17px;
-`
+`;
 
 const ViewContainer = styled.div`
   width: 100%;
-  height: 150px;
+  height: 130px;
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 `;
 
 const RateContainer = styled.div`
   width: 45%;
-  height: 150px;
+  height: 110px;
   margin: 5px;
   display: flex;
   flex-direction: column;
@@ -85,39 +86,40 @@ const RateContainer = styled.div`
 
 const RequirementsContainer = styled.div`
   width: 45%;
-  height: 140px;
+  height: 110px;
   margin: 5px;
   display: flex;
   flex-direction: column;
 `;
 
 const RequireTitle = styled.div`
-  width : 100%;
-  height : 20%;
-`
+  width: 100%;
+  height: 20%;
+`;
 
 const MajorContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin-top: 20px;
+  gap: 7px;
 `;
 
 const Requirement = styled.div`
   width: 90%;
-  height: 28px;
+  height: 21.68px;
   margin: 3px;
   border-radius: 4px;
-  border: 1px solid #C2C1C1;
-  background: #FFF;
+  border: 1px solid #c2c1c1;
+  background: #fff;
 `;
 
 const LineContainer = styled.div`
-  width : 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const UnderLine = styled.div`
   width: 80%;
@@ -127,31 +129,46 @@ const UnderLine = styled.div`
 `;
 
 const Major = styled.div`
-  border-radius: 10px;
+  width: 47.06px;
+  height: 12.32px;
   background: #ebedee;
-  margin: 3px;
-  padding: 4px 8px;
-  text-align: center;
-`;
-
-const MajorText = styled.h4`
+  border-radius: 12.32px;
   color: #000;
   font-family: Inter;
   font-size: 7.884px;
   font-style: normal;
   font-weight: 500;
-  line-height: normal;
-`
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const MajorText = styled.div`
+  width: 47.06px;
+  height: 12.32px;
+  background: #ebedee;
+  border-radius: 12.32px;
+  color: #000;
+  font-family: Inter;
+  font-size: 7.884px;
+  font-style: normal;
+  font-weight: 500;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
 
 const RateText = styled.h4`
-  color: #A7A8AB;
+  color: #a7a8ab;
   font-family: Roboto;
   font-size: 7.884px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-top : 10px;
-`
+  margin-top: 10px;
+`;
 
 const UserText = styled.h2`
   color: #000;
@@ -160,24 +177,23 @@ const UserText = styled.h2`
   font-style: normal;
   font-weight: 900;
   line-height: normal;
-`
+`;
 const RequireText = styled.h4`
   color: #000;
   font-family: Roboto;
-  font-size: 10.347px;
+  font-size: 10.35px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-right : auto;
+  margin-right: auto;
   margin-left: 10px;
-`
+`;
 
 const Text = styled.p`
   font-size: 13px;
   color: #333;
   margin: 0;
 `;
-
 
 const TitleBox = styled.div`
   font-size: 10px;
@@ -189,22 +205,22 @@ const TitleBox = styled.div`
 `;
 
 const ProgressCircleContainer = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 86.23px;
+  height: 86.23px;
   border-radius: 50%;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   background: conic-gradient(
-    #113371 ${(props) => props.progress * 100}%, 
+    #113371 ${(props) => props.progress * 100}%,
     #ddd ${(props) => props.progress * 100}%
   );
 `;
 
 const ProgressCircleInner = styled.div`
-  width: 90px;
-  height: 90px;
+  width: 76.23px;
+  height: 76.23px;
   border-radius: 50%;
   background-color: #fff;
   display: flex;
@@ -229,15 +245,11 @@ const TotalText = styled.span`
   margin-left: 4px;
 `;
 
-
-
-
-
-export default function DashBoard({data}) {
+export default function DashBoard({ data }) {
   const [major, setMajor] = useState("통계학과");
   const [secondmajor, setSecondmajor] = useState("AI융합전공");
   const [username, setUsername] = useState("김민석");
-  const [rate, setRate] = useState(34/54 * 100);
+  const [rate, setRate] = useState((34 / 54) * 100);
 
   const settings = {
     dots: true,
@@ -247,10 +259,10 @@ export default function DashBoard({data}) {
     slidesToScroll: 1,
   };
 
-  function ProgressBox({ title, progress, total, complete}) {
+  function ProgressBox({ title, progress, total, complete }) {
     const current = Math.floor(progress * 54);
     const isElective = title === "자율선택\n이수율";
-  
+
     return (
       <>
         <ProgressCircleContainer progress={30}>
@@ -259,7 +271,7 @@ export default function DashBoard({data}) {
               <CurrentText>{complete}</CurrentText>
               {!isElective && <TotalText>/{total}</TotalText>}
             </ProgressText>
-          </ProgressCircleInner> 
+          </ProgressCircleInner>
         </ProgressCircleContainer>
       </>
     );
@@ -271,15 +283,17 @@ export default function DashBoard({data}) {
         <Board key="slide1">
           <InfoContainer>
             <UserContainer>
-              <UserText style={{ marginLeft: '10px' }}>안녕하세요 {data.name}님</UserText>
+              <UserText style={{ marginLeft: "10px" }}>
+                안녕하세요 {data.name}님
+              </UserText>
             </UserContainer>
             <MajorContainer>
-              <Major>
-                <MajorText>{data.major}</MajorText>
-              </Major>
-              <Major>
-                <MajorText>{data.double_major}</MajorText>
-              </Major>
+              <Major>{data.major}</Major>
+              <MajorText>
+                {data.double_major.length > 7
+                  ? data.double_major.slice(0, 6)
+                  : data.double_major}
+              </MajorText>
             </MajorContainer>
           </InfoContainer>
           <LineContainer>
@@ -287,7 +301,10 @@ export default function DashBoard({data}) {
           </LineContainer>
           <ViewContainer>
             <RateContainer>
-              <ProgressBox total={data.major_credit_required} complete={data.major_credit_completed}/>
+              <ProgressBox
+                total={data.major_credit_required}
+                complete={data.major_credit_completed}
+              />
               <RateText>본전공 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
@@ -300,24 +317,28 @@ export default function DashBoard({data}) {
               <Requirement>
                 <RequireText>{data.major_requirements[1]}</RequireText>
               </Requirement>
-              <Requirement>
-                <RequireText>{data.major_requirements[2]}</RequireText>
-              </Requirement>
+              {data.major_requirements[2] ? (
+                <Requirement>
+                  <RequireText>{data.major_requirements[2]}</RequireText>{" "}
+                </Requirement>
+              ) : null}
             </RequirementsContainer>
           </ViewContainer>
         </Board>
         <Board key="slide2">
           <InfoContainer>
             <UserContainer>
-              <UserText style={{ marginLeft: '10px' }}>안녕하세요 {data.name}님</UserText>
+              <UserText style={{ marginLeft: "10px" }}>
+                안녕하세요 {data.name}님
+              </UserText>
             </UserContainer>
             <MajorContainer>
-              <Major>
-                <MajorText>{data.major}</MajorText>
-              </Major>
-              <Major>
-                <MajorText>{data.double_major}</MajorText>
-              </Major>
+              <Major>{data.major}</Major>
+              <MajorText>
+                {data.double_major.length > 7
+                  ? data.double_major.slice(0, 6)
+                  : data.double_major}
+              </MajorText>
             </MajorContainer>
           </InfoContainer>
           <LineContainer>
@@ -325,7 +346,10 @@ export default function DashBoard({data}) {
           </LineContainer>
           <ViewContainer>
             <RateContainer>
-              <ProgressBox total={data.double_credit_required} complete={data.double_credit_completed}/>
+              <ProgressBox
+                total={data.double_credit_required}
+                complete={data.double_credit_completed}
+              />
               <RateText>부전공 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
@@ -338,9 +362,11 @@ export default function DashBoard({data}) {
               <Requirement>
                 <RequireText>{data.double_requirements[1]}</RequireText>
               </Requirement>
-              <Requirement>
-                <RequireText>{data.double_requirements[2]}</RequireText>
-              </Requirement>
+              {data.double_requirements[2] && (
+                <Requirement>
+                  <RequireText>{data.double_requirements[2]}</RequireText>
+                </Requirement>
+              )}
             </RequirementsContainer>
           </ViewContainer>
         </Board>

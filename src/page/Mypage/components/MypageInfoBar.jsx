@@ -28,7 +28,7 @@ const RightText = styled.p`
   font-weight: 600;
   color: #737373;
   text-align: left;
-  font-size: 13px;
+  font-size: 12px;
   margin: 0;
 `;
 
