@@ -50,7 +50,7 @@ const ButtonContent = styled.div`
 
 export default function Login() {
 
-    const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=359516737837-3ai4hvigr4b7l8dhm6s206mk95uoamda.apps.googleusercontent.com&redirect_uri=http://localhost:5173/googleLogin&response_type=code&scope=openid%20profile%20email`;
+    const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=359516737837-3ai4hvigr4b7l8dhm6s206mk95uoamda.apps.googleusercontent.com&redirect_uri=https://wiseowlone.vercel.app/googleLogin&response_type=code&scope=openid%20profile%20email`;
 
     // 구글 로그인 리디렉션 처리
     const handleGoogleLogin = () => {
