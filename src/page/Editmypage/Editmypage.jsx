@@ -240,9 +240,12 @@ export default function EditMypage(){
     const [changemajor , setChangemajor] = useState(null);
 
     const handleGubunChange = (value) => {
-        setGubun(value);
+        if (value === "전공심화 + 부전공") {
+            setGubun("전공심화 + 부전공"); // 데이터 처리용으로는 부전공으로 설정
+          } else {
+            setGubun(value);
+          }
     };
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -505,60 +508,78 @@ export default function EditMypage(){
                             <Select.Option value="이중전공">이중전공</Select.Option>
                             <Select.Option value="부전공">부전공</Select.Option>
                             <Select.Option value="전공심화">전공심화</Select.Option>
+                            <Select.Option value="전공심화 + 부전공">전공심화 + 부전공</Select.Option>
                         </GubunSelect>
                     </MiddleContainer>
                     {gubun !== "전공심화" && (
                     <LowContainer>
                         <SelectHeader>
-                            <MajorText>{gubun} 단과대</MajorText>
-                            <MajorText>{gubun}</MajorText>
+                            {/* gubun 값이 "전공심화 + 부전공"이면 "부전공"으로 표시 */}
+                            <MajorText>{gubun === "전공심화 + 부전공" ? "부전공" : gubun} 단과대</MajorText>
+                            <MajorText>{gubun === "전공심화 + 부전공" ? "부전공" : gubun}</MajorText>
                         </SelectHeader>
                         <ChooseContainer>
-                        <CollegeSelect
-                            placeholder="단과대를 선택하세요"
-                            style={{ width: "300px" }}
-                            onChange={(value) => {
-                                // 선택된 단과대 객체를 찾음
-                                const selectedCollege = data.colleges.find(college => college.college_name === value);
+                            <CollegeSelect
+                                placeholder="단과대를 선택하세요"
+                                style={{ width: "300px" }}
+                                onChange={(value) => {
+                                    // 선택된 단과대 객체를 찾음
+                                    const selectedCollege = data.colleges.find(
+                                        (college) => college.college_name === value
+                                    );
 
-                                // 선택된 단과대 이름 저장
-                                setSelectedCollege(selectedCollege ? selectedCollege.college_name : null);
+                                    // 선택된 단과대 이름 저장
+                                    setSelectedCollege(selectedCollege ? selectedCollege.college_name : null);
 
-                                // 선택된 단과대의 데이터 저장
-                                setChangeCollege(selectedCollege);
+                                    // 선택된 단과대의 데이터 저장
+                                    setChangeCollege(selectedCollege);
 
-                                // 선택된 단과대의 전공 목록 업데이트
-                                setMajors(selectedCollege ? selectedCollege.majors : []);
+                                    // 선택된 단과대의 전공 목록 업데이트
+                                    setMajors(selectedCollege ? selectedCollege.majors : []);
 
-                                // 선택된 단과대 출력
-                                console.log("선택된 단과대 이름:", selectedCollege ? selectedCollege.college_name : null);
-                            }}
-                        >
-                            {data && data.colleges && data.colleges.map((college) => (
-                                <Select.Option key={college.college_id} value={college.college_name}>
-                                    {college.college_name}
-                                </Select.Option>
-                            ))}
-                        </CollegeSelect>
-                        <CollegeSelect
-                            placeholder="전공을 선택하세요"
-                            style={{ width: "300px" }}
-                            onChange={(value) => {
-                                // 선택된 전공 이름 저장
-                                setChangemajor(value);
+                                    // 선택된 단과대 출력
+                                    console.log(
+                                        "선택된 단과대 이름:",
+                                        selectedCollege ? selectedCollege.college_name : null
+                                    );
+                                }}
+                            >
+                                {data &&
+                                    data.colleges &&
+                                    data.colleges.map((college) => (
+                                        <Select.Option
+                                            key={college.college_id}
+                                            value={college.college_name}
+                                        >
+                                            {college.college_name}
+                                        </Select.Option>
+                                    ))}
+                            </CollegeSelect>
+                            <CollegeSelect
+                                placeholder="전공을 선택하세요"
+                                style={{ width: "300px" }}
+                                onChange={(value) => {
+                                    // 선택된 전공 이름 저장
+                                    setChangemajor(value);
 
-                                // 선택된 전공 출력
-                                console.log("선택된 전공 이름:", value);
-                            }}
-                        >
-                            {majors && majors.map((major) => (
-                                <Select.Option key={major.department_id} value={major.department_name}>
-                                    {major.department_name}
-                                </Select.Option>
-                            ))}
-                        </CollegeSelect>
+                                    // 선택된 전공 출력
+                                    console.log("선택된 전공 이름:", value);
+                                }}
+                            >
+                                {majors &&
+                                    majors.map((major) => (
+                                        <Select.Option
+                                            key={major.department_id}
+                                            value={major.department_name}
+                                        >
+                                            {major.department_name}
+                                        </Select.Option>
+                                    ))}
+                            </CollegeSelect>
                         </ChooseContainer>
-                    </LowContainer>)}
+                    </LowContainer>
+                )}
+
                     <ButtonContainer>
                         <GubunButton onClick={PatchGubun}>구분 변경하기</GubunButton>
                     </ButtonContainer>

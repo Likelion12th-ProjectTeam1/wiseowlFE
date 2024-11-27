@@ -4,13 +4,24 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../auth/axiosInstance";
 
 // Styled Components
+const PageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ModalContainer = styled.div`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  // 중앙 정렬
     width: 250px;
     height: 410px;
     display: flex;
     flex-direction: column;
     border-radius: 22px;
     background: #f5f5f5;
+    z-index: 9999;  // 모달이 다른 요소들 위에 오도록 설정
 `;
 
 const TitleContainer = styled.div`
@@ -201,37 +212,39 @@ export default function NoticeModal() {
     const secondHalf = data.slice(halfIndex);
 
     return (
-        <ModalContainer>
-            <TitleContainer>
-                <TitleImg />
-                <ModalTitle>알림 선택</ModalTitle>
-                <CancleImg onClick={goToNoticepage} />
-            </TitleContainer>
-            <NoticeText>알림을 받아보실 기관을 선택해주세요</NoticeText>
-            <ButtonContainer>
-                <ButtonBox1>
-                    {firstHalf.map((item, index) => (
-                        <CenterButton
-                            key={`first-${index}`}
-                            isSubscribed={item.subscribe_yn}
-                            onClick={() => handleOrgan(index)} // 인덱스 전달
-                        >
-                            {item.organ_name}
-                        </CenterButton>
-                    ))}
-                </ButtonBox1>
-                <ButtonBox2>
-                    {secondHalf.map((item, index) => (
-                        <CenterButton
-                            key={`second-${index}`}
-                            isSubscribed={item.subscribe_yn}
-                            onClick={() => handleOrgan(index + firstHalf.length)} // 전체 인덱스 계산
-                        >
-                            {item.organ_name}
-                        </CenterButton>
-                    ))}
-                </ButtonBox2>
-            </ButtonContainer>
-        </ModalContainer>
+        <PageContainer>
+            <ModalContainer>
+                <TitleContainer>
+                    <TitleImg />
+                    <ModalTitle>알림 선택</ModalTitle>
+                    <CancleImg onClick={goToNoticepage} />
+                </TitleContainer>
+                <NoticeText>알림을 받아보실 기관을 선택해주세요</NoticeText>
+                <ButtonContainer>
+                    <ButtonBox1>
+                        {firstHalf.map((item, index) => (
+                            <CenterButton
+                                key={`first-${index}`}
+                                isSubscribed={item.subscribe_yn}
+                                onClick={() => handleOrgan(index)} // 인덱스 전달
+                            >
+                                {item.organ_name}
+                            </CenterButton>
+                        ))}
+                    </ButtonBox1>
+                    <ButtonBox2>
+                        {secondHalf.map((item, index) => (
+                            <CenterButton
+                                key={`second-${index}`}
+                                isSubscribed={item.subscribe_yn}
+                                onClick={() => handleOrgan(index + firstHalf.length)} // 전체 인덱스 계산
+                            >
+                                {item.organ_name}
+                            </CenterButton>
+                        ))}
+                    </ButtonBox2>
+                </ButtonContainer>
+            </ModalContainer>
+        </PageContainer>
     );
 }

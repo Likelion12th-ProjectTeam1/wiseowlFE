@@ -69,14 +69,12 @@ const Countnotice = styled.div`
     margin-left: 15px;
 `
 
-export default function NoticeHeader(){
+export default function NoticeHeader({sum}){
 
     const Today = new Date();
 
     const formattedYear = `${Today.getFullYear()}년`;
     const formattedDate = `${Today.getMonth() + 1}월 ${Today.getDate()}일`
-
-    const [count , setCount] = useState("5");
 
     return(
         <HeaderContianer>
@@ -89,7 +87,7 @@ export default function NoticeHeader(){
             </DayContainer>
             <CountContainer>
                 <NoticeText>새 공지사항을 확인해보세요!</NoticeText>
-                <Countnotice>{count}</Countnotice>
+                <Countnotice>{sum}</Countnotice>
             </CountContainer>
         </HeaderContianer>
     );

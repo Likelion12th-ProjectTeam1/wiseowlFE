@@ -251,6 +251,7 @@ export default function InfoTwo() {
   const [subjectkey, setSubjectkey] = useState(1);
   const location = useLocation(); // useLocation 훅 사용하여 경로 추적
   const navigate = useNavigate();
+  
 
   const goToMainpage = () => {
         navigate("/Main");
@@ -333,6 +334,7 @@ const FormComponent = ({ semester, subjectKey, data }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [averageGrade, setAverageGrade] = useState(0); // 평균 학점 상태 추가
 
   // data가 업데이트될 때 상태 초기화
   useEffect(() => {
@@ -342,11 +344,6 @@ const FormComponent = ({ semester, subjectKey, data }) => {
     }
   }, [data]);
 
-  const handleUpdate = (updateFn) => {
-    setIsUpdating(true);
-    updateFn();
-    setTimeout(() => setIsUpdating(false), 500); // 100ms 후 로딩 상태 해제
-  };
 
   const addClass = () => {
     const newCourse = {
@@ -362,12 +359,55 @@ const FormComponent = ({ semester, subjectKey, data }) => {
     navigate("/subjectmodal", { state: { selectedSemester, semester, subjectKey } });
   };
 
+  // 학점 변환 함수
+  const gradeToPoint = (grade) => {
+    const gradeMap = {
+      "A+": 4.5,
+      A: 4.0,
+      "B+": 3.5,
+      B: 3.0,
+      "C+": 2.5,
+      C: 2.0,
+      "D+": 1.5,
+      D: 1.0,
+      F: 0.0,
+    };
+    return gradeMap[grade] || 0.0;
+  };
+
+  // 평균 계산 함수
+  const calculateAverageGrade = (courses) => {
+    if (courses.length === 0) return 0;
+    const totalPoints = courses.reduce((sum, course) => {
+      const points = gradeToPoint(course.grade) * (course.credit || 0);
+      return sum + points;
+    }, 0);
+    const totalCredits = courses.reduce(
+      (sum, course) => sum + (course.credit || 0),
+      0
+    );
+    return totalCredits > 0 ? (totalPoints / totalCredits).toFixed(1) : 0;
+  };
+
+  // courses 변경 시 평균 업데이트
+  useEffect(() => {
+    setAverageGrade(calculateAverageGrade(courses));
+  }, [courses]);
+
+  const handleUpdate = (updateFn) => {
+    setIsUpdating(true);
+    updateFn();
+    setTimeout(() => setIsUpdating(false), 500); // 100ms 후 로딩 상태 해제
+  };
+
+
   const DeleteData = async (course) => {
     try {
       const requestBody = {
         complete_year: selectedSemester,
         school_year: subjectKey,
         subject_name: course.subject_name,
+        subject_code: course.subject_code,
       };
       console.log(requestBody);
       
@@ -408,11 +448,12 @@ const FormComponent = ({ semester, subjectKey, data }) => {
   try {
     setLoading(true);
     const requestBody = {
-      "complete_year": selectedSemester, 
-      "school_year": subjectKey, 
-      "subject_name": course.subject_name,
-      "grade": course.grade,
-      "retry_yn": course.retry_yn,
+      complete_year: selectedSemester,
+      school_year: subjectKey,
+      subject_name: course.subject_name,
+      grade: course.grade,
+      retry_yn: course.retry_yn,
+      subject_code: course.subject_code, // 전달된 course에서 subject_code 직접 참조
     };
     
     console.log("PATCH 요청:", requestBody);
@@ -457,6 +498,12 @@ const handleFieldChange = (index, field, value) => {
           <Select.Option value="2021 2학기">2021 2학기</Select.Option>
           <Select.Option value="2022 1학기">2022 1학기</Select.Option>
           <Select.Option value="2022 2학기">2022 2학기</Select.Option>
+          <Select.Option value="2023 1학기">2023 1학기</Select.Option>
+          <Select.Option value="2023 2학기">2023 2학기</Select.Option>
+          <Select.Option value="2024 1학기">2024 1학기</Select.Option>
+          <Select.Option value="2024 2학기">2024 2학기</Select.Option>
+          <Select.Option value="2025 1학기">2025 1학기</Select.Option>
+          <Select.Option value="2025 2학기">2025 2학기</Select.Option>
         </CustomSelect>
         <SemesterContainer>
           <SemesterText>{semester}</SemesterText>
@@ -490,7 +537,7 @@ const handleFieldChange = (index, field, value) => {
         </FormBody>
         <FormFooter>
           <FooterText>학기평점</FooterText>
-          <AvgText>4.2</AvgText>
+          <AvgText>{averageGrade}</AvgText>
           <TotalText>/4.5</TotalText>
         </FormFooter>
       </Form>

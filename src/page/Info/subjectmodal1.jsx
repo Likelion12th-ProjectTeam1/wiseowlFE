@@ -4,6 +4,10 @@ import axiosInstance from "../../auth/axiosInstance";
 import { useNavigate ,useLocation } from "react-router-dom";
 
 const Container = styled.div`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
     width: 390px;
     height: 500px;
     display: flex;

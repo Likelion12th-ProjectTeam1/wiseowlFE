@@ -87,7 +87,7 @@ const CautionText = styled.h5`
 
 const ChooseContainer = styled.div`
   width: 390px;
-  height: 100px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   margin-top: 30px;
@@ -95,20 +95,53 @@ const ChooseContainer = styled.div`
 
 const ButtonContainer = styled.div`
   width: 390px;
-  height: 100px;
+  height: 50px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+`;
+const ButtonContainer2 = styled.div`
+  width: 390px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `;
 const MajorButton = styled.div`
-  width: 18%;
-  height: 45%;
+  width: 98px;
+  height: 31px;
   border-radius: 16px;
   border: 1.811px solid ${(props) => (props.isActive ? "#5D96E8" : "#D9D9D9")};
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 40px;
+  font-size: 12px;
+  margin-left: 10px;
   margin-top: 10px;
+  text-overflow: ellipsis;
+  transition: border 0.3s;
+
+  color: ${(props) =>
+    props.isActive ? "#5D96E8" : "#A09F9F"}; /* 텍스트 색 변경 */
+
+  &:hover {
+    border: 1.811px solid #5d96e8;
+    color: #5d96e8;
+  }
+`;
+
+const MajorButton2 = styled.div`
+  width: 150px;
+  height: 31px;
+  border-radius: 16px;
+  border: 1.811px solid ${(props) => (props.isActive ? "#5D96E8" : "#D9D9D9")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  margin-left: 10px;
+  margin-top: 10px;
+  text-overflow: ellipsis;
   transition: border 0.3s;
 
   color: ${(props) =>
@@ -162,6 +195,7 @@ export default function Info() {
   const [doublecollege , setDoublecollege] = useState(null);
   const [doublemajor , setDoublemajor] = useState("");
   const [selectedCollegeId, setSelectedCollegeId] = useState(null); // 단과대 ID만 저장
+  const [activeButton, setActiveButton] = useState("이중전공"); // 활성화된 버튼 상태
   const navigate = useNavigate();
 
   const goToNextpage = () => {
@@ -169,9 +203,15 @@ export default function Info() {
         PostData();
     };
 
-  const HandleChoose = (value) => {
-    setChoose(value);
-  };
+
+    const HandleChoose = (value) => {
+      if (value === "전공심화 + 부전공") {
+        setChoose("부전공"); // 데이터 처리용으로는 부전공으로 설정
+      } else {
+        setChoose(value);
+      }
+      setActiveButton(value); // 버튼 스타일용으로는 클릭된 버튼을 활성화
+    };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -290,26 +330,34 @@ const PostData = async () => {
       </MajorContainer>
       <ChooseContainer>
       <ButtonTitle>이중전공 및 부전공</ButtonTitle>
-        <ButtonContainer>
-          <MajorButton
-            isActive={choose === "이중전공"}
-            onClick={() => HandleChoose("이중전공")}
-          >
-            이중전공
-          </MajorButton>
-          <MajorButton
-            isActive={choose === "부전공"}
-            onClick={() => HandleChoose("부전공")}
-          >
-            부전공
-          </MajorButton>
-          <MajorButton
-            isActive={choose === "전공심화"}
-            onClick={() => HandleChoose("전공심화")}
-          >
-            전공심화
-          </MajorButton>
-        </ButtonContainer>
+      <ButtonContainer>
+        <MajorButton
+          isActive={activeButton === "이중전공"}
+          onClick={() => HandleChoose("이중전공")}
+        >
+          이중전공
+        </MajorButton>
+        <MajorButton
+          isActive={activeButton === "부전공"}
+          onClick={() => HandleChoose("부전공")}
+        >
+          부전공
+        </MajorButton>
+        <MajorButton
+          isActive={activeButton === "전공심화"}
+          onClick={() => HandleChoose("전공심화")}
+        >
+          전공심화
+        </MajorButton>
+      </ButtonContainer>
+      <ButtonContainer2>
+        <MajorButton2
+          isActive={activeButton === "전공심화 + 부전공"}
+          onClick={() => HandleChoose("전공심화 + 부전공")}
+        >
+          전공심화 + 부전공
+        </MajorButton2>
+      </ButtonContainer2>
       </ChooseContainer>
       {choose !== "전공심화" && (
         <SecondmajorContainer>

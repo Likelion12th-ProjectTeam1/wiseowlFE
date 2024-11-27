@@ -1,79 +1,31 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Landing from "./page/landing";
-import Require from "./page/Require";
-import Login from "./page/Login/Login";
-import LoginModal from "./page/Login/LoginModal";
-import Info from "./page/Info/Info";
-import InfoTwo from "./page/Info/infotwo";
-import Main from "./page/Main/Mainpage";
-import DepthRequire from "./page/Depthrequire/Depthrequire";
-import MobileMenu from "./Moblie";
-import GlobalStyle from "./globalstyle";
-import ShoppingModal from "./page/Shopping/ShopModal";
-import Shopping from "./page/Shopping/Shopping";
-import Buy from "./page/Shopping/Buy";
-import Notice from "./page/Notice/Notice";
-import NoticeModal from "./page/Notice/NoticeModal";
-import Mypage from "./page/Mypage/Mypage";
-import EditMypage from "./page/Editmypage/Editmypage";
-import EditCourse from "./page/Editcourse/Editcourse";
-import EditcourseModal2 from "./page/Editcourse/EditcourseModal2";
-import EditRequire from "./page/Editrequire/Editrequire";
-import EditSecondRequire from "./page/Editrequire/EditSecondrequire";
-import SubjectModal from "./page/Info/subjectmodal1";
-import SubjectModal2 from "./page/Info/subjectmodal2";
+import { useState, useEffect, useRef } from 'react'
+import { Route, BrowserRouter as Router, Routes} from 'react-router-dom';
+import routes from './routes';
+import Mobile from './Moblie';
+import GlobalStyle from './globalstyle';
 import Navigatebar from "./component/Navigatebar";
-import Request from "./page/request.jsx/request";
-import RequestAccept from "./page/request.jsx/requestaccept";
-import MainNotice from "./page/Mypage/mainnotice";
-import EditcourseModal1 from "./page/Editcourse/EditcourseModal1";
-import { ThemeProvider } from "styled-components";
-import GoogleLoginRedirection from "./page/Login/GoogleLoginRedirection";
 
-
-const theme = {
-  colors: {
-    primary: "#000",
-  },
-};
 
 function App() {
+  const elements = routes.map((item, index) => (
+    <Route key={index} path={item.path} element={item.element} />
+  ));
+
   return (
+    <>
+    <GlobalStyle />
     <Router>
-      <GlobalStyle />
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route path="/" element={<MobileMenu />} />
-          <Route path="/landing" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/loginmodal" element={<LoginModal />} />
-          <Route path="/request" element={<Request />} />
-          <Route path="/requestaccept" element={<RequestAccept />} />
-          <Route path="/info" element={<Info />} />
-          <Route path="/infotwo" element={<InfoTwo />} />
-          <Route path="/subjectmodal" element={<SubjectModal />} />
-          <Route path="/subjectmodal2" element={<SubjectModal2 />} />
-          <Route path="/main" element={<Main />} />
-          <Route path="/mainnotice" element={<MainNotice />} />
-          <Route path="/require" element={<Require />} />
-          <Route path="/depthrequire" element={<DepthRequire />} />
-          <Route path="/shoppingmodal" element={<ShoppingModal />} />
-          <Route path="/shopping" element={<Shopping />} />
-          <Route path="/buy" element={<Buy />} />
-          <Route path="/notice" element={<Notice />} />
-          <Route path="/noticemodal" element={<NoticeModal />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/editmypage" element={<EditMypage />} />
-          <Route path="/editcoursepage" element={<EditCourse />} />
-          <Route path="/editcoursemodal2" element={<EditcourseModal2 />} />
-          <Route path="/editrequire" element={<EditRequire />} />
-          <Route path="/editsecondrequire" element={<EditSecondRequire />} />
-          <Route path="/googleLogin" element={<GoogleLoginRedirection/>} />
-          <Route path="/editcoursemodal1" element={<EditcourseModal1/>} />       
-        </Routes>
-        <Navigatebar />
-      </ThemeProvider>
+      <Routes>
+        <Route 
+          path="/" 
+          element={<Mobile />}
+          >
+          {elements}
+        </Route>
+      </Routes>
+      <Navigatebar/>
     </Router>
+    </>
   );
 }
 

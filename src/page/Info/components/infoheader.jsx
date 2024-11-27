@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
     width : 390px;
@@ -46,13 +47,17 @@ const QuestionImg = styled.div`
     margin-left: 10px;
 `;
 export default function InfoHeader(){
+    const navigate = useNavigate();
+
+    const goToRequestpage = () => {
+        navigate("/request");
+      };
     return(
         <HeaderContainer>
             <TitleContainer>
                 <InfoTitle>학과정보를 <br/>입력해주세요</InfoTitle>
-                <QuestionImg />
+                <QuestionImg onClick={goToRequestpage}/>
             </TitleContainer>
-            <JumpInfo>건너뛰기</JumpInfo>
         </HeaderContainer>
     );
 }

@@ -504,9 +504,9 @@ useEffect(() => {
                 <BigCheckbox />
               </BigCheckboxContainer>
             ) : (
-              <XboxContainer>
+              <BigCheckboxContainer>
                 <Xbox />
-              </XboxContainer>
+              </BigCheckboxContainer>
             )}
             <RequirementContainer>
               <RequirementTitle>졸업프로젝트 PASS</RequirementTitle>
@@ -522,9 +522,9 @@ useEffect(() => {
                 <BigCheckbox />
               </BigCheckboxContainer>
             ) : (
-              <XboxContainer>
+              <BigCheckboxContainer>
                 <Xbox />
-              </XboxContainer>
+              </BigCheckboxContainer>
             )}
             <RequirementContainer>
               <RequirementTitle>졸업시험 PASS</RequirementTitle>
@@ -560,7 +560,7 @@ useEffect(() => {
             ) : (
               <BigCheckboxContainer>
                 <Xbox />
-                </BigCheckboxContainer>
+              </BigCheckboxContainer>
             )}
             <RequirementContainer>
               <RequirementTitle>졸업 자격증</RequirementTitle>

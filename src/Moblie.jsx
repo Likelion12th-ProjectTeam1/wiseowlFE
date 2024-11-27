@@ -1,60 +1,38 @@
-
-import { Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-const MobileButton = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 390px;
-  height: 45px;
-  color: white;
-  background-color: #007bff;
-  margin: 8px 0;
-  text-decoration: none;
-  font-size: 16px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
+const Container = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
 
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 14px;
-    height: 40px;
-  }
+    flex-wrap: wrap;
+    /* gap:1vw; */
 `;
 
-function MobileMenu() {
-  return (
-    <div className="page-container">
-      <MobileButton to="/landing">Landingpage</MobileButton>
-      <MobileButton to="/require">Requirepage</MobileButton>
-      <MobileButton to="/login">Loginpage</MobileButton>
-      <MobileButton to="/loginmodal">Loginmodal</MobileButton>
-      <MobileButton to="/request">request</MobileButton>
-      <MobileButton to="/requestaccept">requestaccept</MobileButton>
-      <MobileButton to="/info">Infopage</MobileButton>
-      <MobileButton to="/infotwo">Info2page</MobileButton>
-      <MobileButton to="/subjectmodal">subjectmodal</MobileButton>
-      <MobileButton to="/subjectmodal2">subjectmodal2</MobileButton>
-      <MobileButton to="/main">Mainpage</MobileButton>
-      <MobileButton to="/mainnotice">MainNotice</MobileButton>
-      <MobileButton to="/depthrequire">Depthrequirepage</MobileButton>
-      <MobileButton to="/shoppingmodal">ShoppingModal</MobileButton>
-      <MobileButton to="/shopping">Shoppingpage</MobileButton>
-      <MobileButton to="/buy">buypage</MobileButton>
-      <MobileButton to="/notice">noticepage</MobileButton>
-      <MobileButton to="/noticemodal">noticemodal</MobileButton>
-      <MobileButton to="/mypage">mypage</MobileButton>
-      <MobileButton to="/editmypage">editmypage</MobileButton>
-      <MobileButton to="/editcourse">editcourse</MobileButton>
-      <MobileButton to="/editcoursemodal">editcoursemodal</MobileButton>
-      <MobileButton to="/editrequire">editrequire</MobileButton>
-    </div>
-  );
-}
+const Content = styled.div`
+    position: relative;
+    width: 100%;
+    /* max-width: 428px; */
+    max-width: 393px;
+    min-height: 100vh;
+    overflow: auto;
+    box-shadow: 0px 0px 32px #0000002f;
+    background-color: #ffffff;
+`;
 
-export default MobileMenu;
+const Mobile = () => {
+    
+    return (
+        <>
+            <Container>
+                <Content>
+                    <Outlet />
+                </Content>
+            </Container>
+        </>
+    );
+};
+
+export default Mobile;
