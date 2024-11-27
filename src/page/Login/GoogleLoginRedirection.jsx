@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axiosInstance from "../../auth/axiosInstance";
+import Loading from "../../component/Loading"
 
 function GoogleLoginRedirection() {
   const location = useLocation();
@@ -62,7 +63,7 @@ function GoogleLoginRedirection() {
 
   return (
     <div>
-      {loading && <div className="spinner">Loading...</div>}
+      {loading && <Loading />}
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
