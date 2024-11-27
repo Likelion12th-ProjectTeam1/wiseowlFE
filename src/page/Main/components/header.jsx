@@ -14,7 +14,7 @@ const HeaderContainer = styled.div`
 const Title = styled.div`
   margin-top: 15px;
   margin-left: 50px;
-  background-image: url("/img/wiseowl.png");
+  background-image: url("/img/owl.svg");
   background-repeat: no-repeat;
   width: 150px;
   height: 30px;
