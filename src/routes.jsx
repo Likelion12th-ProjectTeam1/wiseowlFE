@@ -22,6 +22,7 @@ import RequestAccept from './page/request.jsx/requestaccept';
 import MainNotice from './page/Mypage/mainnotice';
 import EditcourseModal1 from './page/Editcourse/EditcourseModal1';
 import Main from './page/Main/Mainpage';
+import GoogleLoginRedirection from "./page/Login/GoogleLoginRedirection";
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
   },
   {
     path: 'googleLogin',
+    element: <GoogleLoginRedirection />,
+    name: '로그인 모달',
+  },
+  {
+    path: 'agree',
     element: <LoginModal />,
     name: '로그인 모달',
   },
