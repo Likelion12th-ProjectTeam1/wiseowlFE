@@ -36,7 +36,7 @@ function GoogleLoginRedirection() {
         setTimeout(() => {
           setLoading(false);
           navigate('/agree'); // 이동할 경로
-        }, 3000);
+        }, 10000);
       } else {
         throw new Error('Tokens not received in response.');
       }
