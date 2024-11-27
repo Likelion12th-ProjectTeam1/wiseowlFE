@@ -14,7 +14,7 @@ const CheckText = styled.p`
   margin-left: 20px;
 `;
 const Unnecessary = styled.button`
-  width: 150px;
+  width: 148px;
   height: 25px;
   justify-content: center;
   align-items: center;
@@ -30,8 +30,8 @@ const Unnecessary = styled.button`
 `;
 
 const CheckBtn = styled.button`
-  width: 70px;
-  height: 25px;
+  width: 69px;
+  height: 24px;
   justify-content: center;
   align-items: center;
   font-family: Inter;
