@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import axiosInstance from "../../auth/axiosInstance";
 
 function GoogleLoginRedirection() {
   const location = useLocation();
@@ -21,12 +22,8 @@ function GoogleLoginRedirection() {
         console.log("Sending GET request with authorization code:", code);
 
         // 백엔드에 GET 요청 보내기
-        const response = await fetch(`http://ec2-43-201-90-146.ap-northeast-2.compute.amazonaws.com:8000/api/accounts/google/callback/?code=${code}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await axiosInstance.get(`/api/accounts/google/callback/?code=${code}`);
+
 
         if (!response.ok) {
           // HTTP 오류가 발생한 경우
