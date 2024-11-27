@@ -33,7 +33,10 @@ function GoogleLoginRedirection() {
         setCookie('refreshToken', data.refresh_token, { path: '/' });
 
         console.log("Tokens saved to cookies");
-        navigate('/agree');
+        setTimeout(() => {
+          setLoading(false);
+          navigate('/agree'); // 이동할 경로
+        }, 3000);
       } else {
         throw new Error('Tokens not received in response.');
       }
