@@ -11,11 +11,9 @@ const HeaderContainer = styled.div`
   margin-top: 20px;
 `;
 
-const Title = styled.div`
+const Title = styled.img`
   margin-top: 15px;
-  margin-left: 50px;
-  background-image: url("/img/owl.svg");
-  background-repeat: no-repeat;
+  margin-left: 30px;
   width: 150px;
   height: 30px;
 `;
@@ -36,7 +34,7 @@ export default function Header() {
 
   return (
     <HeaderContainer>
-      <Title />
+      <Title src="/img/wiseowl.svg" alt="wiseowl"/>
       <Notice size={30} onClick={goToMainNoticepage} />
     </HeaderContainer>
   );
