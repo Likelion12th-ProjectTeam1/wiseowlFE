@@ -37,10 +37,9 @@ const JumpInfo = styled.h3`
     margin-left: 50px;
     margin-top: 25px;
 `
-const QuestionImg = styled.div`
+const QuestionImg = styled.img`
     width: 30px;
     height: 30px;
-    background-image: url("/img/question.png"); 
     background-size: contain;
     background-repeat: no-repeat;
     margin-top: 75px;
@@ -56,7 +55,7 @@ export default function InfoHeader(){
         <HeaderContainer>
             <TitleContainer>
                 <InfoTitle>학과정보를 <br/>입력해주세요</InfoTitle>
-                <QuestionImg onClick={goToRequestpage}/>
+                <QuestionImg  src="/img/question.svg" alt="question"onClick={goToRequestpage}/>
             </TitleContainer>
         </HeaderContainer>
     );

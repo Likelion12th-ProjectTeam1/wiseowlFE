@@ -5,6 +5,7 @@ import Map from "./components/map";
 import DashBoard from "./components/dashboard";
 import NoticeMain from "./components/notices";
 import axiosInstance from "../../auth/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const MainContainer = styled.div`
   width: 390px;
@@ -242,6 +243,7 @@ export default function Main() {
   const [fulldata, setFulldata] = useState(null);
   const [error, setError] = useState(null); // 에러 상태
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -294,6 +296,11 @@ export default function Main() {
       selectedFacilityData ? selectedFacilityData.facility_list : []
     );
   };
+
+  const goToshopping = () => {
+    navigate("/shopping");
+};
+
 
   const halfIndex = Math.ceil(facilityList.length / 2); // 리스트를 반으로 나누는 인덱스
   const firstHalf = facilityList.slice(0, halfIndex); // 첫 번째 절반
@@ -350,7 +357,15 @@ export default function Main() {
                   <>
                     <Content1>
                       {firstHalf.map((facility, index) => (
-                        <ContentButton key={index}>
+                        <ContentButton
+                        key={index}
+                        onClick={() => {
+                          // "던킨도넛"인 경우에만 handleGo 함수 호출
+                          if (facility.facility_name === "던킨") {
+                            goToshopping();
+                          }
+                        }}
+                      >
                           <ContentText>{facility.facility_name}</ContentText>
                           <InfoContainer>
                             <InfoText>{facility.building_name}</InfoText>
@@ -362,7 +377,15 @@ export default function Main() {
                     </Content1>
                     <Content2>
                       {secondHalf.map((facility, index) => (
-                        <ContentButton key={index}>
+                        <ContentButton
+                        key={index}
+                        onClick={() => {
+                          // "던킨도넛"인 경우에만 handleGo 함수 호출
+                          if (facility.facility_name === "던킨") {
+                            goToshopping();
+                          }
+                        }}
+                      >
                           <ContentText>{facility.facility_name}</ContentText>
                           <InfoContainer>
                             <InfoText>{facility.building_name}</InfoText>
