@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import MyPageLinks from "./components/mypagelinks";
+import MyPageLinks from "./components/Mypagelinks";
 import mypage_progile from "../../img/mypage_profile.png";
 import MypageInfoBar from "./components/MypageInfoBar";
 import axiosInstance from "../../auth/axiosInstance";
