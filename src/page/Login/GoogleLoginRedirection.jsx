@@ -34,9 +34,10 @@ function GoogleLoginRedirection() {
 
         console.log("Tokens saved to cookies");
         setTimeout(() => {
-          setLoading(false);
-          navigate('/agree'); // 이동할 경로
-        }, 10000);
+          console.log("[DEBUG] Timeout complete, navigating to /agree.");
+          setLoading(false); // 로딩 상태 해제
+          navigate('/agree'); // 페이지 이동
+        }, 3000);
       } else {
         throw new Error('Tokens not received in response.');
       }
@@ -52,8 +53,6 @@ function GoogleLoginRedirection() {
         console.error('Error during API call:', error.message);
         setError('An unexpected error occurred.');
       }
-    } finally {
-      setLoading(false);
     }
   };
 
