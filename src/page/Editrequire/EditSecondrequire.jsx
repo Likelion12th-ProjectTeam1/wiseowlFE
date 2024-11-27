@@ -48,7 +48,7 @@ const FirstCourseText = styled.p`
 `;
 
 const FirstCourse = styled.div`
-  width: 75px;
+  min-width: 75px;
   height: 23px;
   border: 1.8px solid #5d96e8;
   border-radius: 4px;
@@ -62,6 +62,8 @@ const FirstCourse = styled.div`
   align-items: center;
 
   padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 
 const TopSecondHorizontalBox = styled.div`
@@ -175,7 +177,7 @@ const SortHorizontalBox = styled.div`
   justify-content: center;
   gap: 20px;
   margin-top: 70px;
-  margin-bottom: 70px;
+  margin-bottom: 40px;
 `;
 
 const AddCourse = styled.button`
@@ -205,30 +207,18 @@ const Savebtn = styled.button`
   font-weight: 600;
 `;
 
-const CautionText = styled.p`
+const CautionText = styled.div`
   font-family: Inter;
   color: #a3a3a3;
   font-size: 11px;
   font-weight: 500;
-  margin-left: 25px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 10px;
+  text-align: center;
+  width: 350px;
 `;
 
-const TheLine = styled.hr`
-  height: 0.1px;
-  margin: 40px;
-  border: 1px solid #a3a3a3;
-`;
-
-const RightBox = styled.div`
-  width: 50%;
-  height: 23px;
-`;
-
-const LeftBox = styled.div`
-  width: 50%;
-  height: 23px;
-`;
 export default function EditRequire() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
@@ -239,34 +229,20 @@ export default function EditRequire() {
     false,
     false,
   ]);
-
   const [foreignscore, setScore] = useState();
   const [iscomplete, setIscomplete] = useState(false);
 
-  const [necessary, setNecessary] = useState([true, true, true, true]);
-  const [firstcheck, setFirstcheck] = useState(true);
+  const [necessary, setNecessary] = useState([false, true, true, true]);
+  const [firstcheck, setFirstcheck] = useState(false);
   const [secondcheck, setSecondcheck] = useState(false);
   const [thirdcheck, setThirdcheck] = useState(false);
   const [forthcheck, setForthcheck] = useState(false);
 
   const navigate = useNavigate();
-  const handleChange = (event) => {
-    setScore(event.target.value);
-    console.log(foreignscore);
-  };
 
   const handleClick = () => {
     navigate("/editrequire");
   };
-
-  function changeforeignbtn(key) {
-    let statelist = [false, false, false, false, false];
-    statelist[key] = true;
-    setForeignbtn(statelist);
-  }
-  function switchCompletebtn() {
-    setIscomplete(!iscomplete);
-  }
 
   //api 연동
   useEffect(() => {
@@ -279,43 +255,18 @@ export default function EditRequire() {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching data:", err);
+        console.log("오류남!!!");
         setLoading(false);
       }
     };
 
     fetchData();
   }, []);
-
+  console.log("이중전공", data);
+  // 데이터 로드 후 처리
   useEffect(() => {
     console.log(data);
     if (!data) return;
-
-    // 외국어 인증 처리
-    switch (data[5].for_language_name) {
-      case "Flex":
-        setForeignbtn([true, false, false, false, false]);
-        break;
-      case "Flex 스피킹":
-        setForeignbtn([false, true, false, false, false]);
-        break;
-      case "TOEIC":
-        setForeignbtn([false, false, true, false, false]);
-        break;
-      case "TOEIC 스피킹":
-        setForeignbtn([false, false, false, true, false]);
-        break;
-      case "OPIC":
-        setForeignbtn([false, false, false, false, true]);
-        break;
-      default:
-        console.log("무언가의 오류"); //null 값이 들어오는 경우
-        setForeignbtn([false, false, false, false, false]);
-        break;
-    }
-
-    // 점수 설정 및 외국어 완료 여부
-    setScore(data[6].for_language_score); //이후 null 이면 paceholder에는 0으로 표기
-    setIscomplete(data[7].setIscomplete === "완료");
 
     // 졸업 논문 ~ 자격증 인증 상태 설정
     const basenecessary = [
@@ -337,38 +288,11 @@ export default function EditRequire() {
       data[4].grad_certificate !== "불필요" &&
         data[4].grad_certificate === "완료"
     );
+    console.log("적용 완료", firstcheck, secondcheck, thirdcheck, forthcheck);
   }, [data]);
 
   // api 통신 (patch)
   const completeChange = async () => {
-    // 외국어
-    let for_language = iscomplete ? "완료" : "미완료";
-    let for_languauge_score = foreignscore;
-    let for_language_name;
-    const foreignbtnString = JSON.stringify(foreignbtn);
-
-    if (
-      foreignbtnString === JSON.stringify([true, false, false, false, false])
-    ) {
-      for_language_name = "Flex";
-    } else if (
-      foreignbtnString === JSON.stringify([false, true, false, false, false])
-    ) {
-      for_language_name = "Flex 스피킹";
-    } else if (
-      foreignbtnString === JSON.stringify([false, false, true, false, false])
-    ) {
-      for_language_name = "TOEIC";
-    } else if (
-      foreignbtnString === JSON.stringify([false, false, false, true, false])
-    ) {
-      for_language_name = "TOEIC 스피킹";
-    } else if (
-      foreignbtnString === JSON.stringify([false, false, false, false, true])
-    ) {
-      for_language_name = "OPIC";
-    }
-
     // 졸업 평가 내용 관련
     let grad_research = necessary[0]
       ? firstcheck
@@ -385,31 +309,26 @@ export default function EditRequire() {
         ? "완료"
         : "미완료"
       : "불필요";
+
     console.log(
-      "for_language_name : ",
-      for_language_name,
-      "\nfor_language : ",
-      for_language,
-      "\n for_languauge_score : ",
-      for_languauge_score,
       "졸업 논문, 졸업시험, 졸업프로젝트, 자격증 : ",
       grad_research,
       grad_exam,
       grad_pro,
       grad_certificate
     );
+
+    let patch_data = {
+      grad_research: grad_research,
+      grad_exam: grad_exam,
+      grad_pro: grad_pro,
+      grad_certificate: grad_certificate,
+    };
+    console.log("patch_data", patch_data);
     try {
       const response = await axiosInstance.patch(
         "/api/notices/mypage/이중전공/require-edit/",
-        {
-          grad_research: grad_research,
-          grad_exam: grad_exam,
-          grad_pro: grad_pro,
-          grad_certificate: grad_certificate,
-          for_language: for_language,
-          for_language_name: for_language_name,
-          for_languauge_score: for_languauge_score,
-        }
+        patch_data
       );
       console.log(response);
       alert("정상처리완료");
@@ -427,72 +346,10 @@ export default function EditRequire() {
           <Title>졸업요건 수정</Title>
           <FirstHorizontalBox>
             <FirstCourseText>이중전공</FirstCourseText>
-            <FirstCourse>통계학과</FirstCourse>
+            <FirstCourse>{data[0].major}</FirstCourse>
           </FirstHorizontalBox>
           <CustomSpace height="15px" />
-          <SemiTitle>외국어 인증</SemiTitle>
-          <TopSecondHorizontalBox>
-            <ForeignBtn
-              width="74px"
-              bordercolor={foreignbtn[0] ? "#5D96E8" : "#D9D9D9"}
-              onClick={() => changeforeignbtn(0)}
-              fontcolor={foreignbtn[0] ? "#5D96E8" : "#D9D9D9"}
-            >
-              Flex
-            </ForeignBtn>
-            <ForeignBtn
-              width="114px"
-              bordercolor={foreignbtn[1] ? "#5D96E8" : "#D9D9D9"}
-              onClick={() => changeforeignbtn(1)}
-              fontcolor={foreignbtn[1] ? "#5D96E8" : "#D9D9D9"}
-            >
-              FLEX 스피킹
-            </ForeignBtn>
-            <ForeignBtn
-              width="91px"
-              bordercolor={foreignbtn[2] ? "#5D96E8" : "#D9D9D9"}
-              onClick={() => changeforeignbtn(2)}
-              fontcolor={foreignbtn[2] ? "#5D96E8" : "#D9D9D9"}
-            >
-              TOEIC
-            </ForeignBtn>
-          </TopSecondHorizontalBox>
-          <BottomSecondHorizontalBox>
-            <ForeignBtn
-              width="126px"
-              bordercolor={foreignbtn[3] ? "#5D96E8" : "#D9D9D9"}
-              onClick={() => changeforeignbtn(3)}
-              fontcolor={foreignbtn[3] ? "#5D96E8" : "#D9D9D9"}
-            >
-              TOEIC 스피킹
-            </ForeignBtn>
-            <ForeignBtn
-              width="84px"
-              bordercolor={foreignbtn[4] ? "#5D96E8" : "#D9D9D9"}
-              onClick={() => changeforeignbtn(4)}
-              fontcolor={foreignbtn[4] ? "#5D96E8" : "#D9D9D9"}
-            >
-              OPIC
-            </ForeignBtn>
-          </BottomSecondHorizontalBox>
-          <CustomSpace height="25px" />
-          <ThirdHorizontalBox>
-            <ScoreText>성적입력</ScoreText>
-            <ScoreInput
-              placeholder={
-                data[6].for_language_score ? data[6].for_language_score : 0
-              }
-              value={foreignscore}
-              onChange={handleChange}
-            ></ScoreInput>
-            <Completebtn
-              onClick={switchCompletebtn}
-              fontcolor={iscomplete ? "#5d96e8" : "rgba(255,65,100,0.53)"}
-              bordercolor={iscomplete ? "#5d96e8" : "rgba(255,65,100,0.48)"}
-            >
-              {iscomplete ? "완료" : "미완료"}
-            </Completebtn>
-          </ThirdHorizontalBox>
+
           <CustomSpace height="35px" />
           <CheckBar
             text={"졸업논문 인증"}

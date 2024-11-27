@@ -62,6 +62,8 @@ const FirstCourse = styled.div`
   align-items: center;
 
   padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 
 const TopSecondHorizontalBox = styled.div`
@@ -114,8 +116,8 @@ const ScoreInput = styled.input`
   margin-right: 20px;
 `;
 const Completebtn = styled.button`
-  width: 70px;
-  height: 25px;
+  width: 69px;
+  height: 24px;
   justify-content: center;
   align-items: center;
   font-family: Inter;
@@ -175,7 +177,7 @@ const SortHorizontalBox = styled.div`
   justify-content: center;
   gap: 20px;
   margin-top: 70px;
-  margin-bottom: 70px;
+  margin-bottom: 40px;
 `;
 
 const AddCourse = styled.button`
@@ -211,25 +213,13 @@ const CautionText = styled.p`
   color: #a3a3a3;
   font-size: 11px;
   font-weight: 500;
-  margin-left: 25px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 10px;
+  text-align: center;
+  width: 350px;
 `;
 
-const TheLine = styled.hr`
-  height: 0.1px;
-  margin: 40px;
-  border: 1px solid #a3a3a3;
-`;
-
-const RightBox = styled.div`
-  width: 50%;
-  height: 23px;
-`;
-
-const LeftBox = styled.div`
-  width: 50%;
-  height: 23px;
-`;
 export default function EditRequire() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
@@ -252,7 +242,6 @@ export default function EditRequire() {
   const navigate = useNavigate();
   const handleChange = (event) => {
     setScore(event.target.value);
-    console.log(foreignscore);
   };
   const handleClick = () => {
     navigate("/editsecondrequire");
@@ -316,7 +305,11 @@ export default function EditRequire() {
 
     // 점수 설정 및 외국어 완료 여부
     setScore(data[6].for_language_score);
-    setIscomplete(data[7].setIscomplete === "완료");
+    if (data[7].for_language == "완료") {
+      setIscomplete(true);
+    } else {
+      setIscomplete(false);
+    }
 
     // 졸업 논문 ~ 자격증 인증 상태 설정
     const basenecessary = [
@@ -344,7 +337,8 @@ export default function EditRequire() {
   const completeChange = async () => {
     // 외국어
     let for_language = iscomplete ? "완료" : "미완료";
-    let for_languauge_score = foreignscore;
+    let for_language_score = Number(foreignscore);
+
     let for_language_name;
     const foreignbtnString = JSON.stringify(foreignbtn);
 
@@ -391,26 +385,28 @@ export default function EditRequire() {
       for_language_name,
       "\nfor_language : ",
       for_language,
-      "\n for_languauge_score : ",
-      for_languauge_score,
+      "\n for_language_score : ",
+      for_language_score,
       "졸업 논문, 졸업시험, 졸업프로젝트, 자격증 : ",
       grad_research,
       grad_exam,
       grad_pro,
       grad_certificate
     );
+    let patch_data = {
+      grad_research: grad_research,
+      grad_exam: grad_exam,
+      grad_pro: grad_pro,
+      grad_certificate: grad_certificate,
+      for_language: for_language,
+      for_language_name: for_language_name,
+      for_language_score: for_language_score,
+    };
+    console.log("patch_data", patch_data);
     try {
       const response = await axiosInstance.patch(
         "/api/notices/mypage/본전공/require-edit/",
-        {
-          grad_research: grad_research,
-          grad_exam: grad_exam,
-          grad_pro: grad_pro,
-          grad_certificate: grad_certificate,
-          for_language: for_language,
-          for_language_name: for_language_name,
-          for_languauge_score: for_languauge_score,
-        }
+        patch_data
       );
       console.log(response);
       alert("정상처리완료");
@@ -481,11 +477,14 @@ export default function EditRequire() {
             <ScoreText>성적입력</ScoreText>
             <ScoreInput
               placeholder={
-                data[6].for_language_score ? data[6].for_language_score : 0
+                data[6].for_language_score
+                  ? data[6].for_language_score
+                  : "점수입력"
               }
-              value={foreignscore ?? 0}
+              value={foreignscore ?? ""}
               onChange={handleChange}
-            ></ScoreInput>
+            />
+
             <Completebtn
               onClick={switchCompletebtn}
               fontcolor={iscomplete ? "#5d96e8" : "rgba(255,65,100,0.53)"}
