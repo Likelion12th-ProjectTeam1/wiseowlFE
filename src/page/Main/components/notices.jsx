@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { IoIosArrowForward } from "react-icons/io";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const NoticeConatiner = styled.div`
@@ -66,6 +66,10 @@ const ContentText = styled.h3`
   font-size: 10.1px;
   font-weight: 500;
   margin-left: 11px;
+  white-space: nowrap;       /* 텍스트를 한 줄로 유지 */
+  overflow: hidden;          /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis;   /* 넘치는 부분을 "..."로 표시 */
+  max-width: 200px;
 `;
 const SemiContentText = styled.h3`
   color: #a7a8ab;
@@ -78,7 +82,7 @@ const SemiContentText = styled.h3`
 `;
 
 export default function NoticeMain({ data }) {
-  const [date, setDate] = useState("10월 2일");
+  const [date, setDate] = useState("null");
   const navigate = useNavigate();
 
   const goToNoticepage = () => {
@@ -89,6 +93,13 @@ export default function NoticeMain({ data }) {
     window.open(link, "_blank"); // Opens the link in a new tab
   };
 
+
+  useEffect(() => {
+    // 현재 날짜를 "MM월 DD일" 형식으로 포맷
+    const today = new Date();
+    const formattedDate = `${today.getMonth() + 1}월 ${today.getDate()}일`;
+    setDate(formattedDate);
+  }, []); // 컴포넌트가 마운트될 때 한 번 실행
   return (
     <NoticeConatiner>
       <NoticeHeader>

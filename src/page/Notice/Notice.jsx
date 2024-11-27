@@ -65,6 +65,10 @@ const NoticeContent = styled.h4`
   font-weight: 500;
   margin-top: 7px;
   margin-left: 20px;
+  white-space: nowrap;       /* 텍스트를 한 줄로 유지 */
+  overflow: hidden;          /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis;   /* 넘치는 부분을 "..."로 표시 */
+  max-width: 320px;
 `;
 
 const DayContent = styled.h4`
@@ -85,6 +89,10 @@ const CenterContent = styled.h4`
   margin-right: auto;
   margin-top: 7px;
   margin-left: 20px;
+  white-space: nowrap;       /* 텍스트를 한 줄로 유지 */
+  overflow: hidden;          /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis;   /* 넘치는 부분을 "..."로 표시 */
+  max-width: 320px;
 `;
 
 const SettingButton = styled.div`

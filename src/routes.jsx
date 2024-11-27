@@ -23,6 +23,7 @@ import MainNotice from './page/Mypage/mainnotice';
 import EditcourseModal1 from './page/Editcourse/EditcourseModal1';
 import Main from './page/Main/Mainpage';
 import GoogleLoginRedirection from "./page/Login/GoogleLoginRedirection";
+import EditSecondRequire from './page/Editrequire/EditSecondrequire';
 
 const routes = [
   {
@@ -151,6 +152,11 @@ const routes = [
     element: <EditcourseModal1 />,
     name: '졸업 요건 수정 모달 1',
   },
+  {
+    path: 'editsecondrequire',
+    element: <EditSecondRequire/>,
+    name: '이중전공 졸업요건수정',
+  }
 ];
 
 export default routes;
