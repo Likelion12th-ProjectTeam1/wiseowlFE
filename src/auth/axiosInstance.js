@@ -9,7 +9,9 @@ axiosInstance.interceptors.request.use(
   
   async (config) => {
     const cookies = new Cookies();
-    const accessToken = cookies.get('accessToken'); // 쿠키에서 accessToken 가져오기
+    const accessToken = cookies.get('accessToken');
+    console.log('AccessToken:', accessToken); // 토큰 디버깅
+ // 쿠키에서 accessToken 가져오기
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`; // 요청 헤더에 액세스 토큰 추가
     }
