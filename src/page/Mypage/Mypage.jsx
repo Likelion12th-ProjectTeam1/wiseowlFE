@@ -5,7 +5,6 @@ import mypage_progile from "../../img/mypage_profile.png";
 import MypageInfoBar from "./components/MypageInfoBar";
 import axiosInstance from "../../auth/axiosInstance";
 
-
 const Container = styled.div`
   width: 390px;
   margin: 0 auto;
