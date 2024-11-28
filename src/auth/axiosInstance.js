@@ -39,7 +39,7 @@ axiosInstance.interceptors.response.use(
         try {
           // 리프레시 토큰으로 새로운 액세스 토큰 요청
           const response = await axios.post(
-            'http://ec2-43-201-90-146.ap-northeast-2.compute.amazonaws.com:8000/api/accounts/google/token/refresh/', 
+            'https://largeredjade.site/api/accounts/google/token/refresh/', 
             { refreshToken }
           );
           
