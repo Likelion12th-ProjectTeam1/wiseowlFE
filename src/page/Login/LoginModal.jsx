@@ -220,7 +220,20 @@ export default function LoginModal() {
             if (response.status === 200) navigate('/info');
             else setErrorMessage('서버 오류: 약관 동의가 처리되지 않았습니다.');
         } catch (error) {
-            setErrorMessage(error.response.data, '서버에 연결할 수 없습니다. 나중에 다시 시도해주세요.');
+            // 서버 응답 메시지를 상세히 처리
+            if (error.response && error.response.data) {
+                // 메시지가 객체라면 JSON.stringify로 변환
+                const errorMessage =
+                    typeof error.response.data === 'string'
+                        ? error.response.data
+                        : Object.entries(error.response.data)
+                              .map(([key, value]) => `${key}: ${value}`)
+                              .join('\n');
+                setErrorMessage(errorMessage);
+            } else {
+                // 서버 응답이 없는 경우
+                setErrorMessage('서버에 연결할 수 없습니다. 나중에 다시 시도해주세요.');
+            }
         }
     };
 
