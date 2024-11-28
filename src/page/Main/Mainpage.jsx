@@ -5,6 +5,7 @@ import Map from "./components/map";
 import DashBoard from "./components/dashboard";
 import NoticeMain from "./components/notices";
 import axiosInstance from "../../auth/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const MainContainer = styled.div`
   width: 390px;
@@ -36,8 +37,14 @@ const MapButton = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 12px;
+  text-align: center;
+  font-family: Inter;
+  font-size: 8px;
+  font-weight: 500;
+  transition: color 0.3s;
+  padding-left: 2px;
   background: #fff;
-  color: ${({ $isActive }) => ($isActive ? "#5D96E8" : "#737373")};
+  color: ${({ isActive }) => (isActive ? "#5D96E8" : "#737373")};
   box-shadow: 0px 0px 2.9px 0px
     ${({ isActive }) => (isActive ? "#5D96E8" : "rgba(0, 0, 0, 0.19)")};
   transition: color 0.3s, background-color 0.3s;
@@ -94,16 +101,16 @@ const TitleText = styled.h2`
 `;
 
 const SelectContainer = styled.div`
-  width: 100%;
+  width: 320px;
   height: 70%;
   display: flex;
   flex-direction: row;
-  padding: 2px;
+  padding-right: 2px;
 `;
 
 const Line = styled.div`
-  width: 0.5px;
-  height: 100%;
+  width: 0.4px;
+  height: 4px;
   margin-left: 5px;
   margin-right: 5px;
   background-color: #d4d4d4;
@@ -128,16 +135,20 @@ const FacilityText = styled.h4`
   line-height: normal;
   color: ${({ isButtonactive }) => (isButtonactive ? "#5D96E8" : "#D4D4D4;")};
   transition: color 0.3s, background-color 0.3s;
-  margin-left: 2px;
 `;
 
 const FacilityCount = styled.div`
-  width: 50%;
-  height: 80%;
+  width: 15px;
+  height: 11px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 7px;
+  font-family: Inter;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
   background: ${({ isButtonactive }) =>
     isButtonactive ? "#5D96E8" : "#D4D4D4;"};
   color: #fff;
@@ -145,38 +156,45 @@ const FacilityCount = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  width: 100%;
-  height: 60%;
+  width: 327px;
+  height: 261px;
   padding: 15px;
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
 `;
 const Content1 = styled.div`
-  width: 50%;
-  height: 60%;
+  width: 150px;
+  height: 180px;
   display: flex;
   flex-direction: column;
   margin-top: 10px;
 `;
 const Content2 = styled.div`
-  width: 50%;
-  height: 60%;
+  width: 150px;
+  height: 180px;
   display: flex;
   flex-direction: column;
   margin-top: 10px;
 `;
 
 const ContentButton = styled.div`
-  width: 120px;
-  height: 40px;
+  width: 114px;
+  height: 25px;
   display: flex;
   align-items: center;
   flex-direction: row;
   border-radius: 8px;
   background: #f9f9f9;
-  padding: 4px;
+  padding-top: 7px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right : 7px;
   margin-top: 10px;
   border: 1px solid rgba(115, 115, 115, 0.3);
   gap: 10px;
@@ -184,11 +202,14 @@ const ContentButton = styled.div`
 
 const InfoContainer = styled.div`
   width: 60px;
-  height: 100%;
+  height: 7px; /* 원하는 너비 설정 */
+  white-space: nowrap; /* 텍스트가 한 줄에만 표시되도록 설정 */
+  overflow: hidden; /* 넘치는 텍스트는 보이지 않게 설정 */
+  text-overflow: ellipsis; /* 넘치는 텍스트는 "..."으로 표시 */
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
+  margin-left: auto;
 `;
 
 const ContentText = styled.h4`
@@ -199,6 +220,7 @@ const ContentText = styled.h4`
   font-weight: 600;
   line-height: normal;
   white-space: nowrap;
+  
 `;
 const InfoText = styled.h4`
   color: #a5a3a3;
@@ -221,6 +243,7 @@ export default function Main() {
   const [fulldata, setFulldata] = useState(null);
   const [error, setError] = useState(null); // 에러 상태
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -273,6 +296,14 @@ export default function Main() {
       selectedFacilityData ? selectedFacilityData.facility_list : []
     );
   };
+
+  const goToshopping = () => {
+    navigate("/shopping");
+};
+
+const goToshoppingtwo = () => {
+  navigate("/shoppingtwo");
+};
 
   const halfIndex = Math.ceil(facilityList.length / 2); // 리스트를 반으로 나누는 인덱스
   const firstHalf = facilityList.slice(0, halfIndex); // 첫 번째 절반
@@ -329,7 +360,18 @@ export default function Main() {
                   <>
                     <Content1>
                       {firstHalf.map((facility, index) => (
-                        <ContentButton key={index}>
+                        <ContentButton
+                        key={index}
+                        onClick={() => {
+                          // "던킨도넛"인 경우에만 handleGo 함수 호출
+                          if (facility.facility_name === "던킨") {
+                            goToshopping();
+                          }else if (facility.facility_name === "그라찌에") {
+                            console.log("그라찌에 버튼 클릭");
+                            // "그라찌에"일 경우 goToshoppingtwo 함수 호출
+                            goToshoppingtwo();}
+                        }}
+                      >
                           <ContentText>{facility.facility_name}</ContentText>
                           <InfoContainer>
                             <InfoText>{facility.building_name}</InfoText>
@@ -341,7 +383,18 @@ export default function Main() {
                     </Content1>
                     <Content2>
                       {secondHalf.map((facility, index) => (
-                        <ContentButton key={index}>
+                        <ContentButton
+                        key={index}
+                        onClick={() => {
+                          // "던킨도넛"인 경우에만 handleGo 함수 호출
+                          if (facility.facility_name === "던킨") {
+                            goToshopping();
+                          }else if (facility.facility_name === "그라찌에") {
+                            console.log("그라찌에 버튼 클릭");
+                            // "그라찌에"일 경우 goToshoppingtwo 함수 호출
+                            goToshoppingtwo();}
+                        }}
+                      >
                           <ContentText>{facility.facility_name}</ContentText>
                           <InfoContainer>
                             <InfoText>{facility.building_name}</InfoText>

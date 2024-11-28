@@ -66,6 +66,9 @@ const SwitchTitle = styled.p`
 const FirstCourse = styled.div`
   width: 110px;
   height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 15px;
   color: #737373;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -75,6 +78,9 @@ const SecondCourse = styled.div`
   width: 170px;
   height: 30px;
   font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #737373;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;

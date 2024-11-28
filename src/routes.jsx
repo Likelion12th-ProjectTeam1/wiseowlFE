@@ -24,6 +24,7 @@ import EditcourseModal1 from './page/Editcourse/EditcourseModal1';
 import Main from './page/Main/Mainpage';
 import GoogleLoginRedirection from "./page/Login/GoogleLoginRedirection";
 import EditSecondRequire from './page/Editrequire/EditSecondrequire';
+import ShoppingTwo from './page/Shopping/Shoping2';
 
 const routes = [
   {
@@ -156,6 +157,11 @@ const routes = [
     path: 'editsecondrequire',
     element: <EditSecondRequire/>,
     name: '이중전공 졸업요건수정',
+  },
+  {
+    path: 'shoppingtwo',
+    element: <ShoppingTwo/>,
+    name: '그라찌에',
   }
 ];
 

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState, useRef } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 const ImageContainer = styled.div`
   width: 100%;
@@ -13,44 +14,46 @@ const ImageContainer = styled.div`
 const MapImage = styled.div`
   width: 100%;
   height: 100%;
-  background-image: url("/img/mainmap.png");
+  background-image: url("/img/mainmap.svg");
   background-size: cover;
   background-position: center;
   position: relative;
   z-index: 0;
+
 `;
 
 const BuildingZero = styled.div`
   position: absolute;
-  background-image: url("/img/building0.png");
-  top: 45%;
-  left: 0%;
+  background-image: url("/img/building0.svg");
+  left: 15px;
+  bottom: 40px;
   width: 9vh;
   height: 9vh;
   background-size: cover;
+  transform: scale(1.4);
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.5);
   }
 `;
 
 const BuildingOne = styled.div`
   position: absolute;
-  background-image: url("/img/building1.png");
-  top: 18%;
-  left: 80%;
+  background-image: url("/img/building1.svg");
+  top: 30%;
+  left: 70%;
   width: 9.5vh;
   height: 12vh;
   background-size: cover;
-  transform: scale(0.8);
+  transform: scale(1.4);
   &:hover {
-    transform: scale(0.9);
+    transform: scale(1.5);
   }
 `;
 
 const BuildingTwo = styled.div`
   position: absolute;
-  background-image: url("/img/building2.png");
-  top: -2%;
+  background-image: url("/img/building2.svg");
+  top: 2%;
   left: 48%;
   width: 15vh;
   height: 11vh;
@@ -63,85 +66,85 @@ const BuildingTwo = styled.div`
 
 const BuildingThree = styled.div`
   position: absolute;
-  background-image: url("/img/building3.png");
-  top: 10%;
-  left: -15%;
+  background-image: url("/img/building3.svg");
+  top: 35px;
+  left: -7%;
   width: 24vh;
   height: 12vh;
   background-size: cover;
-  transform: scale(0.7);
+  transform: scale(0.9);
   &:hover {
-    transform: scale(0.8);
+    transform: scale(1.0);
   }
 `;
 
 const BuildingFour = styled.div`
   position: absolute;
-  background-image: url("/img/building4.png");
+  background-image: url("/img/building4.svg");
   top: -10%;
-  left: 71%;
+  left: 70%;
   width: 15vh;
   height: 12vh;
   background-size: cover;
-  transform: scale(0.7);
+  transform: scale(0.9);
   &:hover {
-    transform: scale(0.8);
+    transform: scale(1.0);
   }
 `;
 
 const BuildingFive = styled.div`
   position: absolute;
-  background-image: url("/img/building5.png");
+  background-image: url("/img/building5.svg");
   top: 33%;
   left: 16%;
   width: 16vh;
   height: 12vh;
   background-size: cover;
-  transform: scale(0.7);
+  transform: scale(0.9);
   &:hover {
-    transform: scale(0.8);
+    transform: scale(1.0);
   }
 `;
 
 const BuildingSix = styled.div`
   position: absolute;
-  background-image: url("/img/building6.png");
-  top: 35%;
-  left: 49%;
+  background-image: url("/img/building6.svg");
+  top: 43%;
+  left: 45%;
   width: 15vh;
   height: 13vh;
   background-size: cover;
-  transform: scale(0.7);
+  transform: scale(1.1);
   &:hover {
-    transform: scale(0.8);
+    transform: scale(1.2);
   }
 `;
 
 const BuildingSeven = styled.div`
   position: absolute;
-  background-image: url("/img/building7.png");
-  top: 60%;
-  left: 28%;
+  background-image: url("/img/building7.svg");
+  top: 65%;
+  left: 23%;
   width: 15vh;
   height: 12vh;
   background-size: cover;
-  transform: scale(0.7);
+  transform: scale(1.1);
   &:hover {
-    transform: scale(0.8);
+    transform: scale(1.2);
   }
 `;
 
 const BuildingEight = styled.div`
   position: absolute;
-  background-image: url("/img/building8.png");
-  top: -2%;
-  left: 30%;
+  background-image: url("/img/building8.svg");
+  top: 0%;
+  left: 33%;
   width: 18vh;
   height: 20vh;
   background-size: cover;
-  transform: scale(0.5);
+  transform: scale(0.7);
   &:hover {
-    transform: scale(0.6);
+    transform: scale(0.8);
   }
 `;
 
@@ -159,6 +162,7 @@ const TotalModal = styled.div`
   background-color: #fff;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 10;
+  
 `;
 
 const TitleContainer = styled.div`
@@ -179,24 +183,39 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+
 `;
 
 const ContentButton = styled.div`
-  width: 100px;
-  height: 50px;
+  width: 114px;
+  height: 25px;
   display: flex;
   align-items: center;
+  flex-direction: row;
   border-radius: 8px;
   background: #f9f9f9;
-  padding: 4px;
+  padding-top: 7px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right : 7px;
   margin-top: 10px;
   border: 1px solid rgba(115, 115, 115, 0.3);
+  gap: 10px;
 `;
 
 const ContentText = styled.h4`
   color: #000;
-  font-size: 5px;
+  font-family: Inter;
+  font-size: 8px;
+  font-style: normal;
   font-weight: 600;
+  line-height: normal;
+  white-space: nowrap;
 `;
 
 const InfoText = styled.h4`
@@ -209,20 +228,21 @@ const InfoText = styled.h4`
 `
 
 const InfoContainer = styled.div`
-    width : 50%;
-    height : 100%;
-    margin-left: 15px;
-    display : flex;
+    width: 60px;
+    height: 7px; /* 원하는 너비 설정 */
+    white-space: nowrap; /* 텍스트가 한 줄에만 표시되도록 설정 */
+    overflow: hidden; /* 넘치는 텍스트는 보이지 않게 설정 */
+    text-overflow: ellipsis; /* 넘치는 텍스트는 "..."으로 표시 */
+    display: flex;
+    gap: 5px;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
+    margin-left: auto;
 `
 
 const Line = styled.div`
     width : 0.5px;
     height : 100%;
-    margin-left: 5px;
-    margin-right: 5px;
     background-color: #D4D4D4;
 `
 
@@ -252,20 +272,24 @@ const FacilityText = styled.h4`
     line-height: normal;
     color: ${({ isButtonactive }) => (isButtonactive ? "#5D96E8" : "#D4D4D4;")};
     transition: color 0.3s, background-color 0.3s;
-    margin-left : 1px;
 `
 
 const FacilityCount = styled.div`
-    width : 30%;
-    height : 70%;
+    width: 15px;
+    height: 11px;
     display: flex;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
     justify-content: center;
     align-items: center;
     border-radius: 7px;
     background: ${({ isButtonactive }) => (isButtonactive ? "#5D96E8" : "#D4D4D4;")};
     color: #FFF;
     margin-left: 1px;
-    font-size: 10px;
     `
 
 const ChooseContianer = styled.div`
@@ -291,6 +315,7 @@ const Map = ({ data }) => {
   const [activeBuilding, setActiveBuilding] = useState(null);  // 현재 활성화된 건물의 인덱스를 관리
   const [facilityList, setFacilityList] = useState([]);
   const mapRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleBuildingClick = (buildingIndex) => {
     const selectedBuilding = data[buildingIndex];
@@ -322,6 +347,14 @@ const Map = ({ data }) => {
   const handleModal = (e) => {
     setActiveBuilding(null);
   }
+
+  const goToshopping = () => {
+    navigate("/shopping");
+};
+
+const goToshoppingtwo = () => {
+  navigate("/shoppingtwo");
+};
 
   return (
     <ImageContainer>
@@ -405,7 +438,18 @@ const Map = ({ data }) => {
               {/* 시설 리스트 */}
               {facilityList.length > 0 ? (
                 facilityList.map((facility, index) => (
-                  <ContentButton key={index}>
+                  <ContentButton
+                        key={index}
+                        onClick={() => {
+                          // "던킨도넛"인 경우에만 handleGo 함수 호출
+                          if (facility.facility_name === "던킨") {
+                            goToshopping();
+                          }else if (facility.facility_name === "그라찌에") {
+                            console.log("그라찌에 버튼 클릭");
+                            // "그라찌에"일 경우 goToshoppingtwo 함수 호출
+                            goToshoppingtwo();}
+                        }}
+                      >
                     <ContentText>{facility.facility_name}</ContentText>
                     <InfoContainer>
                       <InfoText>{facility.building_name}</InfoText>
