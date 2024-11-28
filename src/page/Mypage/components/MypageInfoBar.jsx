@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Item = styled.div`
-  width: 300px;
+  width: 290px;
   font-size: 16px;
   font-family: Inter;
   padding: 10px 0;
@@ -10,10 +10,10 @@ const Item = styled.div`
   align-items: center;
 `;
 const DummyDiv = styled.div`
-  width: 10%;
+  width: 23px;
 `;
 const LeftText = styled.p`
-  width: 40%;
+  width: 120px;
   padding-left: 40px;
   font-weight: 500;
   color: #737373;
@@ -23,7 +23,7 @@ const LeftText = styled.p`
 `;
 
 const RightText = styled.p`
-  width: 55%;
+  width: 160px;
   padding-left: 25px;
   font-weight: 600;
   color: #737373;

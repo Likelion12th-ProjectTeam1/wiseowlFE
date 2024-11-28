@@ -78,6 +78,10 @@ const Text = styled.p`
   color: #000;
 `;
 function NoticeItem({ organization, min, text, isread, link }) {
+  const maxLength = 20; //20자까지 표시
+  const slicedText =
+    text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+
   function handleClick() {
     window.location.href = link;
   }
@@ -96,7 +100,7 @@ function NoticeItem({ organization, min, text, isread, link }) {
             <Minute>{min}</Minute>
           </TopHorizontalBox>
           <BottomHorizontalBox>
-            <Text>{text}</Text>
+            <Text>{slicedText}</Text>
           </BottomHorizontalBox>
         </RightBox>
       </BottomBox>
