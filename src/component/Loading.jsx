@@ -90,13 +90,13 @@ const OwlFamily = () => {
       <Section bgColor="#EEEEEE" height="70vh">
         <Title>OWL FAMILY</Title>
         <Description>
-          뚝뚝한 부엉이 친구들이 바보 같자를 도와
+          똑똑한 부엉이 친구들이 바보 감자를 도와
           <br />
-          연명한 대학생활과 졸업을 도와준다.
+          현명한 대학생활과 졸업을 도와준다.
         </Description>
       </Section>
       
-      <Section bgColor="#7EB597" height="30vh">
+      <Section bgColor="#7EB597" height="50vh">
       <Image src="/img/Potato.svg" alt="Request" />
         <OwlContainer>
           {/* 부엉이를 여기에 추가하세요 */}
