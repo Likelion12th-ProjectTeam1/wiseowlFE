@@ -90,7 +90,7 @@ const Loading = () => {
         </Description>
       </Section>
       
-      <Section bgColor="#7EB597" height="55vh">
+      <Section bgColor="#7EB597" height="50vh">
       <Image src="/img/Potato.svg" alt="Request" />
         <OwlContainer>
           {/* 부엉이를 여기에 추가하세요 */}
