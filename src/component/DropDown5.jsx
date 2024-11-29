@@ -11,8 +11,9 @@ const DropDownContainer = styled.ul`
   border: 1.811px solid #D9D9D9;
   display: inline-block;
   position: relative;
-  width: auto; /* 너비를 auto로 설정하여 텍스트 길이에 맞게 조정 */
+  width: 130px; /* 너비를 auto로 설정하여 텍스트 길이에 맞게 조정 */
   font-size: 11.5px;
+  height: 39px;
   color: #A09F9F;
   min-width: 73px; /* 최소 너비를 설정하여 너무 좁아지지 않도록 */
   text-align: center; /* 텍스트를 가운데 정렬 */
@@ -23,6 +24,13 @@ const DropDownContainer = styled.ul`
   padding-top: 8px; /* 패딩을 통해 높이를 조정 */
   padding-bottom: 8px; /* 패딩을 통해 높이를 조정 */
   box-sizing: border-box; /* 패딩이 포함된 전체 크기 계산 */
+`;
+
+const SelectedItem = styled.div`
+  overflow: hidden; /* 넘치는 내용 숨기기 */
+  white-space: nowrap; /* 줄 바꿈 방지 */
+  text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+  width: 100%; /* 너비를 100%로 설정 */
 `;
 
 const DropDownContent = styled.div`
@@ -45,7 +53,11 @@ const DropDownContent = styled.div`
 
 const DropDownItem = styled.li`
   padding: 8px 12px;
+  text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
   font-size: 11.5px; /* 글자 크기 설정 */
+  overflow: hidden; /* 넘치는 내용 숨기기 */
+  white-space: nowrap; /* 줄 바꿈 방지 */
+  text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
   &:hover {
     background-color: #f0f0f0;
   }
@@ -67,7 +79,7 @@ export default function DropDown5({ majors, selectedMajor, setSelectedMajor }) {
   };
   return (
     <DropDownContainer onClick={() => setView(!view)}>
-      {selectedMajor || "전공을 선택하세요"} 
+      <SelectedItem>{selectedMajor || "전공을 선택하세요"}</SelectedItem> 
       <IconWrapper>{view ? <FaChevronUp /> : <FaChevronDown />}</IconWrapper>
       {view && (
         <DropDownContent>
