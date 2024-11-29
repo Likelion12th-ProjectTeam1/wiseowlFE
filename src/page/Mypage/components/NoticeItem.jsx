@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import speaker from "../../../img/speaker 2.png";
+import axiosInstance from "../../../auth/axiosInstance";
 
 const Container = styled.div`
   width: 330px;
@@ -25,6 +26,14 @@ const Dot = styled.div`
   border-radius: 50%;
   background-color: #5d96e8;
 `;
+
+const TheBlock = styled.div`
+  margin-top: 8px;
+  margin-right: 8px;
+  width: 7px;
+  height: 7px;
+`;
+
 const BottomBox = styled.div`
   width: 270px;
   display: flex;
@@ -82,14 +91,26 @@ function NoticeItem({ organization, min, text, isread, link }) {
   const slicedText =
     text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 
+  //patch api 연동
+  const data = {
+    notice_department: organization,
+    notice_link: link,
+    notice_title: text,
+    isread: true,
+  };
   function handleClick() {
-    window.location.href = link;
+    try {
+      const response = axiosInstance.patch("/api/notics/alarm/", data);
+      console.log(response);
+      window.location.href = link;
+    } catch (err) {
+      console.log(err);
+    }
   }
+
   return (
     <Container onClick={handleClick}>
-      <TopBox>
-        <Dot isread={isread} />
-      </TopBox>
+      <TopBox>{!isread ? <Dot /> : <TheBlock />}</TopBox>
       <BottomBox>
         <LeftBox>
           <SpeakImg src={speaker} />
