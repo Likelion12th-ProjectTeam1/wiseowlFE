@@ -96,11 +96,11 @@ function NoticeItem({ organization, min, text, isread, link }) {
     notice_department: organization,
     notice_link: link,
     notice_title: text,
-    isread: true,
+    notice_read: true,
   };
   function handleClick() {
     try {
-      const response = axiosInstance.patch("/api/notics/alarm/", data);
+      const response = axiosInstance.patch("/api/notices/alarm/", data);
       console.log(response);
       window.location.href = link;
     } catch (err) {
