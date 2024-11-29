@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { IoIosArrowForward } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 const NoticeConatiner = styled.div`
   width: 390px;
   height: 300px;
@@ -15,7 +14,7 @@ const NoticeHeader = styled.div`
   height: 10%;
   display: flex;
   flex-direction: row;
-  margin-left: 17px;
+  margin-left: 30px;
 `;
 
 const Arrow = styled(IoIosArrowForward)`
@@ -32,7 +31,7 @@ const SemiText = styled.h3`
   font-weight: 500;
   line-height: normal;
   margin-top: 15px;
-  margin-left: 22px;
+  margin-left: 34px;
   margin-bottom: 10px;
 `;
 
@@ -46,14 +45,14 @@ const NoticeTitle = styled.h2`
 `;
 
 const NoticeContent = styled.div`
-  width: 90%;
-  height: 25%;
+  width: 329.394px;
+  height: 59.867px;
   border-radius: 9.855px;
   background: #fff;
   box-shadow: 0px 0.493px 0.912px 0.985px rgba(0, 0, 0, 0.09);
-  padding: 10px;
+  padding-left : 22px;
   margin: 5px;
-  margin-left: 20px;
+  margin-left: 30px;
   cursor: pointer;
   &:hover {
     transform: scale(1.1);
@@ -63,13 +62,15 @@ const NoticeContent = styled.div`
 const ContentText = styled.h3`
   color: #000;
   font-family: Inter;
-  font-size: 10.1px;
+  font-size: 10.101px;
+  font-style: normal;
   font-weight: 500;
-  margin-left: 11px;
+  line-height: normal;
   white-space: nowrap;       /* 텍스트를 한 줄로 유지 */
   overflow: hidden;          /* 넘치는 텍스트 숨기기 */
   text-overflow: ellipsis;   /* 넘치는 부분을 "..."로 표시 */
-  max-width: 200px;
+  max-width: 300px;
+  margin-top : 15px;
 `;
 const SemiContentText = styled.h3`
   color: #a7a8ab;
@@ -78,7 +79,7 @@ const SemiContentText = styled.h3`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin: 10px;
+  margin-top : 6px;
 `;
 
 export default function NoticeMain({ data }) {

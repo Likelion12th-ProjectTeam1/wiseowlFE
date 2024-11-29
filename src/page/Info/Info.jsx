@@ -5,6 +5,13 @@ import { Select } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 const NameContainer = styled.div`
   width: 100%;
   height : 10%;
@@ -280,7 +287,7 @@ const PostData = async () => {
 
 
   return (
-    <div className="page-container">
+    <PageContainer>
       <InfoHeader />
       <NameContainer>
         <ContentText>이름</ContentText>
@@ -430,6 +437,6 @@ const PostData = async () => {
         학과정보를 입력하지 않으시면 이수과목을 입력할 수 없습니다.
       </CautionText>
       <NextButton onClick = {goToNextpage}>다음</NextButton>
-    </div>
+    </PageContainer>
   );
 }

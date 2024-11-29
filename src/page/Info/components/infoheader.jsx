@@ -24,7 +24,7 @@ const InfoTitle = styled.h2`
     font-weight: 600;
     line-height: normal;
     margin-left : 40px;
-    margin-top: 40px;
+    margin-top: 65px;
 `
 
 const JumpInfo = styled.h3`
