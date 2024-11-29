@@ -7,11 +7,11 @@ import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
   background-color: #F6F6F6;
-  height: 100vh;
+  height: auto;
   width: 390px;
   padding: 0 20px;
   padding-top: 60px;
-  padding-bottom: 65px;
+  padding-bottom: 85px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,7 +78,7 @@ const Section1 = styled.div`
   padding: 20px;
   background-color: #F6F6F6;
   margin-bottom: 20px;
-  margin-top: 120px;
+  margin-top: -60px;
 `;
 
 const SectionDivider = styled.div`
