@@ -87,7 +87,7 @@ const Text = styled.p`
   color: #000;
 `;
 function NoticeItem({ organization, min, text, isread, link }) {
-  const maxLength = 20; //20자까지 표시
+  const maxLength = 37; //37자까지 표시
   const slicedText =
     text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 
@@ -102,7 +102,7 @@ function NoticeItem({ organization, min, text, isread, link }) {
     try {
       const response = axiosInstance.patch("/api/notices/alarm/", data);
       console.log(response);
-      window.location.href = link;
+      window.open(link, "_blank"); //새로운 창에서 link로 연결되도록 동작
     } catch (err) {
       console.log(err);
     }
