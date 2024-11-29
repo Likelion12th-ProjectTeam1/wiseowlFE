@@ -6,6 +6,7 @@ import DashBoard from "./components/dashboard";
 import NoticeMain from "./components/notices";
 import axiosInstance from "../../auth/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../component/Loading";
 
 const MainContainer = styled.div`
   width: 390px;
@@ -22,6 +23,24 @@ const Section = styled.div`
     margin-bottom: 0; /* 마지막 요소에는 간격을 주지 않음 */
   }
 `;
+
+const Section2 = styled.div`
+  margin-bottom: -5px; /* 각 섹션 사이의 간격을 설정 */
+
+  &:last-child {
+    margin-bottom: 0; /* 마지막 요소에는 간격을 주지 않음 */
+  }
+`;
+
+const Section3 = styled.div`
+  margin-bottom: 31px; /* 각 섹션 사이의 간격을 설정 */
+
+  &:last-child {
+    margin-bottom: 0; /* 마지막 요소에는 간격을 주지 않음 */
+  }
+`;
+
+
 
 const ButtonContainer = styled.div`
   width: 390px;
@@ -136,6 +155,23 @@ const FacilityText = styled.h4`
   color: ${({ isButtonactive }) => (isButtonactive ? "#5D96E8" : "#D4D4D4;")};
   transition: color 0.3s, background-color 0.3s;
 `;
+
+const FacilityText2 = styled.h4`
+  font-family: Inter;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.2; /* 줄 간격 설정 */
+  color: ${({ isButtonactive }) => (isButtonactive ? "#5D96E8" : "#D4D4D4")};
+  transition: color 0.3s, background-color 0.3s;
+
+  width: max-content; /* 글자 크기에 따라 자동 너비 조정 */
+  max-width: 30px; /* 글자 3개 정도의 너비에 해당 */
+  word-break: break-word; /* 단어를 강제로 줄바꿈 */
+  white-space: normal; /* 줄바꿈 허용 */
+  text-align: center; /* 가운데 정렬 */
+`;
+
 
 const FacilityCount = styled.div`
   width: 15px;
@@ -269,7 +305,7 @@ export default function Main() {
   }, []); // token이 변경될 때마다 실행
 
   if (loading) {
-    return <div>Loading...</div>; // 데이터가 로드되기 전에는 로딩 화면을 보여줌
+    return <div><Loading /></div>; // 데이터가 로드되기 전에는 로딩 화면을 보여줌
   }
 
   if (error) {
@@ -314,15 +350,15 @@ const goToshoppingtwo = () => {
       <Section>
         <Header />
       </Section>
-      <Section>
+      <Section2>
         <DashBoard data={data.dashboard} />
-      </Section>
+      </Section2>
       <ButtonContainer>
         <MapButton isActive={isActive} onClick={handleButtonClick}>
           <ButtonText>편의시설 모아보기</ButtonText>
         </MapButton>
       </ButtonContainer>
-      <Section>
+      <Section3>
         <MapContainer>
           <Map data={data.building_list} />
           {isModalOpen && (
@@ -333,21 +369,23 @@ const goToshoppingtwo = () => {
                   {fulldata.facility_set.map((category, index) => (
                     <FacilityContainer
                       key={index}
-                      onClick={() =>
-                        handleCategoryClick(category.facility_category)
-                      }
+                      onClick={() => handleCategoryClick(category.facility_category)}
                     >
-                      <FacilityText
-                        isButtonactive={
-                          selectedCategory === category.facility_category
-                        }
-                      >
-                        {category.facility_category}
-                      </FacilityText>
+                      {category.facility_category === "컴퓨터/복사기" ? (
+                        <FacilityText2
+                          isButtonactive={selectedCategory === category.facility_category}
+                        >
+                          {category.facility_category}
+                        </FacilityText2>
+                      ) : (
+                        <FacilityText
+                          isButtonactive={selectedCategory === category.facility_category}
+                        >
+                          {category.facility_category}
+                        </FacilityText>
+                      )}
                       <FacilityCount
-                        isButtonactive={
-                          selectedCategory === category.facility_category
-                        }
+                        isButtonactive={selectedCategory === category.facility_category}
                       >
                         {category.facility_list.length}
                       </FacilityCount>
@@ -412,7 +450,7 @@ const goToshoppingtwo = () => {
             </TotalModal>
           )}
         </MapContainer>
-      </Section>
+      </Section3>
       <Section>
         <NoticeMain data={data.notice_list} />
       </Section>

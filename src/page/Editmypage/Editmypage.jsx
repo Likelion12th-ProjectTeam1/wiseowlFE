@@ -3,6 +3,14 @@ import { useState, useEffect } from "react";
 import { Select } from "antd";
 import axiosInstance from "../../auth/axiosInstance";
 
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height : 1200px;
+  width : 390px;
+`;
+
 const Container = styled.div`
   width: 390px;
   display: flex;
@@ -339,7 +347,7 @@ export default function EditMypage() {
         "/api/notices/mypage/myinfo-edit/double-to-minor/",
         gubundata
       );
-
+      alert("수정완료")
       console.log("패치 성공:", response.data);
     } catch (err) {
       setError("데이터를 업데이트하는 중 오류가 발생했습니다.");
@@ -348,7 +356,7 @@ export default function EditMypage() {
   };
 
   return (
-    <div className="page-container">
+    <PageContainer>
       <Header>
         <HeaderTitle>회원정보 수정</HeaderTitle>
       </Header>
@@ -617,6 +625,6 @@ export default function EditMypage() {
           <GubunButton onClick={PatchGubun}>구분 변경하기</GubunButton>
         </ButtonContainer>
       </GubunContainer>
-    </div>
+    </PageContainer>
   );
 }

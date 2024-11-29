@@ -129,16 +129,19 @@ const UnderLine = styled.div`
 `;
 
 const Major = styled.div`
-  width: 47.06px;
+  width: 60.06px;
   height: 12.32px;
   background: #ebedee;
   border-radius: 12.32px;
+`;
+
+const MajorFont = styled.h3`
+  width : 45px;
   color: #000;
   font-family: Inter;
   font-size: 7.884px;
   font-style: normal;
   font-weight: 500;
-  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -154,7 +157,6 @@ const MajorText = styled.div`
   font-size: 7.884px;
   font-style: normal;
   font-weight: 500;
-  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -288,11 +290,17 @@ export default function DashBoard({ data }) {
               </UserText>
             </UserContainer>
             <MajorContainer>
-              <Major>{data.major}</Major>
+              <Major>
+                <MajorFont>
+                  {data.major}
+                </MajorFont>    
+              </Major>
               <MajorText>
+                <MajorFont>
                 {data.double_major.length > 7
                   ? data.double_major.slice(0, 6)
                   : data.double_major}
+                </MajorFont>
               </MajorText>
             </MajorContainer>
           </InfoContainer>
@@ -333,11 +341,17 @@ export default function DashBoard({ data }) {
               </UserText>
             </UserContainer>
             <MajorContainer>
-              <Major>{data.major}</Major>
+              <Major>
+                <MajorFont>
+                  {data.major}
+                </MajorFont>    
+              </Major>
               <MajorText>
+                <MajorFont>
                 {data.double_major.length > 7
                   ? data.double_major.slice(0, 6)
                   : data.double_major}
+                </MajorFont>
               </MajorText>
             </MajorContainer>
           </InfoContainer>
@@ -350,7 +364,7 @@ export default function DashBoard({ data }) {
                 total={data.double_credit_required}
                 complete={data.double_credit_completed}
               />
-              <RateText>부전공 이수율</RateText>
+              <RateText>{data.gubun} 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
               <RequireTitle>

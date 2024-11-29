@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../auth/axiosInstance";
 import NoticeModal from "./NoticeModal"; // NoticeModal을 import
+import Loading from "../../component/Loading";
 
 const PageContainer = styled.div`
   display: flex;
@@ -151,7 +152,7 @@ export default function Notice() {
   }, []);
 
   if (loading) {
-    return <div>loading</div>;
+    return <div><Loading /></div>;
   }
 
   if (error) {

@@ -14,6 +14,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background: #FBFBFB;
 `;
 
 const ModalContainer = styled.div`
@@ -30,7 +31,7 @@ const ModalHeader = styled.div`
 `;
 
 const ModalBack = styled.h4`
-  color: #a3a3a3;
+  color: #A3A3A3;
   font-family: Inter;
   font-size: 16px;
   font-weight: 500;
@@ -93,11 +94,11 @@ const ClassContainer = styled.div`
 `;
 
 const ClassButton = styled.div`
-  width: 80%;
-  height: 20%;
+  width: 200px;
+  height: 100px;
   display: flex;
   flex-direction: column;
-  background: #dde1f3;
+  background: #F5F6FB;
   border-radius: 7px;
   padding: 10px;
   margin-left: 15px;
@@ -116,14 +117,18 @@ const ClassTitle = styled.h3`
   font-family: Inter;
   font-size: 14px;
   font-weight: 500;
+  width: 150px; /* 원하는 너비 */
+  white-space: nowrap; /* 텍스트 줄바꿈 금지 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 말줄임표 표시 */
+  display: block; /* 필수: block 또는 inline-block */
 `;
 
 const InfoContainer = styled.div`
   width: 100%;
-  height: 30%;
+  height: 40%;
   display: flex;
   flex-direction: row;
-  margin-top: 5px;
 `;
 
 const InfoName = styled.h4`
@@ -131,6 +136,11 @@ const InfoName = styled.h4`
   font-family: Inter;
   font-size: 14px;
   font-weight: 500;
+  width : 120px;
+  white-space: nowrap; /* 텍스트 줄바꿈 금지 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 말줄임표 표시 */
+  display: block; /* 필수: block 또는 inline-block */
 `;
 
 const InfoText = styled.h4`
@@ -139,7 +149,12 @@ const InfoText = styled.h4`
   font-size: 11px;
   font-weight: 500;
   margin-left: 20px;
-  margin-top: 3px;
+  margin-top: 2px;
+  width : 70px;
+  white-space: nowrap; /* 텍스트 줄바꿈 금지 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 말줄임표 표시 */
+  display: block; /* 필수: block 또는 inline-block */
 `;
 
 const DayText = styled.h4`
@@ -147,7 +162,10 @@ const DayText = styled.h4`
   font-family: Inter;
   font-size: 11px;
   font-weight: 500;
-  margin-top: 5px;
+  white-space: nowrap; /* 텍스트 줄바꿈 금지 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 말줄임표 표시 */
+  display: block; /* 필수: block 또는 inline-block */
 `;
 export default function SubjectModal2() {
   const navigate = useNavigate();
@@ -212,7 +230,7 @@ export default function SubjectModal2() {
   const isDepartment = !!department;
 
   const handleBack = () => {
-    navigate("/infotwo");
+    navigate("/subjectmodal");
   };
 
   const fetchgenedData = async (subjectid, subjectName, subjectKey) => {
@@ -289,7 +307,7 @@ export default function SubjectModal2() {
                       {course.subject_department_professor || course.subject_gened_professor}
                     </InfoName>
                     <InfoText>
-                      {`전공 ${course.subject_department_credit || course.subject_gened_credit}학점`}
+                      {` ${course.subject_department_credit || course.subject_gened_credit}학점`}
                     </InfoText>
                   </InfoContainer>
                   <DayText>

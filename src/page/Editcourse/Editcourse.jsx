@@ -69,10 +69,17 @@ const FirstCourse = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
-  color: #737373;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
+
+const CourseText = styled.h3`
+  font-size: 15px;
+  color: #737373;
+  width : 100px;
+  white-space: nowrap; /* 텍스트가 한 줄에만 표시되도록 설정 */
+  overflow: hidden; /* 넘치는 텍스트는 보이지 않게 설정 */
+  text-overflow: ellipsis; /* 넘치는 텍스트는 "..."으로 표시 */
+`
 
 const SecondCourse = styled.div`
   width: 170px;
@@ -428,12 +435,20 @@ export default function EditCourse() {
       <HorizontalBox>
         <TopLeftBox>
           <TopText>본전공</TopText>
-          <FirstCourse>{usermajor}</FirstCourse>
+          <FirstCourse>
+            <CourseText>
+              {usermajor}
+            </CourseText>
+          </FirstCourse>
         </TopLeftBox>
         <TopRightBox>
           <TopText>{usergubun}</TopText>
           {usergubun !== "전공심화" && (
-            <SecondCourse>{usersecondmajor}</SecondCourse>
+            <SecondCourse>
+              <CourseText>
+                {usersecondmajor}
+              </CourseText>
+            </SecondCourse>
           )}
         </TopRightBox>
       </HorizontalBox>
