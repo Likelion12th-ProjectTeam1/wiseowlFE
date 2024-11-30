@@ -102,7 +102,6 @@ function NoticeItem({ organization, min, text, isread, link }) {
   function handleClick() {
     try {
       const response = axiosInstance.patch("/api/notices/alarm/", data);
-      isread = ture;
       window.open(link, "_blank"); //새로운 창에서 link로 연결되도록 동작
     } catch (err) {
       console.log(err);
