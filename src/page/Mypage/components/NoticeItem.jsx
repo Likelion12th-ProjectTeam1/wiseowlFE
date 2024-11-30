@@ -98,18 +98,16 @@ function NoticeItem({ organization, min, text, isread, link }) {
     notice_title: text,
     notice_read: true,
   };
+
   function handleClick() {
     try {
       const response = axiosInstance.patch("/api/notices/alarm/", data);
-      console.log(response);
       isread = ture;
       window.open(link, "_blank"); //새로운 창에서 link로 연결되도록 동작
-      window.location.reload();
     } catch (err) {
       console.log(err);
     }
   }
-
   return (
     <Container onClick={handleClick}>
       <TopBox>{!isread ? <Dot /> : <TheBlock />}</TopBox>
