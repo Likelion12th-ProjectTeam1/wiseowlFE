@@ -73,8 +73,9 @@ const ButtonContainer = styled.div`
     height: 80%;
     display: flex;
     flex-direction: row;
-    padding: 22px;
+    padding: 18px;
     gap: 10px;
+    margin-bottom: 50px;
 `;
 
 const ButtonBox1 = styled.div`
@@ -119,13 +120,7 @@ const CenterButton = styled.div`
     color: ${(props) => (props.isSubscribed ? "#000" : "#737373")};
     border-radius: 30px;
     background: #fff;
-    margin-bottom: 10px; // Add space between buttons
-    font-size: 7px;
-    color: #000;
-    font-family: Inter;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+    margin-bottom: 15px; // Add space between buttons
     cursor: pointer;
     border: ${(props) => (props.isSubscribed ? "2px solid #5d96e8" : "none")};
     &:hover {
@@ -134,6 +129,21 @@ const CenterButton = styled.div`
         color: #000;
     }
 `;
+
+const ButtonText = styled.h3`
+    color: #000;
+    text-align: center;
+    align-items: center;
+    font-size: 10.101px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    width: 70px; /* 원하는 너비 */
+    white-space: nowrap; /* 텍스트 줄바꿈 금지 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 말줄임표 표시 */
+    display: block; /* 필수: block 또는 inline-block */
+`
 
 const Image = styled.img`
    width: 40px;
@@ -253,7 +263,9 @@ export default function NoticeModal() {
                                 isSubscribed={item.subscribe_yn}
                                 onClick={() => handleOrgan(index)} // 인덱스 전달
                             >
-                                {item.organ_name}
+                                <ButtonText>
+                                    {item.organ_name}
+                                </ButtonText>
                             </CenterButton>
                         ))}
                     </ButtonBox1>
@@ -264,7 +276,9 @@ export default function NoticeModal() {
                                 isSubscribed={item.subscribe_yn}
                                 onClick={() => handleOrgan(index + firstHalf.length)} // 전체 인덱스 계산
                             >
-                                {item.organ_name}
+                                <ButtonText>
+                                    {item.organ_name}
+                                </ButtonText>
                             </CenterButton>
                         ))}
                     </ButtonBox2>
