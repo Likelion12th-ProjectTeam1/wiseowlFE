@@ -10,6 +10,7 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 20px;
   margin-bottom: 70px;
+  
 `;
 
 const CustomSpace = styled.div`
@@ -93,7 +94,7 @@ const SecondCourse = styled.div`
 `;
 
 const FormContainer = styled.div`
-  width: 100%;
+  width: 95%;
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
@@ -101,14 +102,20 @@ const FormContainer = styled.div`
 `;
 
 const FormArea = styled.div`
-  width: 100%;
+  width: 90%;
   max-height: 600px;
   display: flex;
-  flex-direction: column; // 폼들을 세로로 나열
-  gap: 20px;
+  flex-direction: column;  // 폼들을 세로로 나열
   align-items: center;
+  overflow: auto;
   padding: 10px;
   transition: max-height 0.3s ease;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
 `;
 
 const DropdownContainer = styled.div`
@@ -141,6 +148,7 @@ const FormBody = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 5px;
 `;
 
 const FormFooter = styled.div`
@@ -167,7 +175,7 @@ const GradeText = styled.h4`
   font-family: Inter;
   font-size: 12px;
   font-weight: 500;
-  margin-left: 50px;
+  margin-left: 65px;
 `;
 
 const FormText = styled.h4`
@@ -211,11 +219,34 @@ const TotalText = styled.h4`
 `;
 
 const AddClassButton = styled.div`
-  width: 50%;
-  min-height: 40px;
+  width: 112px;
+  height: 26px;
   border-radius: 4px;
   background: #5d96e8;
-  color: #fff;
+  color: #FFF;
+  font-family: Inter;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 60px;
+  margin-bottom: 33px;
+`;
+const AddFormButton = styled.div`
+  width: 177px;
+  height: 36px;
+  border-radius: 4px;
+  background: #5d96e8;
+  color: #FFF;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -223,32 +254,19 @@ const AddClassButton = styled.div`
   margin-top: 10px;
 `;
 
-const AddFormButton = styled.div`
-  width: 60%;
-  min-height: 40px;
-  border-radius: 4px;
-  background: #5d96e8;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  margin-top: 50px;
-  margin-bottom: 50px;
-`;
-
 const EnterButton = styled.div`
-  width: 80%;
-  min-height: 40px;
+  width: 260px;
+  height: 37px;
   border-radius: 33px;
-  border: 1px solid #5d96e8;
-  background: #fff;
-  color: #5d96e8;
+  border: 1px solid #5D96E8;
+  background: #FFF;
+  color : #5D96E8;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 51px;
+  margin-bottom: 54px;
 `;
 
 const SemesterContainer = styled.div`
@@ -290,8 +308,7 @@ const CustomSelect = styled(Select)`
   }
 `;
 
-const GradeSelect = styled(Select)`
-  // antd의 Select로 사용
+const GradeSelect = styled(Select)` // antd의 Select로 사용
   width: 70px !important;
   height: 30px !important;
   border: none !important;
@@ -300,10 +317,10 @@ const GradeSelect = styled(Select)`
   .ant-select-selector {
     height: 30px !important;
     border-radius: 4px !important;
-    border: 2.811px solid #e8e8e8 !important;
-    background: #fff !important;
+    border: 2.811px solid #E8E8E8 !important;
+    background: #FFF !important;
     color: #000 !important;
-    display: fleximport App from "./../../App";
+    display: flex;
     align-items: center;
   }
 `;
@@ -316,6 +333,13 @@ const CautionText = styled.h5`
   line-height: normal;
   margin-top: 70px;
   margin-right: 90px;
+`;
+
+const FormContainer1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default function EditCourse() {
@@ -457,29 +481,31 @@ export default function EditCourse() {
         <Switch onChange={handleSwitchChange} style={{ marginRight: "17px" }} />
       </SwitchBox>
       <CustomSpace height="5px" />
-      <FormArea>
-        {onlymajor
-          ? majorcourses.map((majorCourse, index) => (
-              <FormComponent
-                key={index}
-                semester={majorCourse.completed_year}
-                subjectKey={majorCourse.school_year}
-                data={majorCourse} //전공만 보기
-                onlymajor={onlymajor}
-              />
-            ))
-          : forms.map((form, index) => (
-              <FormComponent
-                key={form.key}
-                semester={form.year}
-                subjectKey={subjectkey}
-                data={courses[index]}
-                onlymajor={onlymajor}
-              />
-            ))}
+      <FormContainer1>
+        <FormArea>
+          {onlymajor
+            ? majorcourses.map((majorCourse, index) => (
+                <FormComponent
+                  key={index}
+                  semester={majorCourse.completed_year}
+                  subjectKey={majorCourse.school_year}
+                  data={majorCourse} //전공만 보기
+                  onlymajor={onlymajor}
+                />
+              ))
+            : forms.map((form, index) => (
+                <FormComponent
+                  key={form.key}
+                  semester={form.year}
+                  subjectKey={subjectkey}
+                  data={courses[index]}
+                  onlymajor={onlymajor}
+                />
+              ))}
+        </FormArea>
         <AddFormButton onClick={addForm}>학기 추가하기</AddFormButton>
         <EnterButton>수정완료</EnterButton>
-      </FormArea>
+      </FormContainer1>
     </Container>
   );
 }

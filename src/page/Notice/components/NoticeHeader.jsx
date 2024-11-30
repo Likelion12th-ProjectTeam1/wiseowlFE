@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const HeaderContianer = styled.div`
     width : 390px;
@@ -42,6 +43,7 @@ const NoticeImg = styled.img`
     position : relative;
     left : 160px;
     bottom: 130px;
+    margin-top: 24px;
 `;
 
 const NoticeText = styled.h3`
@@ -70,14 +72,22 @@ const Countnotice = styled.div`
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    z-index: 10;
+    cursor : pointer;
 `
 
 export default function NoticeHeader({sum}){
 
     const Today = new Date();
+    const navigate = useNavigate();
 
     const formattedYear = `${Today.getFullYear()}년`;
     const formattedDate = `${Today.getMonth() + 1}월 ${Today.getDate()}일`
+
+   
+    const goToMainNoticepage = () => {
+        navigate("/mainnotice");
+  };
 
     return(
         <HeaderContianer>
@@ -90,7 +100,13 @@ export default function NoticeHeader({sum}){
             </DayContainer>
             <CountContainer>
                 <NoticeText>새 공지사항을 확인해보세요!</NoticeText>
-                <Countnotice>{sum}</Countnotice>
+                <Countnotice
+                    onClick={() => {
+                        goToMainNoticepage(); // 페이지 이동 함수
+                        console.log("Clicked!");
+                    }}
+                    >{sum}
+                    </Countnotice>
             </CountContainer>
         </HeaderContianer>
     );

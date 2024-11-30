@@ -248,6 +248,7 @@ export default function EditMypage() {
   const [doublemajor, setDoublemajor] = useState("");
   const [changecollege, setChangeCollege] = useState(null);
   const [changemajor, setChangemajor] = useState(null);
+  const [changedoublemajors,setChangeDoubleMajors] = useState(null);
 
   const handleGubunChange = (value) => {
     if (value === "전공심화 + 부전공") {
@@ -275,7 +276,7 @@ export default function EditMypage() {
           `/api/notices/mypage/myinfo-edit/`
         );
         setPrevdata(response.data); // 데이터 저장
-        console.log(response.data); // 데이터 출력
+        console.log("사용자 데이터" ,response.data); // 데이터 출력
       } catch (err) {
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
         console.error("Error fetching data:", err);
@@ -291,8 +292,8 @@ export default function EditMypage() {
       const requestBody = {
         college: selectedCollege,
         major: major,
-        profile_gubn: doublecollege,
-        second_college: gubun,
+        profile_gubn: gubun,
+        second_college:  doublecollege,
         second_major: doublemajor,
       };
 
@@ -468,22 +469,22 @@ export default function EditMypage() {
                   style={{ width: "300px" }}
                   onChange={(value) => {
                     // 선택된 단과대 객체 찾기
-                    const selectedCollege = data.colleges.find(
+                    const selectedDoubleCollege = data.colleges.find(
                       (college) => college.college_name === value
                     );
 
                     // 단과대 이름 저장
                     setDoublecollege(
-                      selectedCollege ? selectedCollege.college_name : null
+                      selectedDoubleCollege ? selectedDoubleCollege.college_name : null
                     );
 
                     // 해당 단과대의 전공 목록 업데이트
-                    setMajors(selectedCollege ? selectedCollege.majors : []);
+                    setChangeDoubleMajors(selectedDoubleCollege ? selectedDoubleCollege.majors : []);
 
                     // 선택된 단과대 출력
                     console.log(
                       "선택된 이중전공 단과대 이름:",
-                      selectedCollege ? selectedCollege.college_name : null
+                      selectedDoubleCollege ? selectedDoubleCollege.college_name : null
                     );
                   }}
                 >
@@ -509,13 +510,13 @@ export default function EditMypage() {
                     console.log("선택된 이중전공 이름:", value);
                   }}
                 >
-                  {majors &&
-                    majors.map((major) => (
+                  {changedoublemajors &&
+                    changedoublemajors.map((doublemajor) => (
                       <Select.Option
-                        key={major.department_id}
-                        value={major.department_name}
+                        key={doublemajor.department_id}
+                        value={doublemajor.department_name}
                       >
-                        {major.department_name}
+                        {doublemajor.department_name}
                       </Select.Option>
                     ))}
                 </CollegeSelect>
