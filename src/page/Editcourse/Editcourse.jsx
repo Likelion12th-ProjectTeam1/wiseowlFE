@@ -375,6 +375,9 @@ export default function EditCourse() {
   const [majorcourses, setMajorcourses] = useState([]);
   const [onlymajor, setOnlyMajor] = useState(false);
   console.log(majorcourses);
+
+  const navigate = useNavigate();
+
   const fetchData = async () => {
     // setLoading(true);
     try {
