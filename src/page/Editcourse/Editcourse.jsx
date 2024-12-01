@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { LuMinusCircle } from "react-icons/lu";
+import { FaChevronLeft } from "react-icons/fa";
 import { Switch, Select, Button } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import axiosInstance from "../../auth/axiosInstance";
@@ -10,12 +11,22 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 20px;
   margin-bottom: 70px;
-  
 `;
 
 const CustomSpace = styled.div`
   width: ${(props) => props.width || "0px"};
   height: ${(props) => props.height || "0px"};
+`;
+
+const HeaderHorizontalBox = styled.div`
+  width: 270px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 25px;
+  gap: 15px;
+  margin-top: 15px;
+  margin-bottom: 30px;
 `;
 
 const Title = styled.h1`
@@ -76,11 +87,11 @@ const FirstCourse = styled.div`
 const CourseText = styled.h3`
   font-size: 15px;
   color: #737373;
-  width : 100px;
+  width: 100px;
   white-space: nowrap; /* 텍스트가 한 줄에만 표시되도록 설정 */
   overflow: hidden; /* 넘치는 텍스트는 보이지 않게 설정 */
   text-overflow: ellipsis; /* 넘치는 텍스트는 "..."으로 표시 */
-`
+`;
 
 const SecondCourse = styled.div`
   width: 170px;
@@ -105,7 +116,7 @@ const FormArea = styled.div`
   width: 90%;
   max-height: 600px;
   display: flex;
-  flex-direction: column;  // 폼들을 세로로 나열
+  flex-direction: column; // 폼들을 세로로 나열
   align-items: center;
   overflow: auto;
   padding: 10px;
@@ -223,7 +234,7 @@ const AddClassButton = styled.div`
   height: 26px;
   border-radius: 4px;
   background: #5d96e8;
-  color: #FFF;
+  color: #fff;
   font-family: Inter;
   font-size: 11px;
   font-style: normal;
@@ -241,7 +252,7 @@ const AddFormButton = styled.div`
   height: 36px;
   border-radius: 4px;
   background: #5d96e8;
-  color: #FFF;
+  color: #fff;
   font-family: Inter;
   font-size: 14px;
   font-style: normal;
@@ -258,9 +269,9 @@ const EnterButton = styled.div`
   width: 260px;
   height: 37px;
   border-radius: 33px;
-  border: 1px solid #5D96E8;
-  background: #FFF;
-  color : #5D96E8;
+  border: 1px solid #5d96e8;
+  background: #fff;
+  color: #5d96e8;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -308,7 +319,8 @@ const CustomSelect = styled(Select)`
   }
 `;
 
-const GradeSelect = styled(Select)` // antd의 Select로 사용
+const GradeSelect = styled(Select)`
+  // antd의 Select로 사용
   width: 70px !important;
   height: 30px !important;
   border: none !important;
@@ -317,8 +329,8 @@ const GradeSelect = styled(Select)` // antd의 Select로 사용
   .ant-select-selector {
     height: 30px !important;
     border-radius: 4px !important;
-    border: 2.811px solid #E8E8E8 !important;
-    background: #FFF !important;
+    border: 2.811px solid #e8e8e8 !important;
+    background: #fff !important;
     color: #000 !important;
     display: flex;
     align-items: center;
@@ -452,26 +464,30 @@ export default function EditCourse() {
     setOnlyMajor(checked);
   };
 
+  const Goback = () => {
+    navigate("/mypage");
+  };
+
   return (
     <Container>
-      <Title>수강정보 수정</Title>
+      <HeaderHorizontalBox>
+        <FaChevronLeft size="22px" onClick={Goback} />
+        <Title>수강정보 수정</Title>
+      </HeaderHorizontalBox>
+
       <CustomSpace height="10px" />
       <HorizontalBox>
         <TopLeftBox>
           <TopText>본전공</TopText>
           <FirstCourse>
-            <CourseText>
-              {usermajor}
-            </CourseText>
+            <CourseText>{usermajor}</CourseText>
           </FirstCourse>
         </TopLeftBox>
         <TopRightBox>
           <TopText>{usergubun}</TopText>
           {usergubun !== "전공심화" && (
             <SecondCourse>
-              <CourseText>
-                {usersecondmajor}
-              </CourseText>
+              <CourseText>{usersecondmajor}</CourseText>
             </SecondCourse>
           )}
         </TopRightBox>
@@ -591,7 +607,6 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
     setTimeout(() => setIsUpdating(false), 500); // 100ms 후 로딩 상태 해제
   };
 
-  
   const addClass = () => {
     const newCourse = {
       subject_name: "",
@@ -613,9 +628,10 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
         subject_code: course.subject_code,
       };
       console.log(requestBody);
-      
 
-      await axiosInstance.delete("/api/notices/mypage/course-edit/", { data: requestBody });
+      await axiosInstance.delete("/api/notices/mypage/course-edit/", {
+        data: requestBody,
+      });
       handleUpdate(() => {
         setCourses((prevCourses) =>
           prevCourses.filter((c) => c.subject_name !== course.subject_name)
@@ -636,9 +652,9 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
     const updatedCourses = courses.map((course, i) =>
       i === index ? { ...course, retry_yn: !course.retry_yn } : course
     );
-  
+
     handleUpdate(() => setCourses(updatedCourses));
-  
+
     // FixData 호출을 상태가 업데이트된 이후로 지연
     setTimeout(() => {
       const courseToUpdate = updatedCourses[index];
@@ -648,46 +664,44 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
   };
 
   const FixData = async (course) => {
-  try {
-    setLoading(true);
-    const requestBody = {
-      "complete_year": selectedSemester, 
-      "school_year": subjectKey, 
-      "subject_name": course.subject_name,
-      "grade": course.grade,
-      "retry_yn": course.retry_yn,
-      "subject_code": course.subject_code,
-    };
-    
-    console.log("PATCH 요청:", requestBody);
+    try {
+      setLoading(true);
+      const requestBody = {
+        complete_year: selectedSemester,
+        school_year: subjectKey,
+        subject_name: course.subject_name,
+        grade: course.grade,
+        retry_yn: course.retry_yn,
+        subject_code: course.subject_code,
+      };
 
-    const response = await axiosInstance.patch(
-      `/api/notices/mypage/course-edit/`, 
-      requestBody
+      console.log("PATCH 요청:", requestBody);
+
+      const response = await axiosInstance.patch(
+        `/api/notices/mypage/course-edit/`,
+        requestBody
+      );
+
+      console.log("응답 데이터:", response.data);
+      // 필요시 응답 데이터 처리
+    } catch (err) {
+      console.error("데이터 업데이트 중 오류:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFieldChange = (index, field, value) => {
+    const updatedCourses = courses.map((course, i) =>
+      i === index ? { ...course, [field]: value } : course
     );
 
-    console.log("응답 데이터:", response.data);
-    // 필요시 응답 데이터 처리
-  } catch (err) {
-    console.error("데이터 업데이트 중 오류:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+    // 상태 업데이트
+    setCourses(updatedCourses);
 
-
-
-const handleFieldChange = (index, field, value) => {
-  const updatedCourses = courses.map((course, i) =>
-    i === index ? { ...course, [field]: value } : course
-  );
-
-  // 상태 업데이트
-  setCourses(updatedCourses);
-
-  // FixData 호출 시 즉시 최신 데이터 전달
-  FixData(updatedCourses[index]);
-};
+    // FixData 호출 시 즉시 최신 데이터 전달
+    FixData(updatedCourses[index]);
+  };
 
   return (
     <FormContainer>
