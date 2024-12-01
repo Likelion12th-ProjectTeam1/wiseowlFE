@@ -4,6 +4,9 @@ import styled from "styled-components";
 import { Button } from "antd";
 import CheckBar from "./components/CheckBar";
 import axiosInstance from "../../auth/axiosInstance";
+import { FaChevronLeft } from "react-icons/fa";
+
+import Loading from "../../component/Loading";
 
 const Container = styled.div`
   width: 390px;
@@ -15,6 +18,17 @@ const Container = styled.div`
 const CustomSpace = styled.div`
   width: ${(props) => props.width || "0px"};
   height: ${(props) => props.height || "0px"};
+`;
+
+const HeaderHorizontalBox = styled.div`
+  width: 270px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 25px;
+  gap: 15px;
+  margin-top: 15px;
+  margin-bottom: 30px;
 `;
 
 const Title = styled.h1`
@@ -244,8 +258,12 @@ export default function EditRequire() {
   const handleChange = (event) => {
     setScore(event.target.value);
   };
+
   const handleClick = () => {
     navigate("/editsecondrequire");
+  };
+  const Goback = () => {
+    navigate("/mypage");
   };
 
   function changeforeignbtn(key) {
@@ -419,10 +437,13 @@ export default function EditRequire() {
   return (
     <Container>
       {loading ? (
-        <>"데이터 로딩중..."</>
+        <Loading />
       ) : (
         <>
-          <Title>졸업요건 수정</Title>
+          <HeaderHorizontalBox>
+            <FaChevronLeft size="22px" onClick={Goback} />
+            <Title>졸업요건 수정</Title>
+          </HeaderHorizontalBox>
           <FirstHorizontalBox>
             <FirstCourseText>본전공</FirstCourseText>
             <FirstCourse>{data[0].major}</FirstCourse>
