@@ -33,7 +33,6 @@ const Title = styled.h1`
   font-family: Inter;
   font-size: 24px;
   padding-left: 15px;
-  margin-bottom: 20px;
 `;
 
 const HorizontalBox = styled.div`
@@ -376,6 +375,9 @@ export default function EditCourse() {
   const [majorcourses, setMajorcourses] = useState([]);
   const [onlymajor, setOnlyMajor] = useState(false);
   console.log(majorcourses);
+
+  const navigate = useNavigate();
+
   const fetchData = async () => {
     // setLoading(true);
     try {
