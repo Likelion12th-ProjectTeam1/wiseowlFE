@@ -160,6 +160,9 @@ const MajorText = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const RateText = styled.h4`
