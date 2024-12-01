@@ -302,11 +302,11 @@ export default function EditMypage() {
   const PostData = async () => {
     try {
       const requestBody = {
-        college: selectedCollege,
-        major: major,
+        college: selectedCollege || prevcollege, // 변경되지 않았으면 기존 값
+        major: major || prevmajor, // 변경되지 않았으면 기존 값
         profile_gubn: gubun,
-        second_college:  doublecollege,
-        second_major: doublemajor,
+        second_college: doublecollege || prevdoublecollege, // 변경되지 않았으면 기존 값
+        second_major: doublemajor || prevdoublemajor, // 변경되지 않았으면 기존 값
       };
 
       console.log("패치 성공:", requestBody);
