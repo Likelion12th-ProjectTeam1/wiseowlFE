@@ -33,7 +33,6 @@ const Title = styled.h1`
   font-family: Inter;
   font-size: 24px;
   padding-left: 15px;
-  margin-bottom: 20px;
 `;
 
 const HorizontalBox = styled.div`

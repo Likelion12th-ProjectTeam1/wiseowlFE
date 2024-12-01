@@ -37,7 +37,7 @@ const Title = styled.h1`
   font-weight: 600;
   margin-left: 15px;
   margin-top: 10px;
-  margin-bottom: 25px;
+  margin-bottom: 13px;
 `;
 
 const SemiTitle = styled.h1`
