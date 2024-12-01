@@ -249,6 +249,11 @@ export default function EditMypage() {
   const [changecollege, setChangeCollege] = useState(null);
   const [changemajor, setChangemajor] = useState(null);
   const [changedoublemajors,setChangeDoubleMajors] = useState(null);
+  const [prevcollege , setPrevcollege] = useState(null);
+  const [prevmajor , setPrevmajor] = useState(null);
+  const [prevdoublecollege , setPrevdoublecollege] = useState(null);
+  const [prevdoublemajor , setPrevdoublemajor] = useState(null);
+  
 
   const handleGubunChange = (value) => {
     if (value === "전공심화 + 부전공") {
@@ -257,6 +262,7 @@ export default function EditMypage() {
       setGubun(value);
     }
   };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -277,6 +283,12 @@ export default function EditMypage() {
         );
         setPrevdata(response.data); // 데이터 저장
         console.log("사용자 데이터" ,response.data); // 데이터 출력
+        if (response.data) {
+          setPrevcollege(response.data.college);
+          setPrevmajor(response.data.major);
+          setPrevdoublecollege(response.data.double_college);
+          setPrevdoublemajor(response.data.double_major);
+        }
       } catch (err) {
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
         console.error("Error fetching data:", err);
@@ -304,8 +316,8 @@ export default function EditMypage() {
         "/api/notices/mypage/myinfo-edit/major/",
         requestBody
       );
-
       console.log("패치 성공:", response.data);
+      alert("수정완료")
     } catch (err) {
       setError("데이터를 업데이트하는 중 오류가 발생했습니다.");
       console.error("Error updating data:", err);
@@ -355,6 +367,7 @@ export default function EditMypage() {
       console.error("Error updating data:", err);
     }
   };
+  
 
   return (
     <PageContainer>
@@ -398,6 +411,7 @@ export default function EditMypage() {
             <CollegeSelect
               placeholder="단과대를 선택하세요"
               style={{ width: "300px" }}
+              value={selectedCollege || prevcollege}
               onChange={(value) => {
                 // 선택된 단과대 객체를 찾음
                 const selectedCollege = data.colleges.find(
@@ -421,6 +435,7 @@ export default function EditMypage() {
                   selectedCollege ? selectedCollege.college_name : null
                 );
               }}
+
             >
               {data &&
                 data.colleges &&
@@ -435,6 +450,7 @@ export default function EditMypage() {
             </CollegeSelect>
             <CollegeSelect
               placeholder="전공을 선택하세요"
+              value={major || prevmajor}
               style={{ width: "300px" }}
               onChange={(value) => {
                 // 선택된 전공 이름 저장
@@ -467,6 +483,7 @@ export default function EditMypage() {
                 <CollegeSelect
                   placeholder="단과대를 선택하세요"
                   style={{ width: "300px" }}
+                  value={doublecollege || prevdoublecollege}
                   onChange={(value) => {
                     // 선택된 단과대 객체 찾기
                     const selectedDoubleCollege = data.colleges.find(
@@ -502,6 +519,7 @@ export default function EditMypage() {
                 <CollegeSelect
                   placeholder="전공을 선택하세요"
                   style={{ width: "300px" }}
+                  value={doublemajor || prevdoublemajor}
                   onChange={(value) => {
                     // 전공 이름 저장
                     setDoublemajor(value);
@@ -585,6 +603,7 @@ export default function EditMypage() {
                     selectedCollege ? selectedCollege.college_name : null
                   );
                 }}
+                
               >
                 {data &&
                   data.colleges &&
