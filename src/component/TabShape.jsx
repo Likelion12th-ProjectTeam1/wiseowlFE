@@ -28,7 +28,7 @@ function TabShape() {
 
   return (
     <svg width={wWidth} height={height}>
-      <path fill="#000" d={d} />
+      <path fill="#fff" d={d} />
     </svg>
   );
 }
