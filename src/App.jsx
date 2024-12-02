@@ -30,14 +30,13 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Mobile />}>
-            {elements}
-          </Route>
-        </Routes>
-        {!noNavbarPaths.includes(location.pathname) && <Navigatebar />}
-      </Router>
+      <Routes>
+        {routes.map((item, index) => (
+          <Route key={index} path={item.path} element={item.element} />
+        ))}
+        <Route path="/" element={<Mobile />} />
+      </Routes>
+      {!noNavbarPaths.includes(location.pathname) && <Navigatebar />}
     </>
   );
 }
