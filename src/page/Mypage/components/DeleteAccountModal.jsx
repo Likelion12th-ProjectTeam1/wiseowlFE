@@ -27,11 +27,11 @@ const ModalContent = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  font-family: "Inter", Arial, sans-serif; /* Inter 글꼴 설정 */
+  font-family: "Inter", Arial, sans-serif;
 
   p {
-    margin-top: 10px; /* 텍스트와 버튼 간 간격 조정 */
-    font-size: 16px; /* 텍스트 크기 */
+    margin-top: 10px;
+    font-size: 16px;
   }
 `;
 
@@ -44,15 +44,15 @@ const ModalButton = styled.button`
   cursor: pointer;
 
   &:nth-child(1) {
-    background-color: #5d96e8; /* 파란색 */
+    background-color: #5d96e8;
     color: white;
     cursor: pointer;
   }
   &:nth-child(2) {
-    background-color: #e0e0e0; /* 흐린 회색 */
+    background-color: #e0e0e0;
     color: black;
-    opacity: 0.5; /* 흐리게 표시 */
-    cursor: not-allowed; /* 클릭 불가 느낌 */
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 
@@ -60,18 +60,21 @@ const AccountDeletionComponent = ({ onClose }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirmDeletion = async () => {
-    setIsDeleting(true);
+    setIsDeleting(true); // 삭제 진행 상태 업데이트
     try {
       console.log("탈퇴 API 호출 중...");
-      const response = await axiosInstance.post("/api/accounts/withdraw-membership/");
-      console.log("탈퇴 완료!", response.data);
+
+      // API 요청 (DELETE 메서드)
+      await axiosInstance.delete("/api/accounts/withdraw/");
+
+      // 탈퇴 성공 후 처리
       alert("회원탈퇴가 완료되었습니다.");
       window.location.href = "/"; // 루트 경로로 리디렉션
     } catch (error) {
       console.error("탈퇴 실패:", error);
       alert("탈퇴 중 문제가 발생했습니다. 다시 시도해주세요.");
     } finally {
-      setIsDeleting(false);
+      setIsDeleting(false); // 상태 초기화
     }
   };
 
