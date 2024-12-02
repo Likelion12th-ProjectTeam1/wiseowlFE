@@ -48,8 +48,9 @@ const routes = [
   },
   {
     path: 'googleLogin',
-    element: <PrivateRoute element={<GoogleLoginRedirection />}/>,
+    element: <GoogleLoginRedirection />,
     name: '로그인 모달',
+    isPublic: true,
   },
   {
     path: 'agree',
