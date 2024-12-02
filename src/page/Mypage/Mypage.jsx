@@ -147,27 +147,24 @@ export default function Mypage() {
   }, []);
 
   const handleLogout = async () => {
-    const cookies = new Cookies(); // 쿠키 객체 생성
+    const cookies = new Cookies();
   
     try {
-      const refreshToken = cookies.get("refreshToken"); // 쿠키에서 refreshToken 가져오기
+      const refreshToken = cookies.get("refreshToken");
       if (!refreshToken) {
         throw new Error("Refresh token not found in cookies.");
       }
-  
+
       await axiosInstance.post("/api/accounts/logout/", {
-        refresh_token: refreshToken, // 서버에 Refresh Token 전달
+        refresh_token: refreshToken, 
       });
   
-      // 로그아웃 성공 시 쿠키 삭제 및 페이지 이동
       cookies.remove("accessToken", { path: "/" });
       cookies.remove("refreshToken", { path: "/" });
   
-      alert("로그아웃 되었습니다.");
       window.location.href = "/";
     } catch (err) {
       console.error("Error logging out:", err);
-      alert("로그아웃 중 문제가 발생했습니다.");
     }
   };
 
