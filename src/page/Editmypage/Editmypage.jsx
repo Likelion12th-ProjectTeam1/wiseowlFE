@@ -2,7 +2,9 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { Select } from "antd";
 import axiosInstance from "../../auth/axiosInstance";
-<FaChevronLeft size="22px" onClick={handleClick} />
+import { FaChevronLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 
 const PageContainer = styled.div`
   display: flex;
@@ -20,6 +22,9 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   height: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const HeaderTitle = styled.h1`
@@ -30,7 +35,7 @@ const HeaderTitle = styled.h1`
   font-weight: 600;
   line-height: normal;
   margin-top: 40px;
-  margin-left: 40px;
+  margin-left: 10px;
 `;
 
 const PasswordContainer = styled.div`
@@ -232,6 +237,11 @@ const GubunButton = styled.div`
   color: #fff;
   margin-bottom: 50px;
 `;
+
+const LeftButton = styled(FaChevronLeft)`
+  margin-top : 40px;
+  margin-left : 15px;
+`
 export default function EditMypage() {
   const [oldpassword, setOldpassword] = useState();
   const [newpassword, setNewpassword] = useState();
@@ -254,6 +264,7 @@ export default function EditMypage() {
   const [prevmajor , setPrevmajor] = useState(null);
   const [prevdoublecollege , setPrevdoublecollege] = useState(null);
   const [prevdoublemajor , setPrevdoublemajor] = useState(null);
+  const navigate = useNavigate();
   
 
   const handleGubunChange = (value) => {
@@ -264,6 +275,9 @@ export default function EditMypage() {
     }
   };
 
+  const Goback = () => {
+    navigate("/mypage");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -373,6 +387,7 @@ export default function EditMypage() {
   return (
     <PageContainer>
       <Header>
+        <LeftButton size="22px" onClick={Goback} />
         <HeaderTitle>회원정보 수정</HeaderTitle>
       </Header>
       <PasswordContainer>
