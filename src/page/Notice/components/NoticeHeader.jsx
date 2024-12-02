@@ -99,7 +99,7 @@ export default function NoticeHeader({sum}){
                 </DayText>
             </DayContainer>
             <CountContainer>
-                <NoticeText>새 공지사항을 확인해보세요!</NoticeText>
+                <NoticeText onClick={goToMainNoticepage}>새 공지사항을 확인해보세요!</NoticeText>
                 <Countnotice
                     onClick={() => {
                         goToMainNoticepage(); // 페이지 이동 함수

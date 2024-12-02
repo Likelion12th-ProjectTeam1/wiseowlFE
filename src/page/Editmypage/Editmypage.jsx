@@ -80,7 +80,7 @@ const PasswordText = styled.h4`
   font-weight: 500;
   line-height: normal;
   margin-left: 40px;
-  margin-top: 15px;
+  margin-top: 17px;
 `;
 
 const InputBox = styled.input`
@@ -91,7 +91,7 @@ const InputBox = styled.input`
   box-sizing: border-box; /* 패딩과 보더 포함 */
   padding: 10px; /* 내부 여백 */
   margin-left: 40px;
-  margin-top: 10px;
+  margin-top: 9px;
   border-radius: 3.696px;
   line-height: normal; /* 라인 높이 설정 */
   -webkit-appearance: none; /* 브라우저 기본 스타일 제거 */
@@ -123,6 +123,7 @@ const PasswordButton = styled.div`
   justify-content: center;
   color: #fff;
   margin-top: 70px;
+  font-size: 13px;
 `;
 
 const MajorContainer = styled.div`
@@ -159,7 +160,7 @@ const MajorText = styled.h4`
 const SelectHeader = styled.div`
   width: 100%;
   height: 20px;
-  margin-top: 20px;
+  margin-top: 28px;
   display: flex;
   font-size: row;
 `;
@@ -173,7 +174,7 @@ const SelectContainer = styled.div`
 
 const ChooseContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 50%;
   display: flex;
   flex-direction: row;
   margin-top: 10px;
@@ -188,6 +189,7 @@ const MajorButton = styled.div`
   align-items: center;
   justify-content: center;
   color: #fff;
+  font-size: 13px;
   margin-top: 90px;
 `;
 
@@ -202,11 +204,12 @@ const MiddleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 20px;
 `;
 
 const LowContainer = styled.div`
   width: 100%;
-  height: 40%;
+  height: 30%;
 `;
 
 const GubunSelect = styled(Select)`
@@ -234,7 +237,12 @@ const GubunButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #FFF;
+  font-family: Inter;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
   margin-bottom: 50px;
 `;
 
@@ -559,7 +567,17 @@ export default function EditMypage() {
           )}
         </SelectContainer>
         <ButtonContainer>
-          <MajorButton onClick={PostData}>수정완료</MajorButton>
+        <MajorButton
+            onClick={PostData}
+            style={{
+              background: selectedCollege && major ? "#5d96e8" : "#ECECEC",
+              cursor: selectedCollege && major ? "pointer" : "not-allowed",
+              color : selectedCollege && major ? "#FFF" : "#959595"
+            }}
+            disabled={!selectedCollege || !major}
+          >
+          수정완료
+          </MajorButton>
         </ButtonContainer>
       </MajorContainer>
       <GubunContainer>
@@ -569,9 +587,9 @@ export default function EditMypage() {
         </Line>
         <MiddleContainer>
           <GubunSelect
-            value={gubun}
+            placeholder="구분선택"
+            value={gubun || undefined} 
             onChange={handleGubunChange}
-            placeholder="구분 선택"
           >
             <Select.Option value="이중전공">이중전공</Select.Option>
             <Select.Option value="부전공">부전공</Select.Option>
@@ -658,7 +676,14 @@ export default function EditMypage() {
         )}
 
         <ButtonContainer>
-          <GubunButton onClick={PatchGubun}>구분 변경하기</GubunButton>
+          <GubunButton onClick={PatchGubun}
+          style={{
+            background: gubun && changecollege && changemajor ? "#5d96e8" : "#ECECEC",
+            cursor:  gubun && changecollege && changemajor ? "pointer" : "not-allowed",
+            color : gubun && changecollege && changemajor  ? "#FFF" : "#959595"
+          }}>
+            구분 변경하기
+          </GubunButton>
         </ButtonContainer>
       </GubunContainer>
     </PageContainer>
