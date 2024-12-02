@@ -755,7 +755,14 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
               />
             ))
           )}
-          <AddClassButton onClick={addClass}>수강과목 추가</AddClassButton>
+          <AddClassButton onClick={addClass}
+           style={{
+            background: selectedSemester ? "#5d96e8" : "#ECECEC",
+            cursor:  selectedSemester ? "pointer" : "not-allowed",
+            color : selectedSemester  ? "#FFF" : "#959595"
+          }}>
+            수강과목 추가
+          </AddClassButton>
         </FormBody>
         <FormFooter>
           <FooterText>학기평점</FooterText>
