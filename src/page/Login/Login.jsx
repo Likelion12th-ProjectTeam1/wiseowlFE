@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Logo, Char, GoogleLogo as ImportedGoogleLogo } from '../../img/Logo'
+import { Logo, Char, GoogleLogo as ImportedGoogleLogo } from '../../img/Logo';
+import { Cookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
     display: flex;
@@ -49,14 +51,23 @@ const ButtonContent = styled.div`
 `;
 
 export default function Login() {
+    const cookies = new Cookies();
+    const navigate = useNavigate();
 
-    const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=359516737837-3ai4hvigr4b7l8dhm6s206mk95uoamda.apps.googleusercontent.com&redirect_uri=https://wiseowlone.vercel.app/googleLogin&response_type=code&scope=openid%20profile%20email`;
+    // 엑세스/리프레시 토큰 확인 후 리다이렉트
+    useEffect(() => {
+        const accessToken = cookies.get('accessToken');
+        const refreshToken = cookies.get('refreshToken');
 
-    // 구글 로그인 리디렉션 처리
+        if (accessToken || refreshToken) {
+            console.log('Tokens found. Redirecting to /main...');
+            navigate('/main'); // 토큰이 있으면 메인 페이지로 리다이렉트
+        }
+    }, [cookies, navigate]);
+
     const handleGoogleLogin = () => {
-        window.location.href = googleURL;
+        window.location.href = 'https://largeredjade.site/api/accounts/google/login/';
     };
-
 
     return (
         <PageContainer>
@@ -72,5 +83,3 @@ export default function Login() {
         </PageContainer>
     );
 }
-
-
