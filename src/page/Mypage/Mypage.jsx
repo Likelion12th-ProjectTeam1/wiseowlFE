@@ -4,6 +4,7 @@ import MyPageLinks from "./components/Mypagelinks";
 import mypage_progile from "../../img/mypage_profile.png";
 import MypageInfoBar from "./components/MypageInfoBar";
 import axiosInstance from "../../auth/axiosInstance";
+import AccountDeletionComponent from './components/DeleteAccountModal';
 
 const Container = styled.div`
   width: 390px;
@@ -77,29 +78,35 @@ const LogoutDeleteContainer = styled.div`
   margin-top: 65px;
   color: #737373;
   font-size: 9px;
+  font-family: Inter;
+  
 
   .button-group {
     display: flex;
     gap: 3px;
     margin-bottom: 6px;
+    font-family: Inter;
   }
   
   .divider {
-    font-size: 10px;
+    font-size: 9px;
     color: #737373;
     transform: scaleX(0.6);
     display: inline-block;
+    font-family: Inter;
   }
   .copyright {
     font-size: 9px;
     color: #989898;
     text-align: center;
+    font-family: Inter;
   }
 `;
 
 const Button = styled.span`
   position: relative;
   cursor: pointer;
+  font-family: Inter;
 
   &:hover::after {
     content: '';
@@ -113,10 +120,15 @@ const Button = styled.span`
     transform-origin: bottom;
   }
 `;
+const CopyrightSymbol = styled.span`
+  font-weight: 300;
+  font-family: "Inter", Arial, sans-serif;
+`;
 
 export default function Mypage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //api 연동
   useEffect(() => {
     const fetchData = async () => {
@@ -132,19 +144,12 @@ export default function Mypage() {
     };
     fetchData();
   }, []);
+
   const handleLogout = async () => {
     try {
       await axiosInstance.post("/api/accounts/logout/");
     } catch (err) {
       console.error("Error logging out:", err);
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    try {
-      await axiosInstance.post("/api/accounts/withdraw-membership/");
-    } catch (err) {
-      console.error("Error deleting account:", err);
     }
   };
 
@@ -188,14 +193,18 @@ export default function Mypage() {
       </LinkContainer>
       <LogoutDeleteContainer>
         <div className="button-group">
-          <Button>로그아웃</Button>
+          <Button onClick={handleLogout}>로그아웃</Button>
             <span className="divider">|</span>
-          <Button>회원탈퇴</Button>
+            <Button onClick={() => setIsModalOpen(true)}>회원탈퇴</Button>
         </div>
         <div className="copyright">
-          ©위기탈출넘버원.company
+          <CopyrightSymbol>©</CopyrightSymbol>
+          위기탈출넘버원.company
         </div>
       </LogoutDeleteContainer>
+      {isModalOpen && (
+        <AccountDeletionComponent onClose={() => setIsModalOpen(false)} />
+      )}
     </Container>
   );
 }
