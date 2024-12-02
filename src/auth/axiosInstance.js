@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
           // 리프레시 토큰으로 새로운 액세스 토큰 요청
           const response = await axios.post(
             'https://largeredjade.site/api/accounts/google/token/refresh/', 
-            { refreshToken }
+            { refresh_token: refreshToken }
           );
           
           const newAccessToken = response.data.accessToken;
@@ -53,6 +53,7 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(originalRequest); // 갱신된 토큰으로 다시 요청
         } catch (refreshError) {
           console.log('Refresh token error:', refreshError);
+          window.location.href = '/';
           // 리프레시 토큰 갱신 실패 시 처리 (예: 로그인 화면으로 리다이렉트 등)
         }
       }

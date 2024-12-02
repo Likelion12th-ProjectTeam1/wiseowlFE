@@ -25,143 +25,146 @@ import Main from './page/Main/Mainpage';
 import GoogleLoginRedirection from "./page/Login/GoogleLoginRedirection";
 import EditSecondRequire from './page/Editrequire/EditSecondrequire';
 import ShoppingTwo from './page/Shopping/Shoping2';
+import PrivateRoute from './privateRoute';
 
 const routes = [
   {
     path: '/', // 상대 경로
     element: <Login />,
     name: '로그인페이지',
+    isPublic: true,
   }
   ,
   {
     path: 'landing', // 상대 경로
     element: <Landing />,
     name: '랜딩페이지',
+    isPublic: true,
   },
   {
     path: 'require', // 상대 경로
-    element: <Require />,
+    element: <PrivateRoute element={<Require />}/>,
     name: '졸업요건 페이지',
   },
   {
     path: 'googleLogin',
-    element: <GoogleLoginRedirection />,
+    element: <PrivateRoute element={<GoogleLoginRedirection />}/>,
     name: '로그인 모달',
   },
   {
     path: 'agree',
-    element: <LoginModal />,
+    element: <PrivateRoute element={<LoginModal />} />,
     name: '로그인 모달',
   },
   {
     path: 'info',
-    element: <Info />,
-    name: '정보입력 페이지',
+    element: <PrivateRoute element={<Info />} />,
+    name: '정보 입력 페이지',
   },
   {
     path: 'infotwo',
-    element: <InfoTwo />,
-    name: '정보입력 (추가)',
+    element: <PrivateRoute element={<InfoTwo />} />,
+    name: '정보 입력 추가',
   },
   {
     path: 'depthrequire',
-    element: <DepthRequire />,
-    name: '상세요건 페이지',
+    element: <PrivateRoute element={<DepthRequire />} />,
+    name: '상세 요구사항 페이지',
   },
   {
     path: 'shoppingmodal',
-    element: <ShoppingModal />,
+    element: <PrivateRoute element={<ShoppingModal />} />,
     name: '쇼핑 모달',
   },
   {
     path: 'shopping',
-    element: <Shopping />,
+    element: <PrivateRoute element={<Shopping />} />,
     name: '쇼핑 페이지',
   },
   {
     path: 'buy',
-    element: <Buy />,
+    element: <PrivateRoute element={<Buy />} />,
     name: '구매 페이지',
   },
   {
     path: 'notice',
-    element: <Notice />,
+    element: <PrivateRoute element={<Notice />} />,
     name: '공지 페이지',
   },
   {
     path: 'Main',
-    element: <Main />,
+    element: <PrivateRoute element={<Main />}/>,
     name: '공지 페이지',
   },
   {
     path: 'noticemodal',
-    element: <NoticeModal />,
+    element: <PrivateRoute element={<NoticeModal />}/>,
     name: '공지 모달',
   },
   {
     path: 'mypage',
-    element: <Mypage />,
-    name: '내정보 페이지',
+    element: <PrivateRoute element={<Mypage />} />,
+    name: '내 정보 페이지',
   },
   {
     path: 'editmypage',
-    element: <EditMypage />,
-    name: '내정보 수정 페이지',
+    element: <PrivateRoute element={<EditMypage />} />,
+    name: '내 정보 수정 페이지',
   },
   {
     path: 'editcoursepage',
-    element: <EditCourse />,
-    name: '졸업요건 수정 페이지',
+    element: <PrivateRoute element={<EditCourse />} />,
+    name: '졸업 요건 수정 페이지',
   },
   {
     path: 'editcoursemodal2',
-    element: <EditcourseModal2 />,
-    name: '졸업요건 수정 모달',
+    element: <PrivateRoute element={<EditcourseModal2 />} />,
+    name: '졸업 요건 수정 모달 2',
   },
   {
     path: 'editrequire',
-    element: <EditRequire />,
-    name: '졸업요건 수정',
+    element: <PrivateRoute element={<EditRequire />} />,
+    name: '졸업 요건 수정',
   },
   {
     path: 'subjectmodal',
-    element: <SubjectModal />,
+    element: <PrivateRoute element={<SubjectModal />} />,
     name: '이수 과목 입력 모달',
   },
   {
     path: 'subjectmodal2',
-    element: <SubjectModal2 />,
+    element: <PrivateRoute element={<SubjectModal2 />} />,
     name: '이수 과목 입력 모달 2',
   },
   {
     path: 'request',
-    element: <Request />,
+    element: <PrivateRoute element={<Request />} />,
     name: '요청 페이지',
   },
   {
     path: 'requestaccept',
-    element: <RequestAccept />,
+    element: <PrivateRoute element={<RequestAccept />} />,
     name: '요청 수락',
   },
   {
     path: 'mainnotice',
-    element: <MainNotice />,
+    element: <PrivateRoute element={<MainNotice />} />,
     name: '메인 공지',
   },
   {
     path: 'editcoursemodal1',
-    element: <EditcourseModal1 />,
+    element: <PrivateRoute element={<EditcourseModal1 />} />,
     name: '졸업 요건 수정 모달 1',
   },
   {
     path: 'editsecondrequire',
-    element: <EditSecondRequire/>,
-    name: '이중전공 졸업요건수정',
+    element: <PrivateRoute element={<EditSecondRequire />} />,
+    name: '이중 전공 졸업 요건 수정',
   },
   {
     path: 'shoppingtwo',
-    element: <ShoppingTwo/>,
-    name: '그라찌에',
+    element: <PrivateRoute element={<ShoppingTwo />} />,
+    name: '추가 쇼핑 페이지',
   }
 ];
 
