@@ -34,22 +34,12 @@ const TitleContainer = styled.div`
 const ModalTitle = styled.h2`
     color: #000;
     font-family: Inter;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 600;
-    margin-left: 25px;
-    margin-top: 35px;
+    margin-left: 30px;
+    margin-top: 40px;
 `;
 
-const TitleImg = styled.div`
-    width: 40px;
-    height: 40px;
-    background-image: url("/img/stopwatch.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    position: relative;
-    left: 20px;
-    top: 30px;
-`;
 
 const CancleImg = styled.img`
     width: 17px;
@@ -66,6 +56,7 @@ const NoticeText = styled.h4`
     font-size: 10px;
     font-weight: 500;
     margin-left: 25px;
+    margin-top : 7px;
 `;
 
 const ButtonContainer = styled.div`

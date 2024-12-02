@@ -322,17 +322,21 @@ export default function DashBoard({ data }) {
               <RequireTitle>
                 <RequireText>졸업요건</RequireText>
               </RequireTitle>
+              {data.major_requirements[0] && (
               <Requirement>
                 <RequireText>{data.major_requirements[0]}</RequireText>
               </Requirement>
+            )}
+            {data.major_requirements[1] && (
               <Requirement>
                 <RequireText>{data.major_requirements[1]}</RequireText>
               </Requirement>
-              {data.major_requirements[2] ? (
-                <Requirement>
-                  <RequireText>{data.major_requirements[2]}</RequireText>{" "}
-                </Requirement>
-              ) : null}
+            )}
+            {data.major_requirements[2] && (
+              <Requirement>
+                <RequireText>{data.major_requirements[2]}</RequireText>
+              </Requirement>
+            )}
             </RequirementsContainer>
           </ViewContainer>
         </Board>

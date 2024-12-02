@@ -306,10 +306,17 @@ const HeaderContainer = styled.div`
   flex-direction: row;
 `
 
-const Cancle = styled(IoMdCloseCircleOutline)`
-  margin-left : auto;
-  margin-right: 10px;
-`
+
+
+const CancleImg = styled.img`
+    width: 17px;
+    height: 20px;
+    position: relative;
+    left: 55px;
+    top: 30px;
+    cursor: pointer;
+`;
+
 
 const Map = ({ data }) => {
   const [activeBuilding, setActiveBuilding] = useState(null);  // 현재 활성화된 건물의 인덱스를 관리
@@ -376,7 +383,7 @@ const goToshoppingtwo = () => {
             <TitleContainer>
               <HeaderContainer>
                 <TitleText>{data[activeBuilding]?.building_name || "건물 이름 없음"}</TitleText>
-                <Cancle onClick={handleModal}/>
+                <CancleImg src="/img/cancle.svg" alt="cancle" onClick={handleModal} />
               </HeaderContainer>
               <ChooseContianer>
                 {/* 첫 번째 줄: 전체, 식장/매점, 열람실 */}
