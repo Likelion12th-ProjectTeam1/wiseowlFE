@@ -97,7 +97,7 @@ const TotalModal = styled.div`
   height: 300px;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 18px;
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
@@ -198,6 +198,7 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
   overflow-y: auto;
+  margin-top: 8px;
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Edge */
   }
@@ -266,6 +267,8 @@ const InfoText = styled.h4`
   font-weight: 600;
   line-height: normal;
 `;
+
+
 
 // Styled components
 // (Include your styled components code here as it is)

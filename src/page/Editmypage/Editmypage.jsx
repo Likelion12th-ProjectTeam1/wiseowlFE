@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { Select } from "antd";
 import axiosInstance from "../../auth/axiosInstance";
+<FaChevronLeft size="22px" onClick={handleClick} />
 
 const PageContainer = styled.div`
   display: flex;
