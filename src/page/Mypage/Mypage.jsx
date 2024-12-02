@@ -69,6 +69,51 @@ const LinkContainer = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+const LogoutDeleteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 65px;
+  color: #737373;
+  font-size: 9px;
+
+  .button-group {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 6px;
+  }
+  
+  .divider {
+    font-size: 10px;
+    color: #737373;
+    transform: scaleX(0.6);
+    display: inline-block;
+  }
+  .copyright {
+    font-size: 9px;
+    color: #989898;
+    text-align: center;
+  }
+`;
+
+const Button = styled.span`
+  position: relative;
+  cursor: pointer;
+
+  &:hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #737373;
+    transform: scaleY(0.3);
+    transform-origin: bottom;
+  }
+`;
+
 export default function Mypage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -87,6 +132,21 @@ export default function Mypage() {
     };
     fetchData();
   }, []);
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post("/api/accounts/logout/");
+    } catch (err) {
+      console.error("Error logging out:", err);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await axiosInstance.post("/api/accounts/withdraw-membership/");
+    } catch (err) {
+      console.error("Error deleting account:", err);
+    }
+  };
 
   return (
     <Container>
@@ -126,6 +186,16 @@ export default function Mypage() {
         <MyPageLinks text={"수강정보 수정"} link="/editcoursepage" />
         <MyPageLinks text={"졸업요건"} link="/editrequire" />
       </LinkContainer>
+      <LogoutDeleteContainer>
+        <div className="button-group">
+          <Button>로그아웃</Button>
+            <span className="divider">|</span>
+          <Button>회원탈퇴</Button>
+        </div>
+        <div className="copyright">
+          ©위기탈출넘버원.company
+        </div>
+      </LogoutDeleteContainer>
     </Container>
   );
 }
