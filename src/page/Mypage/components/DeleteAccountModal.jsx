@@ -65,7 +65,7 @@ const AccountDeletionComponent = ({ onClose }) => {
       console.log("탈퇴 API 호출 중...");
 
       // API 요청 (DELETE 메서드)
-      await axiosInstance.delete("/api/accounts/withdraw/");
+      await axiosInstance.delete("/api/accounts/withdraw-membership/");
 
       // 탈퇴 성공 후 처리
       alert("회원탈퇴가 완료되었습니다.");
