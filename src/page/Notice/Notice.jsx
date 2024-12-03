@@ -105,7 +105,7 @@ const SettingButton = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-bottom: 83px;
+  margin-bottom: 130px;
 `;
 
 const SettingText = styled.h3`
