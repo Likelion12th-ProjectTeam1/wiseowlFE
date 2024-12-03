@@ -267,10 +267,11 @@ export default function DashBoard({ data }) {
   function ProgressBox({ title, progress, total, complete }) {
     const current = Math.floor(progress * 54);
     const isElective = title === "자율선택\n이수율";
+    const progressrate = total > 0 ? (complete / total) * 100 : 0;
 
     return (
       <>
-        <ProgressCircleContainer progress={30}>
+        <ProgressCircleContainer progress={progressrate / 100}>
           <ProgressCircleInner>
             <ProgressText>
               <CurrentText>{complete}</CurrentText>

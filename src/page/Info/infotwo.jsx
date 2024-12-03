@@ -24,6 +24,15 @@ const CautionText = styled.h5`
   margin-right: 90px;
 `;
 
+const CautionmiddleText = styled.h5`
+  color: #a3a3a3;
+  font-family: Inter;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 70px;
+`;
+
 const FormContainer = styled.div`
   width: 95%;
   display: flex;
@@ -224,10 +233,20 @@ const SemesterText = styled.h4`
 
 `
 
+const GradenumText = styled.h4`
+  color: #737373;
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 75px;
+`;
+
 const CustomSelect = styled(Select)` // antd의 Select로 사용
   width: 120px !important;
   height: 30px !important;
   border: none !important;
+  text-align: center;
+  font-size: 11px;
   border-radius: 0 !important;
   .ant-select-selector {
     height: 30px !important;
@@ -532,13 +551,13 @@ const handleFieldChange = (index, field, value) => {
           <ClassText>재수강</ClassText>
           <ClassText>과목명</ClassText>
           <GradeText>성적</GradeText>
-          <GradeText>학점</GradeText>
+          <GradenumText>학점</GradenumText>
         </FormHeader>
         <FormBody>
           {isUpdating ? (
             <CautionText>로딩 중...</CautionText>
           ) : courses.length === 0 ? (
-            <CautionText>이 학기에는 수강과목이 없습니다.</CautionText>
+            <CautionmiddleText>이 학기에는 수강과목이 없습니다.</CautionmiddleText>
           ) : (
             courses.map((course, index) => (
               <ClassRow
@@ -551,7 +570,14 @@ const handleFieldChange = (index, field, value) => {
               />
             ))
           )}
-          <AddClassButton onClick={addClass}>과목추가</AddClassButton>
+          <AddClassButton onClick={addClass}
+           style={{
+            background: selectedSemester ? "#5d96e8" : "#ECECEC",
+            cursor:  selectedSemester ? "pointer" : "not-allowed",
+            color : selectedSemester  ? "#FFF" : "#959595"
+          }}>
+            과목추가
+          </AddClassButton>
         </FormBody>
         <FormFooter>
           <FooterText>학기평점</FooterText>

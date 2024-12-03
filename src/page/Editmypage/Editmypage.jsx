@@ -160,7 +160,7 @@ const MajorText = styled.h4`
 const SelectHeader = styled.div`
   width: 100%;
   height: 20px;
-  margin-top: 28px;
+  margin-top: 20px;
   display: flex;
   font-size: row;
 `;
@@ -171,6 +171,8 @@ const SelectContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+
 
 const ChooseContainer = styled.div`
   width: 100%;
@@ -190,7 +192,7 @@ const MajorButton = styled.div`
   justify-content: center;
   color: #fff;
   font-size: 13px;
-  margin-top: 90px;
+  margin-top: 135px;
 `;
 
 const GubunContainer = styled.div`
@@ -676,12 +678,14 @@ export default function EditMypage() {
         )}
 
         <ButtonContainer>
-          <GubunButton onClick={PatchGubun}
-          style={{
-            background: gubun && changecollege && changemajor ? "#5d96e8" : "#ECECEC",
-            cursor:  gubun && changecollege && changemajor ? "pointer" : "not-allowed",
-            color : gubun && changecollege && changemajor  ? "#FFF" : "#959595"
-          }}>
+        <GubunButton
+            onClick={PatchGubun}
+            style={{
+              background: gubun && (gubun === "전공심화" || (changecollege && changemajor)) ? "#5d96e8" : "#ECECEC",
+              cursor: gubun && (gubun === "전공심화" || (changecollege && changemajor)) ? "pointer" : "not-allowed",
+              color: gubun && (gubun === "전공심화" || (changecollege && changemajor)) ? "#FFF" : "#959595"
+            }}
+          >
             구분 변경하기
           </GubunButton>
         </ButtonContainer>
