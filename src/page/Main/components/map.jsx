@@ -309,12 +309,10 @@ const HeaderContainer = styled.div`
 
 
 const CancleImg = styled.img`
-    width: 17px;
-    height: 20px;
-    position: relative;
-    left: 55px;
-    top: 30px;
-    cursor: pointer;
+  width: 17px;
+  height: 20px;
+  margin-left: 110px;
+  cursor: pointer;
 `;
 
 
