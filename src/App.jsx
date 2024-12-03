@@ -19,7 +19,6 @@ function App() {
     "/agree",
     "/info",
     "/infotwo",
-    "/depthrequire",
     "/subjectmodal",
     "/subjectmodal2",
     "/request",

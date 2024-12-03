@@ -33,10 +33,10 @@ const HeaderHorizontalBox = styled.div`
 
 const Title = styled.h1`
   font-family: Inter;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 600;
   margin-left: 15px;
-  margin-top: 10px;
+  margin-top: 11px;
   margin-bottom: 13px;
 `;
 
@@ -441,7 +441,7 @@ export default function EditRequire() {
       ) : (
         <>
           <HeaderHorizontalBox>
-            <FaChevronLeft size="22px" onClick={Goback} />
+            <FaChevronLeft size="18px" onClick={Goback} />
             <Title>졸업요건 수정</Title>
           </HeaderHorizontalBox>
           <FirstHorizontalBox>
