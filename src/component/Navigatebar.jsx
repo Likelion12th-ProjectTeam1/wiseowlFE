@@ -4,7 +4,7 @@ import TabShape from "./TabShape";
 
 const theme = {
   colors: {
-    primary: "rgb(255,255,255)",
+    primary: "rgba(0, 0, 0, 0.0)",
   },
 };
 
