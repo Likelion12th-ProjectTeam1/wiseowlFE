@@ -708,9 +708,19 @@ useEffect(() => {
 
 
 
-function ProgressBox({ title }) {
+function ProgressBox({ title, profileGibun }) {
   const [progress, setProgress] = useState(0); // 이수율
   const [total, setTotal] = useState(54); // 기본 학점 총합, API에서 가져온 값으로 변경됨
+
+  // profileGibun에 따라 title만 변경
+  const modifiedTitle = React.useMemo(() => {
+    if (profileGibun === "이중전공") {
+      return "이중전공\n이수율"; // 이중전공일 경우 제목 수정
+    } else if (profileGibun === "부전공") {
+      return "부전공\n이수율"; // 부전공일 경우 제목 수정
+    }
+    return title; // 다른 경우에는 기본 title 유지
+  }, [title, profileGibun]);
 
   // API 호출하여 졸업 요건과 완료 학점 정보 가져오기
   const fetchCompletionData = async () => {
@@ -730,7 +740,7 @@ function ProgressBox({ title }) {
       let totalCredits = 0;
 
       // 제목에 따라 적절한 값을 선택하여 이수율 계산
-      switch (title) {
+      switch (modifiedTitle) {
         case "본전공\n이수율":
           const mainMajorCredits = completedCredits.main_major_credits || 0;
           const mainMajorGraduationCredits = requiredCredits.main_major_graduation_credits || 0;
@@ -740,6 +750,8 @@ function ProgressBox({ title }) {
           }
           break;
         case "이중전공\n이수율":
+        case "부전공\n이수율":
+          // 이중전공과 부전공은 동일한 로직 사용
           const doubleMajorCredits = completedCredits.double_minor_major_credits || 0;
           const doubleMajorGraduationCredits = requiredCredits.double_minor_major_graduation_credits || 0;
           if (doubleMajorGraduationCredits > 0) {
@@ -776,23 +788,23 @@ function ProgressBox({ title }) {
   };
 
   useEffect(() => {
-    fetchCompletionData(); // 컴포넌트가 처음 렌더링될 때 API 호출
-  }, [title]); 
-
+    if (modifiedTitle) {
+      fetchCompletionData(); // modifiedTitle이 설정되면 API 호출
+    }
+  }, [modifiedTitle]); // title이 변경될 때마다 다시 호출
 
   // total이 업데이트 될 때마다 실행
   useEffect(() => {
     console.log('Progress:', progress); // progress 상태 확인
     console.log('Total:', total); // total 상태 확인
   }, [progress, total]);
-  
 
   const current = Math.floor(progress * total / 100); // 완료된 학점 계산
-  const isElective = title === "자율선택\n이수학점"; // 자율선택 학점은 별도 처리
+  const isElective = modifiedTitle === "자율선택\n이수학점"; // 자율선택 학점은 별도 처리
 
   return (
     <ProgressBoxContainer>
-      <TitleBox>{title}</TitleBox>
+      <TitleBox>{modifiedTitle}</TitleBox>
       <ProgressCircleContainer progress={progress / 100}>
         <ProgressCircleInner>
           <ProgressText>

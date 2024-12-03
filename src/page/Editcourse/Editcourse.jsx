@@ -186,7 +186,15 @@ const GradeText = styled.h4`
   font-family: Inter;
   font-size: 12px;
   font-weight: 500;
-  margin-left: 65px;
+  margin-left: 90px;
+`;
+
+const GradenumText = styled.h4`
+  color: #737373;
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 75px;
 `;
 
 const FormText = styled.h4`
@@ -307,6 +315,8 @@ const CustomSelect = styled(Select)`
   width: 120px !important;
   height: 30px !important;
   border: none !important;
+  text-align: center;
+  font-size: 11px;
   border-radius: 0 !important;
   .ant-select-selector {
     height: 30px !important;
@@ -345,6 +355,15 @@ const CautionText = styled.h5`
   line-height: normal;
   margin-top: 70px;
   margin-right: 90px;
+`;
+
+const CautionmiddleText = styled.h5`
+  color: #a3a3a3;
+  font-family: Inter;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 70px;
 `;
 
 const FormContainer1 = styled.div`
@@ -736,13 +755,13 @@ const FormComponent = ({ semester, subjectKey, data, onlymajor }) => {
           <ClassText>재수강</ClassText>
           <ClassText>과목명</ClassText>
           <GradeText>성적</GradeText>
-          <GradeText>학점</GradeText>
+          <GradenumText>학점</GradenumText>
         </FormHeader>
         <FormBody>
           {isUpdating ? (
             <CautionText>로딩 중...</CautionText>
           ) : courses.length === 0 ? (
-            <CautionText>이 학기에는 수강과목이 없습니다.</CautionText>
+            <CautionmiddleText>이 학기에는 수강과목이 없습니다.</CautionmiddleText>
           ) : (
             courses.map((course, index) => (
               <ClassRow
