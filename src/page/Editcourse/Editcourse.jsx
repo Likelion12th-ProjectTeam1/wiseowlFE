@@ -81,7 +81,8 @@ const FirstCourse = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background: #FFF;
+  box-shadow: 0px 0.246px 3.277px 0.246px rgba(0, 0, 0, 0.25);
 `;
 
 const CourseText = styled.h3`
@@ -100,8 +101,8 @@ const SecondCourse = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #737373;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background: #FFF;
+  box-shadow: 0px 0.246px 3.277px 0.246px rgba(0, 0, 0, 0.25);
 `;
 
 const FormContainer = styled.div`
@@ -179,6 +180,7 @@ const ClassText = styled.h4`
   font-weight: 500;
   margin-right: 25px;
   margin: 7px;
+  margin-left: 10px;
 `;
 
 const GradeText = styled.h4`
@@ -186,7 +188,7 @@ const GradeText = styled.h4`
   font-family: Inter;
   font-size: 12px;
   font-weight: 500;
-  margin-left: 90px;
+  margin-left: 50px;
 `;
 
 const GradenumText = styled.h4`
@@ -194,7 +196,7 @@ const GradenumText = styled.h4`
   font-family: Inter;
   font-size: 12px;
   font-weight: 500;
-  margin-left: 75px;
+  margin-left: 40px;
 `;
 
 const FormText = styled.h4`
@@ -878,15 +880,16 @@ const ClassRow = ({
 
       {/* 삭제 버튼 */}
       <LuMinusCircle
-        onClick={() => onDelete(index)}
-        style={{
-          width: "24px",
-          height: "24px",
-          cursor: "pointer",
-          color: "#B1B0B0",
-          flexShrink: 0, // 크기 고정
-        }}
-      />
+          onClick={() => onDelete(index)}
+          style={{
+            width: "18px",
+            height: "18px",
+            cursor: "pointer", // 수정: 문자열로 감싸기
+            marginLeft: "5px", // 수정: `margin-left`를 camelCase로 수정
+            color: "#B1B0B0",
+            flexShrink: 0, // 크기 고정
+          }}
+        />
     </div>
   );
 };

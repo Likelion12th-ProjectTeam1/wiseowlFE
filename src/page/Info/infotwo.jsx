@@ -671,9 +671,10 @@ const ClassRow = ({ course, index, onFieldChange, onDelete, onCheckboxChange }) 
       <LuMinusCircle
         onClick={() => onDelete(index)}
         style={{
-          width: "24px",
-          height: "24px",
-          cursor: "pointer",
+          width: "18px",
+          height: "18px",
+          cursor: "pointer", // 수정: 문자열로 감싸기
+          marginLeft: "5px", // 수정: `margin-left`를 camelCase로 수정
           color: "#B1B0B0",
           flexShrink: 0, // 크기 고정
         }}
