@@ -9,6 +9,8 @@ const Container = styled.div`
   align-items: center;
   height: 100vh;
   width: 390px;
+  z-index: 2000;
+  position: fixed;
 `;
 
 const Image = styled.img`
