@@ -10,14 +10,13 @@ const Container = styled.div`
   height: 100vh;
   width: 390px;
   z-index: 2000;
-  position: fixed;
 `;
 
 const Image = styled.img`
   max-width: 100%;
   height: auto;
   margin-top: -250px; /* 두 섹션의 경계선에 맞추기 위한 여백 */
-  z-index: 1; /* 이미지가 위에 보이도록 설정 */
+  z-index: 2001; /* 이미지가 위에 보이도록 설정 */
   margin-right: 50px;
 `;
 
