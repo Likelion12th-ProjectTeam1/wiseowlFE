@@ -17,7 +17,7 @@ const NameContainer = styled.div`
   height : 10%;
   flex-direction : column;
   margin-top: 100px;
-  margin-left: 80px;
+  margin-left: 150px;
 `
 
 const MiddleContainer = styled.div`
@@ -32,7 +32,6 @@ const MajorContainer = styled.div`
   height: 50px;
   display: flex;
   flex-direction: row;
-  margin-top: 50px;
   margin-left: 80px;
 `;
 
@@ -199,6 +198,7 @@ const NextButton = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 30px;
+  margin-bottom: 70px;
 `;
 
 export default function Info() {
