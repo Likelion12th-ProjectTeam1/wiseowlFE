@@ -374,7 +374,7 @@ const FormContainer1 = styled.div`
   align-items: center;
 `;
 
-const Image = styled.image`
+const Image = styled.img`
   width: 11px;
   height: 11.64px;
   flex-shrink: 0;
