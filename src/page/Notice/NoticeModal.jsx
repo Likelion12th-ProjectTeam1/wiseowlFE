@@ -45,7 +45,7 @@ const CancleImg = styled.img`
     width: 17px;
     height: 20px;
     position: relative;
-    left: 55px;
+    left: 75px;
     top: 30px;
     cursor: pointer;
 `;

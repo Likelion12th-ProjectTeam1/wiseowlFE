@@ -42,7 +42,7 @@ const QuestionImg = styled.img`
     height: 30px;
     background-size: contain;
     background-repeat: no-repeat;
-    margin-top: 75px;
+    margin-top: 100px;
     margin-left: 10px;
 `;
 export default function InfoHeader(){

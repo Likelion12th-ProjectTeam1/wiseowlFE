@@ -178,7 +178,7 @@ const TitleText = styled.h2`
 const ContentContainer = styled.div`
   width: 100%;
   height: 60%;
-  padding: 10px;
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -272,15 +272,16 @@ const SelectBottomContainer = styled.div`
 `;
 
 const FacilityContainer = styled.div`
-  width: 30%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  cursor: pointer;
-  margin-top: 2px;
-`;
+    width: auto;
+    height : 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    cursor: pointer;
+    margin-top: 2px;
+    margin-right: 20px;
+`
 
 const FacilityText = styled.h4`
   font-family: Inter;

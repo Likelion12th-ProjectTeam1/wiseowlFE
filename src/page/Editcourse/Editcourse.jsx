@@ -333,7 +333,7 @@ const CustomSelect = styled(Select)`
 
 const GradeSelect = styled(Select)`
   // antd의 Select로 사용
-  width: 70px !important;
+  width: 40px !important;
   height: 30px !important;
   border: none !important;
   border-radius: 0 !important;
@@ -341,11 +341,10 @@ const GradeSelect = styled(Select)`
   .ant-select-selector {
     height: 30px !important;
     border-radius: 4px !important;
-    border: 2.811px solid #e8e8e8 !important;
-    background: #fff !important;
     color: #000 !important;
     display: flex;
     align-items: center;
+    font-size: 13px;
   }
 `;
 
@@ -856,6 +855,7 @@ const ClassRow = ({
           flexBasis: "20%", // 고정된 비율로 넓이 설정
           marginLeft: "10px",
         }}
+        suffixIcon={<Image src="/img/pen.svg" alt="pen" />}
       >
         <Select.Option value="A+">A+</Select.Option>
         <Select.Option value="A">A</Select.Option>
