@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axiosInstance from '../../auth/axiosInstance';
 import { createGlobalStyle } from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import Loading from '../../component/Loading';
 
 
 // 전역 스타일 정의
@@ -288,8 +289,8 @@ const DataRow = styled.div`
 const TitleRow = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;  
-  margin-bottom: 5px; 
+  margin-top: 25px;  
+  margin-bottom: 10px; 
   margin-left: -8px;
   width: 100%;
   color: #868686;
@@ -363,7 +364,7 @@ export default function DepthRequire() {
   // useLocation을 사용하여 `viewType` 값을 받아옵니다.
   const location = useLocation();
   const viewTypeFromRoute = location.state?.viewType || 'main';  // 'state'에 'viewType'이 없으면 'main'으로 기본값 설정
-
+  const [profileGibun, setProfileGibun] = useState('');  // 기본값 설정
   const [viewType, setViewType] = useState(viewTypeFromRoute);  // 받아온 `viewType`을 상태에 설정
 
   useEffect(() => {
@@ -393,7 +394,12 @@ export default function DepthRequire() {
             liberalArts: requiredCredits.liberal_graduation_credits,
             elective: completedCredits.elective_credits + requiredCredits.liberal_graduation_credits // 자율선택 학점은 교양학점 + 자율선택 학점으로 계산
           }
+          
         });
+        if (response.data.profile_gibun && response.data.profile_gibun.length > 0) {
+          setProfileGibun(response.data.profile_gibun[0]); // 배열의 첫 번째 요소
+          console.log('Profile Gibun set to:', response.data.profile_gibun[0]);
+      }
       }
       } catch (err) {
         setError('데이터를 가져오는 중 오류가 발생했습니다.');
@@ -408,7 +414,7 @@ export default function DepthRequire() {
   
   
   if (!data) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 // 데이터가 정상적으로 로드되었을 때에만 처리하도록 조건 추가
 const { main_major, main_major_required_courses, liberal_required_courses, double_major, profile_gibun, double_or_minor_required_courses } = data || {};
@@ -433,7 +439,7 @@ const isDoubleOrMinorView = viewType === 'double_or_minor';
    const filteredCourses = double_or_minor_required_courses.filter(course => {
      return course.subject_department_name; // 여기에 더 구체적인 조건을 추가할 수 있음
    });
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) return <Loading />;
   if (error) return <div>{error}</div>;
   
   return (
@@ -444,7 +450,11 @@ const isDoubleOrMinorView = viewType === 'double_or_minor';
         <Title>졸업진행도</Title>
         <ProgressContainer>
           <ProgressBox title={"본전공\n이수율"} progress={completionRates.major} total={completionRates.total.major} />
-          <ProgressBox title={"이중전공\n이수율"} progress={completionRates.doubleMajor} total={completionRates.total.doubleMajor} />
+          <ProgressBox 
+            title={profileGibun === "이중전공" ? "이중전공\n이수율" : "부전공\n이수율"} 
+            progress={completionRates.doubleMajor} 
+            total={completionRates.total.doubleMajor} 
+        />
           <ProgressBox title={"교양\n이수율"} progress={completionRates.liberalArts} total={completionRates.total.liberalArts} />
           <ProgressBox title={"자율선택\n이수학점"} progress={completionRates.elective} total={completionRates.total.elective} />
         </ProgressContainer>
@@ -530,9 +540,19 @@ const isDoubleOrMinorView = viewType === 'double_or_minor';
   );
 }
 
-function ProgressBox({ title }) {
+function ProgressBox({ title, profileGibun }) {
   const [progress, setProgress] = useState(0); // 이수율
   const [total, setTotal] = useState(54); // 기본 학점 총합, API에서 가져온 값으로 변경됨
+
+  // profileGibun에 따라 title만 변경
+  const modifiedTitle = React.useMemo(() => {
+    if (profileGibun === "이중전공") {
+      return "이중전공\n이수율"; // 이중전공일 경우 제목 수정
+    } else if (profileGibun === "부전공") {
+      return "부전공\n이수율"; // 부전공일 경우 제목 수정
+    }
+    return title; // 다른 경우에는 기본 title 유지
+  }, [title, profileGibun]);
 
   // API 호출하여 졸업 요건과 완료 학점 정보 가져오기
   const fetchCompletionData = async () => {
@@ -552,7 +572,7 @@ function ProgressBox({ title }) {
       let totalCredits = 0;
 
       // 제목에 따라 적절한 값을 선택하여 이수율 계산
-      switch (title) {
+      switch (modifiedTitle) {
         case "본전공\n이수율":
           const mainMajorCredits = completedCredits.main_major_credits || 0;
           const mainMajorGraduationCredits = requiredCredits.main_major_graduation_credits || 0;
@@ -562,6 +582,8 @@ function ProgressBox({ title }) {
           }
           break;
         case "이중전공\n이수율":
+        case "부전공\n이수율":
+          // 이중전공과 부전공은 동일한 로직 사용
           const doubleMajorCredits = completedCredits.double_minor_major_credits || 0;
           const doubleMajorGraduationCredits = requiredCredits.double_minor_major_graduation_credits || 0;
           if (doubleMajorGraduationCredits > 0) {
@@ -598,21 +620,23 @@ function ProgressBox({ title }) {
   };
 
   useEffect(() => {
-    fetchCompletionData(); // 컴포넌트가 처음 렌더링될 때 API 호출
-  }, [title]); // title이 변경될 때마다 다시 호출
+    if (modifiedTitle) {
+      fetchCompletionData(); // modifiedTitle이 설정되면 API 호출
+    }
+  }, [modifiedTitle]); // title이 변경될 때마다 다시 호출
 
+  // total이 업데이트 될 때마다 실행
   useEffect(() => {
     console.log('Progress:', progress); // progress 상태 확인
     console.log('Total:', total); // total 상태 확인
   }, [progress, total]);
-  
 
   const current = Math.floor(progress * total / 100); // 완료된 학점 계산
-  const isElective = title === "자율선택\n이수학점"; // 자율선택 학점은 별도 처리
+  const isElective = modifiedTitle === "자율선택\n이수학점"; // 자율선택 학점은 별도 처리
 
   return (
     <ProgressBoxContainer>
-      <TitleBox>{title}</TitleBox>
+      <TitleBox>{modifiedTitle}</TitleBox>
       <ProgressCircleContainer progress={progress / 100}>
         <ProgressCircleInner>
           <ProgressText>
@@ -629,3 +653,4 @@ function ProgressBox({ title }) {
     </ProgressBoxContainer>
   );
 }
+

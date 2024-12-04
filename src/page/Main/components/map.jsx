@@ -19,7 +19,6 @@ const MapImage = styled.div`
   background-position: center;
   position: relative;
   z-index: 0;
-
 `;
 
 const BuildingZero = styled.div`
@@ -74,7 +73,7 @@ const BuildingThree = styled.div`
   background-size: cover;
   transform: scale(0.9);
   &:hover {
-    transform: scale(1.0);
+    transform: scale(1);
   }
 `;
 
@@ -88,7 +87,7 @@ const BuildingFour = styled.div`
   background-size: cover;
   transform: scale(0.9);
   &:hover {
-    transform: scale(1.0);
+    transform: scale(1);
   }
 `;
 
@@ -102,7 +101,7 @@ const BuildingFive = styled.div`
   background-size: cover;
   transform: scale(0.9);
   &:hover {
-    transform: scale(1.0);
+    transform: scale(1);
   }
 `;
 
@@ -162,7 +161,6 @@ const TotalModal = styled.div`
   background-color: #fff;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 10;
-  
 `;
 
 const TitleContainer = styled.div`
@@ -171,6 +169,7 @@ const TitleContainer = styled.div`
 `;
 
 const TitleText = styled.h2`
+  width: 100px;
   color: #000;
   font-size: 12px;
   font-weight: 600;
@@ -188,11 +187,10 @@ const ContentContainer = styled.div`
   }
   -ms-overflow-style: none; /* IE/Edge */
   scrollbar-width: none; /* Firefox */
-
 `;
 
 const ContentButton = styled.div`
-  width: 114px;
+  width: 124px; //기존 114에서 너비 수정
   height: 25px;
   display: flex;
   align-items: center;
@@ -201,11 +199,11 @@ const ContentButton = styled.div`
   background: #f9f9f9;
   padding-top: 7px;
   padding-bottom: 8px;
-  padding-left: 15px;
-  padding-right : 7px;
+  padding-left: 7px;
+  padding-right: 7px;
   margin-top: 10px;
   border: 1px solid rgba(115, 115, 115, 0.3);
-  gap: 10px;
+  gap: 5px;
 `;
 
 const ContentText = styled.h4`
@@ -218,33 +216,60 @@ const ContentText = styled.h4`
   white-space: nowrap;
 `;
 
+const InfoTextBname = styled.h4`
+  width: 60px;
+  color: #a5a3a3;
+  font-family: Inter;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+`;
 const InfoText = styled.h4`
-    color: #A5A3A3;
-    font-family: Inter;
-    font-size: 4px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-`
+  color: #a5a3a3;
+  font-family: Inter;
+  font-size: 6px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+`;
 
 const InfoContainer = styled.div`
-    width: 60px;
-    height: 7px; /* 원하는 너비 설정 */
-    white-space: nowrap; /* 텍스트가 한 줄에만 표시되도록 설정 */
-    overflow: hidden; /* 넘치는 텍스트는 보이지 않게 설정 */
-    text-overflow: ellipsis; /* 넘치는 텍스트는 "..."으로 표시 */
-    display: flex;
-    gap: 5px;
-    flex-direction: row;
-    align-items: center;
-    margin-left: auto;
-`
+  width: 60px;
+  height: 7px; /* 원하는 너비 설정 */
+  white-space: nowrap; /* 텍스트가 한 줄에만 표시되도록 설정 */
+  overflow: hidden; /* 넘치는 텍스트는 보이지 않게 설정 */
+  text-overflow: ellipsis; /* 넘치는 텍스트는 "..."으로 표시 */
+  display: flex;
+  gap: 2px;
+  flex-direction: row;
+  align-items: center;
+  margin-left: auto;
+`;
 
 const Line = styled.div`
-    width : 0.5px;
-    height : 100%;
-    background-color: #D4D4D4;
-`
+  width: 0.6px;
+  height: 100%;
+  background-color: #d4d4d4;
+  margin: 0 2px;
+`;
+
+const SelectTopContainer = styled.div`
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: row;
+  padding: 1px;
+`;
+
+const SelectBottomContainer = styled.div`
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: row;
+  padding: 1px;
+`;
+
 
 const SelectContainer = styled.div`
     width : 100%;
@@ -254,13 +279,7 @@ const SelectContainer = styled.div`
     padding : 1px;
 `
 
-const SelectContainertwo = styled.div`
-    width : 100%;
-    height : 70%;
-    display : flex;
-    flex-direction: row;
-    padding : 1px;
-`
+
 const FacilityContainer = styled.div`
     width: auto;
     height : 100%;
@@ -274,50 +293,50 @@ const FacilityContainer = styled.div`
 `
 
 const FacilityText = styled.h4`
-    font-family: Inter;
-    font-size: 7px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    color: ${({ isButtonactive }) => (isButtonactive ? "#5D96E8" : "#D4D4D4;")};
-    transition: color 0.3s, background-color 0.3s;
-`
+  font-family: Inter;
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: ${({ isButtonactive }) => (isButtonactive ? "#5D96E8" : "#D4D4D4;")};
+  transition: color 0.3s, background-color 0.3s;
+`;
 
 const FacilityCount = styled.div`
-    width: 15px;
-    height: 11px;
-    display: flex;
-    color: #FFF;
-    font-family: Inter;
-    font-size: 8px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    justify-content: center;
-    align-items: center;
-    border-radius: 7px;
-    background: ${({ isButtonactive }) => (isButtonactive ? "#5D96E8" : "#D4D4D4;")};
-    color: #FFF;
-    margin-left: 1px;
-    `
+  width: 15px;
+  height: 11px;
+  display: flex;
+  color: #fff;
+  font-family: Inter;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  background: ${({ isButtonactive }) =>
+    isButtonactive ? "#5D96E8" : "#D4D4D4;"};
+  color: #fff;
+  margin-left: 5px;
+`;
 
 const ChooseContianer = styled.div`
-  width : 100%;
-  height : 50%;
+  width: 100%;
+  height: 50%;
   display: flex;
   flex-direction: column;
-`
+`;
 
 
 
 const HeaderContainer = styled.div`
-  width : 100%;
-  height : 30%;
+  width: 100%;
+  height: 30%;
   display: flex;
   flex-direction: row;
-`
-
-
+  margin-bottom: 8px;
+`;
 
 const CancleImg = styled.img`
   width: 17px;
@@ -326,9 +345,8 @@ const CancleImg = styled.img`
   cursor: pointer;
 `;
 
-
 const Map = ({ data }) => {
-  const [activeBuilding, setActiveBuilding] = useState(null);  // 현재 활성화된 건물의 인덱스를 관리
+  const [activeBuilding, setActiveBuilding] = useState(null); // 현재 활성화된 건물의 인덱스를 관리
   const [facilityList, setFacilityList] = useState([]);
   const mapRef = useRef(null);
   const navigate = useNavigate();
@@ -337,20 +355,20 @@ const Map = ({ data }) => {
     const selectedBuilding = data[buildingIndex];
 
     if (selectedBuilding && selectedBuilding.facilities_summary) {
-      setActiveBuilding(buildingIndex);  // 해당 건물을 클릭하면 그 건물만 모달이 열리도록
+      setActiveBuilding(buildingIndex); // 해당 건물을 클릭하면 그 건물만 모달이 열리도록
       console.log(selectedBuilding);
       console.log(selectedBuilding.facilities_summary);
       console.log(activeBuilding);
-      
 
-      const allFacilities = selectedBuilding.facilities_summary.facility_set.find(
-        (category) => category.facility_category === "전체"
-      );
+      const allFacilities =
+        selectedBuilding.facilities_summary.facility_set.find(
+          (category) => category.facility_category === "전체"
+        );
 
       setFacilityList(allFacilities ? allFacilities.facility_list : []);
     } else {
       console.error(`인덱스 ${buildingIndex}에 대한 정보가 없습니다.`);
-      setActiveBuilding(null);  // 건물 정보가 없으면 모달을 닫음
+      setActiveBuilding(null); // 건물 정보가 없으면 모달을 닫음
     }
   };
 
@@ -362,15 +380,15 @@ const Map = ({ data }) => {
 
   const handleModal = (e) => {
     setActiveBuilding(null);
-  }
+  };
 
   const goToshopping = () => {
     navigate("/shopping");
-};
+  };
 
-const goToshoppingtwo = () => {
-  navigate("/shoppingtwo");
-};
+  const goToshoppingtwo = () => {
+    navigate("/shoppingtwo");
+  };
 
   return (
     <ImageContainer>
@@ -391,15 +409,23 @@ const goToshoppingtwo = () => {
           <TotalModal>
             <TitleContainer>
               <HeaderContainer>
-                <TitleText>{data[activeBuilding]?.building_name || "건물 이름 없음"}</TitleText>
-                <CancleImg src="/img/cancle.svg" alt="cancle" onClick={handleModal} />
+                <TitleText>
+                  {data[activeBuilding]?.building_name || "건물 이름 없음"}
+                </TitleText>
+                <CancleImg
+                  src="/img/cancle.svg"
+                  alt="cancle"
+                  onClick={handleModal}
+                />
               </HeaderContainer>
               <ChooseContianer>
                 {/* 첫 번째 줄: 전체, 식장/매점, 열람실 */}
-                <SelectContainer>
+                <SelectTopContainer>
                   {data[activeBuilding].facilities_summary.facility_set
                     .filter((category) =>
-                      ["전체", "카페/식당", "열람실"].includes(category.facility_category)
+                      ["전체", "카페/식당", "열람실"].includes(
+                        category.facility_category
+                      )
                     )
                     .map((category, index) => (
                       <FacilityContainer
@@ -409,24 +435,30 @@ const goToshoppingtwo = () => {
                         }
                       >
                         <FacilityText
-                          isButtonactive={facilityList === category.facility_list}
+                          isButtonactive={
+                            facilityList === category.facility_list
+                          }
                         >
                           {category.facility_category}
                         </FacilityText>
                         <FacilityCount
-                          isButtonactive={facilityList === category.facility_list}
+                          isButtonactive={
+                            facilityList === category.facility_list
+                          }
                         >
                           {category.facility_list.length}
                         </FacilityCount>
                       </FacilityContainer>
                     ))}
-                </SelectContainer>
+                </SelectTopContainer>
 
                 {/* 두 번째 줄: 컴퓨터/복사기, 기타 */}
-                <SelectContainertwo>
+                <SelectBottomContainer>
                   {data[activeBuilding].facilities_summary.facility_set
                     .filter((category) =>
-                      ["컴퓨터/복사기", "기타"].includes(category.facility_category)
+                      ["컴퓨터/복사기", "기타"].includes(
+                        category.facility_category
+                      )
                     )
                     .map((category, index) => (
                       <FacilityContainer
@@ -436,39 +468,44 @@ const goToshoppingtwo = () => {
                         }
                       >
                         <FacilityText
-                          isButtonactive={facilityList === category.facility_list}
+                          isButtonactive={
+                            facilityList === category.facility_list
+                          }
                         >
                           {category.facility_category}
                         </FacilityText>
                         <FacilityCount
-                          isButtonactive={facilityList === category.facility_list}
+                          isButtonactive={
+                            facilityList === category.facility_list
+                          }
                         >
                           {category.facility_list.length}
                         </FacilityCount>
                       </FacilityContainer>
                     ))}
-                </SelectContainertwo>
-              </ChooseContianer> 
+                </SelectBottomContainer>
+              </ChooseContianer>
             </TitleContainer>
             <ContentContainer>
               {/* 시설 리스트 */}
               {facilityList.length > 0 ? (
                 facilityList.map((facility, index) => (
                   <ContentButton
-                        key={index}
-                        onClick={() => {
-                          // "던킨도넛"인 경우에만 handleGo 함수 호출
-                          if (facility.facility_name === "던킨") {
-                            goToshopping();
-                          }else if (facility.facility_name === "그라찌에") {
-                            console.log("그라찌에 버튼 클릭");
-                            // "그라찌에"일 경우 goToshoppingtwo 함수 호출
-                            goToshoppingtwo();}
-                        }}
-                      >
+                    key={index}
+                    onClick={() => {
+                      // "던킨도넛"인 경우에만 handleGo 함수 호출
+                      if (facility.facility_name === "던킨") {
+                        goToshopping();
+                      } else if (facility.facility_name === "그라찌에") {
+                        console.log("그라찌에 버튼 클릭");
+                        // "그라찌에"일 경우 goToshoppingtwo 함수 호출
+                        goToshoppingtwo();
+                      }
+                    }}
+                  >
                     <ContentText>{facility.facility_name}</ContentText>
                     <InfoContainer>
-                      <InfoText>{facility.building_name}</InfoText>
+                      <InfoTextBname>{facility.building_name}</InfoTextBname>
                       <InfoText>{facility.facility_loc}</InfoText>
                       <Line />
                       <InfoText>{facility.facility_desc}</InfoText>
@@ -483,6 +520,7 @@ const goToshoppingtwo = () => {
         )}
       </MapImage>
     </ImageContainer>
-  );};
-  
-  export default Map;
+  );
+};
+
+export default Map;

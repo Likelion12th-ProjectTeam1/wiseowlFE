@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Cookies } from "react-cookie";
 import axiosInstance from "../../../auth/axiosInstance";
 
 const ModalBackground = styled.div`
@@ -60,15 +61,22 @@ const AccountDeletionComponent = ({ onClose }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirmDeletion = async () => {
+    const cookies = new Cookies();
     setIsDeleting(true); // 삭제 진행 상태 업데이트
     try {
       console.log("탈퇴 API 호출 중...");
-
+      const refreshToken = cookies.get("refreshToken");
+      if (!refreshToken) {
+        throw new Error("Refresh token not found in cookies.");
+      }
       // API 요청 (DELETE 메서드)
-      await axiosInstance.delete("/api/accounts/withdraw/");
+      await axiosInstance.delete("/api/accounts/withdraw-membership/", {
+        refresh_token: refreshToken, 
+      });
 
-      // 탈퇴 성공 후 처리
-      alert("회원탈퇴가 완료되었습니다.");
+      cookies.remove("accessToken", { path: "/" });
+      cookies.remove("refreshToken", { path: "/" });
+      
       window.location.href = "/"; // 루트 경로로 리디렉션
     } catch (error) {
       console.error("탈퇴 실패:", error);

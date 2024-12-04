@@ -287,7 +287,7 @@ const WrapperRow = styled.div`
 
 
 const StyledP = styled.p`
-  font-size: 14px; 
+  font-size: 8px; 
   color: #000000;
   margin: 0;
   padding: 0;
@@ -344,13 +344,14 @@ export default function Require() {
   const [modalContent, setModalContent] = useState(null);
   const navigate = useNavigate(); 
   const handleNoticeClick = async (type, e) => {
-    // 클릭 이벤트 전파 방지
     e.stopPropagation();
+    console.log('Notice type:', type);  // type이 잘 전달되는지 확인
 
 
     try {
       const response = await axiosInstance.get('/api/requirements/i/');
       const data = response.data;
+      console.log('API Response:', data);
 
       // 타입에 따라 모달 내용 설정
       if (type === 'major') {
@@ -364,6 +365,31 @@ export default function Require() {
       console.error('Error fetching modal data:', error);
     }
   };
+
+  useEffect(() => {
+    const mockData = {
+      major: {
+        requirement_description: "졸업프로젝트 FAIL시 졸업시험",
+        lang_test: {
+          basic: [
+            { test_name: "TOEIC", test_basic_score: "645점 이상" }
+          ],
+          etc: [
+            { test_name: "FLEX", test_basic_score: "551점 이상" },
+            { test_name: "FLEX Speaking", test_basic_score: "160점 이상" },
+            { test_name: "TOEIC Speaking", test_basic_score: "110점 이상" },
+            { test_name: "OPIC", test_basic_score: "IM1 이상" }
+          ]
+        },
+        extra_foreign_test: [
+          { extra_test_name: "시험 A", extra_test_basic_score: "100점 이상", extra_test_gubun: "종류 A" },
+          { extra_test_name: "시험 B", extra_test_basic_score: "200점 이상", extra_test_gubun: "종류 B" }
+        ]
+      }
+    };
+  
+    setModalContent(mockData); // 목데이터 설정
+  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -410,6 +436,64 @@ useEffect(() => {
 }, [viewType, navigate]);  // viewType 변경 시 effect 실행
 
 
+
+
+
+
+useEffect(() => {
+  // Sample data from your JSON response, replace this with actual API call
+  const fetchedData = {
+    profile_gibun: "부전공",
+    main_major_conditions: {
+      complete_requirment: [
+        {
+          grad_research: false,
+          grad_exam: false,
+          grad_pro: false,
+          grad_certificate: false,
+          for_language: false
+        }
+      ],
+      requirement: [
+        {
+          graduation_foreign: true,
+          graduation_project: true,
+          graduation_exam: false,
+          graduation_thesis: true,
+          graduation_qualifications: false,
+          graduation_requirments: true
+        }
+      ]
+    },
+    double_minor_major_conditions: {
+      double_complete_requirment: [
+        {
+          double_grad_research: false,
+          double_grad_exam: false,
+          double_grad_pro: false,
+          double_grad_certificate: false,
+          double_for_language: false
+        }
+      ],
+      requirement: [
+        {
+          graduation_project: false,
+          graduation_exam: false,
+          graduation_thesis: true,
+          graduation_qualifications: false,
+          graduation_requirments: true
+        }
+      ]
+    }
+  };
+
+  setRequirements(fetchedData);
+  setProfileGibun(fetchedData.profile_gibun);
+  setCompleteRequirement(fetchedData.main_major_conditions.complete_requirment[0]);
+}, []);
+
+
+
   useEffect(() => {
     // navigate 함수는 페이지를 이동시키는 역할을 합니다.
 
@@ -423,6 +507,10 @@ useEffect(() => {
         if (response.data.main_major_conditions && response.data.main_major_conditions.complete_requirment) {
           setCompleteRequirement(response.data.main_major_conditions.complete_requirment[0]);
         }
+        if (response.data.profile_gibun && response.data.profile_gibun.length > 0) {
+          setProfileGibun(response.data.profile_gibun[0]); // 배열의 첫 번째 요소
+          console.log('Profile Gibun set to:', response.data.profile_gibun[0]);
+      }
 
         /// 'profile_gibun' 값에 "이중전공" 또는 "부전공"이 포함되었는지 확인
         if (response.data.profile_gibun) {
@@ -445,6 +533,8 @@ useEffect(() => {
           const liberalArtsCompletion = (completedCredits.liberal_credits / requiredCredits.liberal_graduation_credits) * 100;
           // 자율선택 이수율 계산
           const electiveCompletion = (completedCredits.elective_credits / (requiredCredits.liberal_graduation_credits + completedCredits.elective_credits)) * 100;
+
+        
 
           // 졸업 요건 총 학점도 계산
           setCompletionRates({
@@ -474,6 +564,10 @@ useEffect(() => {
 
   // 졸업 요건을 출력하는 함수
   const renderRequirements = (requirements, completeRequirement) => {
+    if (!requirements || !completeRequirement) {
+      return <div>요건 데이터가 없습니다.</div>; // 데이터가 없으면 메시지 표시
+    }
+
     return requirements.map((req, index) => (
       <RequirementBox key={index}>
         {/* 졸업 요건에 따라 '본전공' 또는 '이중전공'을 렌더링 */}
@@ -597,7 +691,11 @@ useEffect(() => {
         <Title>졸업진행도</Title>
         <ProgressContainer>
         <ProgressBox title={"본전공\n이수율"} progress={completionRates.major} total={completionRates.total.major} />
-          <ProgressBox title={"이중전공\n이수율"} progress={completionRates.doubleMajor} total={completionRates.total.doubleMajor} />
+        <ProgressBox 
+            title={profileGibun === "이중전공" ? "이중전공\n이수율" : "부전공\n이수율"} 
+            progress={completionRates.doubleMajor} 
+            total={completionRates.total.doubleMajor} 
+        />
           <ProgressBox title={"교양\n이수율"} progress={completionRates.liberalArts} total={completionRates.total.liberalArts} />
           <ProgressBox title={"자율선택\n이수학점"} progress={completionRates.elective} total={completionRates.total.elective} />
         </ProgressContainer>
@@ -644,15 +742,13 @@ useEffect(() => {
       {isModalOpen && modalContent && (
   <ModalBackground onClick={closeModal}>
     <NoticeModal onClick={(e) => e.stopPropagation()}>
-
       <ModalContent>
-        {/* lang_test.basic이 있을 때만 ModalTitle과 Image를 렌더링 */}
-        {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 && (
+        {/* 어학시험 데이터가 있을 때만 렌더링 */}
+        {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 ? (
           <>
             <ModalTitle>어학시험</ModalTitle>
             <WrapperRow>
               <Image src="/img/Book.svg" alt="Request" />
-
               {modalContent.lang_test.basic.map((test, index) => (
                 <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                   <StyledP style={{ marginRight: '10px' }}>{test.test_name}</StyledP>
@@ -661,12 +757,14 @@ useEffect(() => {
               ))}
             </WrapperRow>
           </>
+        ) : (
+          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
         )}
 
         {/* 대체 가능한 시험이 있을 때만 렌더링 */}
-        {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 && (
+        {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 ? (
           <WrapperRow>
-            <StyledP3>대체 가능 시험 </StyledP3>
+            <StyledP3>대체 가능 시험</StyledP3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
               {modalContent.lang_test.etc.map((test, index) => (
                 <StyledP4 key={index}>
@@ -675,10 +773,12 @@ useEffect(() => {
               ))}
             </div>
           </WrapperRow>
+        ) : (
+          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
         )}
 
         {/* 추가 어학 시험이 있을 때만 렌더링 */}
-        {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 && (
+        {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 ? (
           <>
             <StyledP5>추가 어학 시험:</StyledP5>
             {modalContent.extra_foreign_test.map((extraTest, index) => (
@@ -687,20 +787,24 @@ useEffect(() => {
               </StyledP6>
             ))}
           </>
+        ) : (
+          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
         )}
 
         {/* 기타 정보가 있을 때만 렌더링 */}
-        {modalContent.requirement_description && (
+        {modalContent.requirement_description ? (
           <>
             <StyledP5>기타</StyledP5>
             <StyledP6>{modalContent.requirement_description}</StyledP6>
           </>
+        ) : (
+          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
         )}
       </ModalContent>
-
     </NoticeModal>
   </ModalBackground>
 )}
+
 
     </PageContainer>
   );
@@ -708,9 +812,19 @@ useEffect(() => {
 
 
 
-function ProgressBox({ title }) {
+function ProgressBox({ title, profileGibun }) {
   const [progress, setProgress] = useState(0); // 이수율
   const [total, setTotal] = useState(54); // 기본 학점 총합, API에서 가져온 값으로 변경됨
+
+  // profileGibun에 따라 title만 변경
+  const modifiedTitle = React.useMemo(() => {
+    if (profileGibun === "이중전공") {
+      return "이중전공\n이수율"; // 이중전공일 경우 제목 수정
+    } else if (profileGibun === "부전공") {
+      return "부전공\n이수율"; // 부전공일 경우 제목 수정
+    }
+    return title; // 다른 경우에는 기본 title 유지
+  }, [title, profileGibun]);
 
   // API 호출하여 졸업 요건과 완료 학점 정보 가져오기
   const fetchCompletionData = async () => {
@@ -730,7 +844,7 @@ function ProgressBox({ title }) {
       let totalCredits = 0;
 
       // 제목에 따라 적절한 값을 선택하여 이수율 계산
-      switch (title) {
+      switch (modifiedTitle) {
         case "본전공\n이수율":
           const mainMajorCredits = completedCredits.main_major_credits || 0;
           const mainMajorGraduationCredits = requiredCredits.main_major_graduation_credits || 0;
@@ -740,6 +854,8 @@ function ProgressBox({ title }) {
           }
           break;
         case "이중전공\n이수율":
+        case "부전공\n이수율":
+          // 이중전공과 부전공은 동일한 로직 사용
           const doubleMajorCredits = completedCredits.double_minor_major_credits || 0;
           const doubleMajorGraduationCredits = requiredCredits.double_minor_major_graduation_credits || 0;
           if (doubleMajorGraduationCredits > 0) {
@@ -776,23 +892,23 @@ function ProgressBox({ title }) {
   };
 
   useEffect(() => {
-    fetchCompletionData(); // 컴포넌트가 처음 렌더링될 때 API 호출
-  }, [title]); 
-
+    if (modifiedTitle) {
+      fetchCompletionData(); // modifiedTitle이 설정되면 API 호출
+    }
+  }, [modifiedTitle]); // title이 변경될 때마다 다시 호출
 
   // total이 업데이트 될 때마다 실행
   useEffect(() => {
     console.log('Progress:', progress); // progress 상태 확인
     console.log('Total:', total); // total 상태 확인
   }, [progress, total]);
-  
 
   const current = Math.floor(progress * total / 100); // 완료된 학점 계산
-  const isElective = title === "자율선택\n이수학점"; // 자율선택 학점은 별도 처리
+  const isElective = modifiedTitle === "자율선택\n이수학점"; // 자율선택 학점은 별도 처리
 
   return (
     <ProgressBoxContainer>
-      <TitleBox>{title}</TitleBox>
+      <TitleBox>{modifiedTitle}</TitleBox>
       <ProgressCircleContainer progress={progress / 100}>
         <ProgressCircleInner>
           <ProgressText>
