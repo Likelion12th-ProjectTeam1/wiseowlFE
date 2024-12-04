@@ -136,6 +136,7 @@ const CollegeSelect = styled(Select)`
   height: 30px !important;
   border: none !important;
   border-radius: 0 !important;
+  font-size: 11px;
   margin-left: 40px;
   .ant-select-selector {
     height: 30px !important;
@@ -570,16 +571,23 @@ export default function EditMypage() {
         </SelectContainer>
         <ButtonContainer>
         <MajorButton
-            onClick={PostData}
-            style={{
-              background: selectedCollege && major ? "#5d96e8" : "#ECECEC",
-              cursor: selectedCollege && major ? "pointer" : "not-allowed",
-              color : selectedCollege && major ? "#FFF" : "#959595"
-            }}
-            disabled={!selectedCollege || !major}
-          >
+          onClick={PostData}
+          style={{
+            background:
+              (doublecollege && doublemajor) || (selectedCollege && major) 
+              ? "#5d96e8" 
+              : "#ECECEC",
+            cursor: (doublecollege && doublemajor) || (selectedCollege && major) 
+              ? "pointer" 
+              : "not-allowed",
+            color: (doublecollege && doublemajor) || (selectedCollege && major) 
+              ? "#FFF" 
+              : "#959595"
+          }}
+          disabled={!(doublecollege && doublemajor) && !(selectedCollege && major)}
+        >
           수정완료
-          </MajorButton>
+        </MajorButton>
         </ButtonContainer>
       </MajorContainer>
       <GubunContainer>

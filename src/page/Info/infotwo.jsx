@@ -108,6 +108,7 @@ const ClassText = styled.h4`
   font-weight: 500;
   margin-right: 25px;
   margin: 7px;
+  margin-left: 10px;
 `;
 
 const GradeText = styled.h4`
@@ -115,7 +116,7 @@ const GradeText = styled.h4`
   font-family: Inter;
   font-size: 12px;
   font-weight: 500;
-  margin-left: 65px;
+  margin-left: 105px;
 `;
 
 const FormText = styled.h4`
@@ -238,7 +239,7 @@ const GradenumText = styled.h4`
   font-family: Inter;
   font-size: 12px;
   font-weight: 500;
-  margin-left: 75px;
+  margin-left: 45px;
 `;
 
 const CustomSelect = styled(Select)` // antd의 Select로 사용
@@ -671,9 +672,10 @@ const ClassRow = ({ course, index, onFieldChange, onDelete, onCheckboxChange }) 
       <LuMinusCircle
         onClick={() => onDelete(index)}
         style={{
-          width: "24px",
-          height: "24px",
-          cursor: "pointer",
+          width: "18px",
+          height: "18px",
+          cursor: "pointer", // 수정: 문자열로 감싸기
+          marginLeft: "5px", // 수정: `margin-left`를 camelCase로 수정
           color: "#B1B0B0",
           flexShrink: 0, // 크기 고정
         }}
