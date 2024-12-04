@@ -14,7 +14,7 @@ const Container = styled.div`
   min-height: 100vh; 
   text-align: left; 
   padding-top: 50px; 
-  padding-left: 50px; 
+  padding-left: 38px; 
   width: 390px;
 `;
 
@@ -110,6 +110,7 @@ const SubmitButton = styled.button`
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   width: 258px;
   height: 40px;
+  margin-left: 20px;
   
   &:hover {
     background-color: ${props => props.disabled ? '#ECECEC' : '#5D96E8'};

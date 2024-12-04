@@ -87,7 +87,7 @@ const Text = styled.p`
   color: #000;
 `;
 function NoticeItem({ organization, min, text, isread, link }) {
-  const maxLength = 37; //37자까지 표시
+  const maxLength = 30; //30자까지 표시
   const slicedText =
     text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 

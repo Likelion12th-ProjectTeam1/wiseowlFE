@@ -23,8 +23,8 @@ const LeftText = styled.p`
 `;
 
 const RightText = styled.p`
-  width: 160px;
-  padding-left: 25px;
+  width: 125px;
+  padding-left: 10px;
   font-weight: 600;
   color: #737373;
   text-align: left;
