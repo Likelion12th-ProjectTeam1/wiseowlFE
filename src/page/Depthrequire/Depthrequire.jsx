@@ -269,7 +269,7 @@ const MajorSubjectItem = styled.div`
 
 const SubjectBox = styled.div`
   width: 100%;
-  padding: 10px;
+  padding: 20px;
   background-color: #fff;
   border-radius: 5px;
   margin-top: 20px;
@@ -322,7 +322,6 @@ const CompletionStatus = styled.div`
   justify-content: center;
   margin: 0 auto;
   padding: 4px 0; /* 여백 추가 */
-  margin-bottom: 10px; /* 아래쪽 여백 추가 */
 `;
 
 
@@ -370,6 +369,10 @@ export default function DepthRequire() {
   const [profileGibun, setProfileGibun] = useState('');  // 기본값 설정
   const [viewType, setViewType] = useState(viewTypeFromRoute);  // 받아온 `viewType`을 상태에 설정
 
+
+
+
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
