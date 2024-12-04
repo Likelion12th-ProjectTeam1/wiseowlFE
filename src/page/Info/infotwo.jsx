@@ -268,7 +268,6 @@ const GradeSelect = styled(Select)` // antd의 Select로 사용
   margin-left: 18px;
   .ant-select-selector {
     height: 30px !important;
-    background: #FFF !important;
     color: #000 !important;
     display: flex;
     align-items: center;
