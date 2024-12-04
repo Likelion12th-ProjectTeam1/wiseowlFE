@@ -321,7 +321,10 @@ const CompletionStatus = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  padding: 4px 0; /* 여백 추가 */
+  margin-bottom: 10px; /* 아래쪽 여백 추가 */
 `;
+
 
 const ButtonContainer = styled.div`
   display: flex;

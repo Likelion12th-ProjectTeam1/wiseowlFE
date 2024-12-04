@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../auth/axiosInstance';
 import styled from 'styled-components';
 import { BigCheckbox, Xbox, DeepArrow, Notice } from '../img/Logo'; 
-import { FaBookOpen } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom'; 
 
 const PageContainer = styled.div`
@@ -743,67 +742,74 @@ useEffect(() => {
   <ModalBackground onClick={closeModal}>
     <NoticeModal onClick={(e) => e.stopPropagation()}>
       <ModalContent>
-        {/* 어학시험 데이터가 있을 때만 렌더링 */}
-        {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 ? (
-          <>
-            <ModalTitle>어학시험</ModalTitle>
-            <WrapperRow>
-              <Image src="/img/Book.svg" alt="Request" />
-              {modalContent.lang_test.basic.map((test, index) => (
-                <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                  <StyledP style={{ marginRight: '10px' }}>{test.test_name}</StyledP>
-                  <StyledP2>{test.test_basic_score}점 이상</StyledP2>
-                </div>
-              ))}
-            </WrapperRow>
-          </>
-        ) : (
-          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
-        )}
+        {/* 전체 내용이 없을 때 메시지 */}
+        {
+          !(
+            modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 ||
+            modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 ||
+            modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 ||
+            modalContent.requirement_description
+          ) ? (
+            <StyledP>상세 내용이 없습니다.</StyledP>
+          ) : (
+            <>
+              {/* 어학시험 데이터가 있을 때만 렌더링 */}
+              {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 ? (
+                <>
+                  <ModalTitle>어학시험</ModalTitle>
+                  <WrapperRow>
+                    <Image src="/img/Book.svg" alt="Request" />
+                    {modalContent.lang_test.basic.map((test, index) => (
+                      <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                        <StyledP style={{ marginRight: '10px' }}>{test.test_name}</StyledP>
+                        <StyledP2>{test.test_basic_score}점 이상</StyledP2>
+                      </div>
+                    ))}
+                  </WrapperRow>
+                </>
+              ) : null}
 
-        {/* 대체 가능한 시험이 있을 때만 렌더링 */}
-        {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 ? (
-          <WrapperRow>
-            <StyledP3>대체 가능 시험</StyledP3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
-              {modalContent.lang_test.etc.map((test, index) => (
-                <StyledP4 key={index}>
-                  {test.test_name} : {test.test_basic_score}
-                </StyledP4>
-              ))}
-            </div>
-          </WrapperRow>
-        ) : (
-          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
-        )}
+              {/* 대체 가능한 시험이 있을 때만 렌더링 */}
+              {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 ? (
+                <WrapperRow>
+                  <StyledP3>대체 가능 시험</StyledP3>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
+                    {modalContent.lang_test.etc.map((test, index) => (
+                      <StyledP4 key={index}>
+                        {test.test_name} : {test.test_basic_score}
+                      </StyledP4>
+                    ))}
+                  </div>
+                </WrapperRow>
+              ) : null}
 
-        {/* 추가 어학 시험이 있을 때만 렌더링 */}
-        {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 ? (
-          <>
-            <StyledP5>추가 어학 시험:</StyledP5>
-            {modalContent.extra_foreign_test.map((extraTest, index) => (
-              <StyledP6 key={index}>
-                {extraTest.extra_test_name}: {extraTest.extra_test_basic_score}
-              </StyledP6>
-            ))}
-          </>
-        ) : (
-          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
-        )}
+              {/* 추가 어학 시험이 있을 때만 렌더링 */}
+              {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 ? (
+                <>
+                  <StyledP5>추가 어학 시험:</StyledP5>
+                  {modalContent.extra_foreign_test.map((extraTest, index) => (
+                    <StyledP6 key={index}>
+                      {extraTest.extra_test_name}: {extraTest.extra_test_basic_score}
+                    </StyledP6>
+                  ))}
+                </>
+              ) : null}
 
-        {/* 기타 정보가 있을 때만 렌더링 */}
-        {modalContent.requirement_description ? (
-          <>
-            <StyledP5>기타</StyledP5>
-            <StyledP6>{modalContent.requirement_description}</StyledP6>
-          </>
-        ) : (
-          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
-        )}
+              {/* 기타 정보가 있을 때만 렌더링 */}
+              {modalContent.requirement_description ? (
+                <>
+                  <StyledP5>기타</StyledP5>
+                  <StyledP6>{modalContent.requirement_description}</StyledP6>
+                </>
+              ) : null}
+            </>
+          )
+        }
       </ModalContent>
     </NoticeModal>
   </ModalBackground>
 )}
+
 
 
     </PageContainer>
