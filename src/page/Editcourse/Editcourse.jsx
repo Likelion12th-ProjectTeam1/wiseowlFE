@@ -868,6 +868,7 @@ const ClassRow = ({
           flexBasis: "20%", // 고정된 비율로 넓이 설정
           marginLeft: "10px",
         }}
+        bordered={false}
         suffixIcon={
         <StyledIconWrapper>
           <Image src="/img/pen.svg" alt="pen" />
