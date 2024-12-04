@@ -333,19 +333,26 @@ const CustomSelect = styled(Select)`
 
 const GradeSelect = styled(Select)`
   // antd의 Select로 사용
-  width: 40px !important;
+  width: 60px !important;
   height: 30px !important;
   border: none !important;
   border-radius: 0 !important;
   margin-left: 18px;
   .ant-select-selector {
     height: 30px !important;
-    border-radius: 4px !important;
     color: #000 !important;
     display: flex;
     align-items: center;
     font-size: 13px;
+    border: none;
+    text-overflow : clip;
   }
+`;
+
+const StyledIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 8px; /* 아이콘과 값 사이의 간격 설정 */
 `;
 
 const CautionText = styled.h5`
@@ -861,7 +868,10 @@ const ClassRow = ({
           flexBasis: "20%", // 고정된 비율로 넓이 설정
           marginLeft: "10px",
         }}
-        suffixIcon={<Image src="/img/pen.svg" alt="pen" />}
+        suffixIcon={
+        <StyledIconWrapper>
+          <Image src="/img/pen.svg" alt="pen" />
+        </StyledIconWrapper>}
       >
         <Select.Option value="A+">A+</Select.Option>
         <Select.Option value="A">A</Select.Option>
