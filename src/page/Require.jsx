@@ -287,7 +287,7 @@ const WrapperRow = styled.div`
 
 
 const StyledP = styled.p`
-  font-size: 10px; 
+  font-size: 8px; 
   color: #000000;
   margin: 0;
   padding: 0;
@@ -346,7 +346,6 @@ export default function Require() {
   const handleNoticeClick = async (type, e) => {
     e.stopPropagation();
     console.log('Notice type:', type);  // type이 잘 전달되는지 확인
-  
 
 
     try {
@@ -366,6 +365,31 @@ export default function Require() {
       console.error('Error fetching modal data:', error);
     }
   };
+
+  useEffect(() => {
+    const mockData = {
+      major: {
+        requirement_description: "졸업프로젝트 FAIL시 졸업시험",
+        lang_test: {
+          basic: [
+            { test_name: "TOEIC", test_basic_score: "645점 이상" }
+          ],
+          etc: [
+            { test_name: "FLEX", test_basic_score: "551점 이상" },
+            { test_name: "FLEX Speaking", test_basic_score: "160점 이상" },
+            { test_name: "TOEIC Speaking", test_basic_score: "110점 이상" },
+            { test_name: "OPIC", test_basic_score: "IM1 이상" }
+          ]
+        },
+        extra_foreign_test: [
+          { extra_test_name: "시험 A", extra_test_basic_score: "100점 이상", extra_test_gubun: "종류 A" },
+          { extra_test_name: "시험 B", extra_test_basic_score: "200점 이상", extra_test_gubun: "종류 B" }
+        ]
+      }
+    };
+  
+    setModalContent(mockData); // 목데이터 설정
+  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -412,10 +436,14 @@ useEffect(() => {
 }, [viewType, navigate]);  // viewType 변경 시 effect 실행
 
 
+
+
+
+
 useEffect(() => {
   // Sample data from your JSON response, replace this with actual API call
   const fetchedData = {
-    profile_gibun: "이중전공",
+    profile_gibun: "부전공",
     main_major_conditions: {
       complete_requirment: [
         {
@@ -459,12 +487,12 @@ useEffect(() => {
     }
   };
 
-  
-
   setRequirements(fetchedData);
   setProfileGibun(fetchedData.profile_gibun);
   setCompleteRequirement(fetchedData.main_major_conditions.complete_requirment[0]);
 }, []);
+
+
 
   useEffect(() => {
     // navigate 함수는 페이지를 이동시키는 역할을 합니다.
@@ -479,6 +507,10 @@ useEffect(() => {
         if (response.data.main_major_conditions && response.data.main_major_conditions.complete_requirment) {
           setCompleteRequirement(response.data.main_major_conditions.complete_requirment[0]);
         }
+        if (response.data.profile_gibun && response.data.profile_gibun.length > 0) {
+          setProfileGibun(response.data.profile_gibun[0]); // 배열의 첫 번째 요소
+          console.log('Profile Gibun set to:', response.data.profile_gibun[0]);
+      }
 
         /// 'profile_gibun' 값에 "이중전공" 또는 "부전공"이 포함되었는지 확인
         if (response.data.profile_gibun) {
@@ -501,6 +533,8 @@ useEffect(() => {
           const liberalArtsCompletion = (completedCredits.liberal_credits / requiredCredits.liberal_graduation_credits) * 100;
           // 자율선택 이수율 계산
           const electiveCompletion = (completedCredits.elective_credits / (requiredCredits.liberal_graduation_credits + completedCredits.elective_credits)) * 100;
+
+        
 
           // 졸업 요건 총 학점도 계산
           setCompletionRates({
@@ -530,6 +564,10 @@ useEffect(() => {
 
   // 졸업 요건을 출력하는 함수
   const renderRequirements = (requirements, completeRequirement) => {
+    if (!requirements || !completeRequirement) {
+      return <div>요건 데이터가 없습니다.</div>; // 데이터가 없으면 메시지 표시
+    }
+
     return requirements.map((req, index) => (
       <RequirementBox key={index}>
         {/* 졸업 요건에 따라 '본전공' 또는 '이중전공'을 렌더링 */}
@@ -704,15 +742,13 @@ useEffect(() => {
       {isModalOpen && modalContent && (
   <ModalBackground onClick={closeModal}>
     <NoticeModal onClick={(e) => e.stopPropagation()}>
-
       <ModalContent>
-        {/* lang_test.basic이 있을 때만 ModalTitle과 Image를 렌더링 */}
-        {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 && (
+        {/* 어학시험 데이터가 있을 때만 렌더링 */}
+        {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 ? (
           <>
             <ModalTitle>어학시험</ModalTitle>
             <WrapperRow>
               <Image src="/img/Book.svg" alt="Request" />
-
               {modalContent.lang_test.basic.map((test, index) => (
                 <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                   <StyledP style={{ marginRight: '10px' }}>{test.test_name}</StyledP>
@@ -721,12 +757,14 @@ useEffect(() => {
               ))}
             </WrapperRow>
           </>
+        ) : (
+          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
         )}
 
         {/* 대체 가능한 시험이 있을 때만 렌더링 */}
-        {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 && (
+        {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 ? (
           <WrapperRow>
-            <StyledP3>대체 가능 시험 </StyledP3>
+            <StyledP3>대체 가능 시험</StyledP3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
               {modalContent.lang_test.etc.map((test, index) => (
                 <StyledP4 key={index}>
@@ -735,10 +773,12 @@ useEffect(() => {
               ))}
             </div>
           </WrapperRow>
+        ) : (
+          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
         )}
 
         {/* 추가 어학 시험이 있을 때만 렌더링 */}
-        {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 && (
+        {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 ? (
           <>
             <StyledP5>추가 어학 시험:</StyledP5>
             {modalContent.extra_foreign_test.map((extraTest, index) => (
@@ -747,20 +787,24 @@ useEffect(() => {
               </StyledP6>
             ))}
           </>
+        ) : (
+          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
         )}
 
         {/* 기타 정보가 있을 때만 렌더링 */}
-        {modalContent.requirement_description && (
+        {modalContent.requirement_description ? (
           <>
             <StyledP5>기타</StyledP5>
             <StyledP6>{modalContent.requirement_description}</StyledP6>
           </>
+        ) : (
+          <StyledP>상세 내용이 없습니다.</StyledP> // 데이터가 없을 때 메시지
         )}
       </ModalContent>
-
     </NoticeModal>
   </ModalBackground>
 )}
+
 
     </PageContainer>
   );

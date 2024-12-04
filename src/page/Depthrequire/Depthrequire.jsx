@@ -289,7 +289,7 @@ const DataRow = styled.div`
 const TitleRow = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;  
+  margin-top: 25px;  
   margin-bottom: 10px; 
   margin-left: -8px;
   width: 100%;
@@ -394,7 +394,12 @@ export default function DepthRequire() {
             liberalArts: requiredCredits.liberal_graduation_credits,
             elective: completedCredits.elective_credits + requiredCredits.liberal_graduation_credits // 자율선택 학점은 교양학점 + 자율선택 학점으로 계산
           }
+          
         });
+        if (response.data.profile_gibun && response.data.profile_gibun.length > 0) {
+          setProfileGibun(response.data.profile_gibun[0]); // 배열의 첫 번째 요소
+          console.log('Profile Gibun set to:', response.data.profile_gibun[0]);
+      }
       }
       } catch (err) {
         setError('데이터를 가져오는 중 오류가 발생했습니다.');
@@ -434,7 +439,7 @@ const isDoubleOrMinorView = viewType === 'double_or_minor';
    const filteredCourses = double_or_minor_required_courses.filter(course => {
      return course.subject_department_name; // 여기에 더 구체적인 조건을 추가할 수 있음
    });
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) return <Loading />;
   if (error) return <div>{error}</div>;
   
   return (
