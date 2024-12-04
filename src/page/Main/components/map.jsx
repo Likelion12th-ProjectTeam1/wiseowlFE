@@ -268,8 +268,17 @@ const SelectBottomContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding: 1px;
-  margin-left: 16px;
 `;
+
+
+const SelectContainer = styled.div`
+    width : 100%;
+    height : 70%;
+    display : flex;
+    flex-direction: row;
+    padding : 1px;
+`
+
 
 const FacilityContainer = styled.div`
     width: auto;
@@ -318,6 +327,8 @@ const ChooseContianer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+
 
 const HeaderContainer = styled.div`
   width: 100%;

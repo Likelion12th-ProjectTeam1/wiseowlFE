@@ -374,6 +374,12 @@ const FormContainer1 = styled.div`
   align-items: center;
 `;
 
+const Image = styled.image`
+  width: 11px;
+  height: 11.64px;
+  flex-shrink: 0;
+`
+
 export default function EditCourse() {
   const [forms, setForms] = useState(() => {
     // 로컬 스토리지에서 데이터 초기화
