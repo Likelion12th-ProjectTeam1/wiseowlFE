@@ -71,7 +71,9 @@ const AccountDeletionComponent = ({ onClose }) => {
       }
       // API 요청 (DELETE 메서드)
       await axiosInstance.delete("/api/accounts/withdraw-membership/", {
-        refresh_token: refreshToken, 
+        data: {
+          refresh_token: refreshToken,
+        },
       });
 
       cookies.remove("accessToken", { path: "/" });
