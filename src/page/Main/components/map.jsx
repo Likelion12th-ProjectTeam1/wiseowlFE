@@ -339,8 +339,8 @@ const HeaderContainer = styled.div`
 `;
 
 const CancleImg = styled.img`
-  width: 17px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   margin-left: 110px;
   cursor: pointer;
 `;
