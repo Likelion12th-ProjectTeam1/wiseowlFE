@@ -656,7 +656,6 @@ const ClassRow = ({ course, index, onFieldChange, onDelete, onCheckboxChange }) 
           marginLeft: "10px",
         }}
         bordered={false}
-        dropdownStyle={{ background: "none" }}
         suffixIcon={
         <StyledIconWrapper>
           <Image src="/img/pen.svg" alt="pen" />
