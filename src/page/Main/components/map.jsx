@@ -253,6 +253,14 @@ const SelectContainer = styled.div`
     flex-direction: row;
     padding : 1px;
 `
+
+const SelectContainertwo = styled.div`
+    width : 100%;
+    height : 70%;
+    display : flex;
+    flex-direction: row;
+    padding : 1px;
+`
 const FacilityContainer = styled.div`
     width: auto;
     height : 100%;
@@ -299,6 +307,8 @@ const ChooseContianer = styled.div`
   display: flex;
   flex-direction: column;
 `
+
+
 
 const HeaderContainer = styled.div`
   width : 100%;
@@ -413,7 +423,7 @@ const goToshoppingtwo = () => {
                 </SelectContainer>
 
                 {/* 두 번째 줄: 컴퓨터/복사기, 기타 */}
-                <SelectContainer>
+                <SelectContainertwo>
                   {data[activeBuilding].facilities_summary.facility_set
                     .filter((category) =>
                       ["컴퓨터/복사기", "기타"].includes(category.facility_category)
@@ -437,7 +447,7 @@ const goToshoppingtwo = () => {
                         </FacilityCount>
                       </FacilityContainer>
                     ))}
-                </SelectContainer>
+                </SelectContainertwo>
               </ChooseContianer> 
             </TitleContainer>
             <ContentContainer>
