@@ -333,7 +333,7 @@ const CustomSelect = styled(Select)`
 
 const GradeSelect = styled(Select)`
   // antd의 Select로 사용
-  width: 60px !important;
+  width: 70px !important;
   height: 30px !important;
   border: none !important;
   border-radius: 0 !important;
