@@ -373,6 +373,16 @@ export default function DepthRequire() {
         const response = await axiosInstance.get('/api/requirements/required-subject/');
         console.log('응답 데이터:', response.data); // 응답 데이터 확인
         setData(response.data);
+
+        /// 'profile_gibun' 값에 "이중전공" 또는 "부전공"이 포함되었는지 확인
+        if (response.data.profile_gibun) {
+          if (response.data.profile_gibun.includes('이중전공')) {
+            setProfileGibun('이중전공');
+          } else if (response.data.profile_gibun.includes('부전공')) {
+            setProfileGibun('부전공');
+          }
+        }
+        
         // 졸업 이수율 및 총 이수 학점 계산
       if (response.data.completed_credits && response.data.required_credits) {
         const completedCredits = response.data.completed_credits[0];
