@@ -3,6 +3,7 @@ import axiosInstance from '../auth/axiosInstance';
 import styled from 'styled-components';
 import { BigCheckbox, Xbox, DeepArrow, Notice } from '../img/Logo'; 
 import { useNavigate } from 'react-router-dom'; 
+import Loading from '../component/Loading';
 
 const PageContainer = styled.div`
   background-color: #F6F6F6;
@@ -559,7 +560,26 @@ useEffect(() => {
     fetchRequirements();
   }, []);
 
-  if (!requirements || !completeRequirement) return <div>로딩 중...</div>;
+  if (!requirements || !completeRequirement) return <Loading />;
+
+  // 모든 졸업 요건이 충족되었는지 확인하는 함수
+const areAllRequirementsMet = () => {
+  if (!requirements || !completeRequirement) return false;
+
+  const { graduation_foreign, graduation_project, graduation_exam, graduation_thesis, graduation_qualifications, graduation_requirments } = requirements.main_major_conditions.requirement[0];
+  const { grad_research, grad_exam, grad_pro, grad_certificate, for_language } = completeRequirement;
+
+  // 졸업 요건이 충족되지 않으면 false 반환
+  if (graduation_foreign && !for_language) return false;
+  if (graduation_project && !grad_pro) return false;
+  if (graduation_exam && !grad_exam) return false;
+  if (graduation_thesis && !grad_research) return false;
+  if (graduation_qualifications && !grad_certificate) return false;
+  if (graduation_requirments && !grad_requirments) return false;
+
+  return true; // 모든 요건이 충족되면 true
+};
+
 
   // 졸업 요건을 출력하는 함수
   const renderRequirements = (requirements, completeRequirement) => {
@@ -714,6 +734,12 @@ useEffect(() => {
           </NoticeContainer>
       </TitleWithArrow>
 
+      {/* 졸업 요건 체크 후 표시 */}
+      {areAllRequirementsMet() ? (
+        requirements.main_major_conditions && renderRequirements(requirements.main_major_conditions.requirement, completeRequirement)
+      ) : (
+        <div>졸업 요건이 없습니다.</div>  // 졸업 요건이 충족되지 않으면 이 메시지 표시
+      )}
 
       {requirements.main_major_conditions && renderRequirements(requirements.main_major_conditions.requirement, completeRequirement)}
 
@@ -809,8 +835,6 @@ useEffect(() => {
     </NoticeModal>
   </ModalBackground>
 )}
-
-
 
     </PageContainer>
   );
@@ -931,3 +955,4 @@ function ProgressBox({ title, profileGibun }) {
     </ProgressBoxContainer>
   );
 }
+

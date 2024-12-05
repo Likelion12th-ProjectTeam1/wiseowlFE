@@ -407,6 +407,15 @@ export default function DepthRequire() {
           console.log('Profile Gibun set to:', response.data.profile_gibun[0]);
       }
       }
+      /// 'profile_gibun' 값에 "이중전공" 또는 "부전공"이 포함되었는지 확인
+      if (response.data.profile_gibun) {
+        if (response.data.profile_gibun.includes('이중전공')) {
+          setProfileGibun('이중전공');
+        } else if (response.data.profile_gibun.includes('부전공')) {
+          setProfileGibun('부전공');
+        }
+      }
+
       } catch (err) {
         setError('데이터를 가져오는 중 오류가 발생했습니다.');
         console.error('데이터 가져오기 오류:', err);
@@ -493,24 +502,33 @@ const isDoubleOrMinorView = viewType === 'double_or_minor';
         </TitleRow2>
         {/* 과목 목록 */}
         <SubjectBox>
-        {viewType === 'main' && main_major_required_courses && main_major_required_courses.map((course) => (
-          <DataRow key={course.subject_department_code}>
-            <CompletionStatus isCompleted={course.completion_status}>
-              {course.completion_status ? '이수완료' : '미완료'}
-            </CompletionStatus>
-            <SubjectItem2>{course.subject_department_code}</SubjectItem2>
-            <SubjectItem>{course.subject_department_name}</SubjectItem>
-          </DataRow>
-        ))}
-        {viewType === 'double_or_minor' && filteredCourses && filteredCourses.map((course) => (
-          <DataRow key={course.subject_department_code}>
-            <CompletionStatus isCompleted={course.completion_status}>
-              {course.completion_status ? '이수완료' : '미완료'}
-            </CompletionStatus>
-            <SubjectItem2>{course.subject_department_code}</SubjectItem2>
-            <SubjectItem>{course.subject_department_name}</SubjectItem>
-          </DataRow>
-        ))}
+          {viewType === 'main' && main_major_required_courses && main_major_required_courses.length > 0 ? (
+            main_major_required_courses.map((course) => (
+              <DataRow key={course.subject_department_code}>
+                <CompletionStatus isCompleted={course.completion_status}>
+                  {course.completion_status ? '이수완료' : '미완료'}
+                </CompletionStatus>
+                <SubjectItem2>{course.subject_department_code}</SubjectItem2>
+                <SubjectItem>{course.subject_department_name}</SubjectItem>
+              </DataRow>
+            ))
+          ) : (
+            <div>필수과목이 없습니다.</div>  // 과목이 없을 때 메시지 표시
+          )}
+          
+          {viewType === 'double_or_minor' && filteredCourses && filteredCourses.length > 0 ? (
+            filteredCourses.map((course) => (
+              <DataRow key={course.subject_department_code}>
+                <CompletionStatus isCompleted={course.completion_status}>
+                  {course.completion_status ? '이수완료' : '미완료'}
+                </CompletionStatus>
+                <SubjectItem2>{course.subject_department_code}</SubjectItem2>
+                <SubjectItem>{course.subject_department_name}</SubjectItem>
+              </DataRow>
+            ))
+          ) : (
+            <div>필수과목이 없습니다.</div>  // 과목이 없을 때 메시지 표시
+          )}
         </SubjectBox>
 
         <Title5Container>
@@ -523,18 +541,24 @@ const isDoubleOrMinorView = viewType === 'double_or_minor';
           <MajorSubjectItem>영역</MajorSubjectItem>
           <MajorSubjectItem>교과목명</MajorSubjectItem>
         </TitleRow>
+
         <SubjectBox>
-          {liberal_required_courses.map((course) => (
-            <DataRow key={course.subject_gened_code}>
-              <CompletionStatus isCompleted={course.completion_status}>
-                {course.completion_status ? '이수완료' : '미완료'}
-              </CompletionStatus>
-              <SubjectItem>{course.subject_gened_code}</SubjectItem>
-              <SubjectItem>{course.gen_category_name}</SubjectItem>
-              <SubjectItem>{course.subject_gened_name}</SubjectItem>
-            </DataRow>
-          ))}
+          {liberal_required_courses && liberal_required_courses.length > 0 ? (
+            liberal_required_courses.map((course) => (
+              <DataRow key={course.subject_gened_code}>
+                <CompletionStatus isCompleted={course.completion_status}>
+                  {course.completion_status ? '이수완료' : '미완료'}
+                </CompletionStatus>
+                <SubjectItem>{course.subject_gened_code}</SubjectItem>
+                <SubjectItem>{course.gen_category_name}</SubjectItem>
+                <SubjectItem>{course.subject_gened_name}</SubjectItem>
+              </DataRow>
+            ))
+          ) : (
+            <div>필수과목이 없습니다.</div>  // 과목이 없을 때 메시지 표시
+          )}
         </SubjectBox>
+
         <ButtonContainer>
         <Button onClick={handleToggleView}>
         {viewType === 'main' ? `${majortype} 보기` : '본전공 보기'}
