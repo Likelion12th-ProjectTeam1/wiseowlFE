@@ -247,7 +247,6 @@ const CustomSelect = styled(Select)` // antd의 Select로 사용
   height: 30px !important;
   border: none !important;
   text-align: center;
-  font-size: 11px;
   border-radius: 0 !important;
   .ant-select-selector {
     height: 30px !important;
@@ -255,6 +254,7 @@ const CustomSelect = styled(Select)` // antd의 Select로 사용
     border: 2.811px solid #E8E8E8 !important;
     background: #FFF !important;
     color: #000 !important;
+    font-size: 11px !important;
     display: flex;
     align-items: center;
   }
@@ -624,8 +624,8 @@ const ClassRow = ({ course, index, onFieldChange, onDelete, onCheckboxChange }) 
       <input
         type="checkbox"
         style={{
-          width: "20px",
-          height: "20px",
+          width: "17px",
+          height: "17px",
           marginRight: "10px",
           flexShrink: 0, // 크기 고정
         }}
