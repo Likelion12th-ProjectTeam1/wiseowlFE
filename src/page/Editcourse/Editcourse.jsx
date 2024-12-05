@@ -556,7 +556,6 @@ export default function EditCourse() {
               ))}
         </FormArea>
         <AddFormButton onClick={addForm}>학기 추가하기</AddFormButton>
-        <EnterButton>수정완료</EnterButton>
       </FormContainer1>
     </Container>
   );
