@@ -86,7 +86,7 @@ const FirstCourse = styled.div`
 `;
 
 const CourseText = styled.h3`
-  font-size: 15px;
+  font-size: 14px;
   color: #737373;
   width: 100px;
   white-space: nowrap; /* 텍스트가 한 줄에만 표시되도록 설정 */
@@ -318,7 +318,6 @@ const CustomSelect = styled(Select)`
   height: 30px !important;
   border: none !important;
   text-align: center;
-  font-size: 11px;
   border-radius: 0 !important;
   .ant-select-selector {
     height: 30px !important;
@@ -326,6 +325,7 @@ const CustomSelect = styled(Select)`
     border: 2.811px solid #e8e8e8 !important;
     background: #fff !important;
     color: #000 !important;
+    font-size: 11px !important;
     display: flex;
     align-items: center;
   }
@@ -837,8 +837,8 @@ const ClassRow = ({
       <input
         type="checkbox"
         style={{
-          width: "20px",
-          height: "20px",
+          width: "17px",
+          height: "17px",
           marginRight: "10px",
           flexShrink: 0, // 크기 고정
         }}
