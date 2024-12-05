@@ -269,7 +269,7 @@ const MajorSubjectItem = styled.div`
 
 const SubjectBox = styled.div`
   width: 100%;
-  padding: 20px;
+  padding: 10px;
   background-color: #fff;
   border-radius: 5px;
   margin-top: 20px;
@@ -289,8 +289,8 @@ const DataRow = styled.div`
 const TitleRow = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 25px;  
-  margin-bottom: 10px; 
+  margin-top: 15px;  
+  margin-bottom: 5px; 
   margin-left: -8px;
   width: 100%;
   color: #868686;
@@ -321,9 +321,7 @@ const CompletionStatus = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  padding: 4px 0; /* 여백 추가 */
 `;
-
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -369,10 +367,6 @@ export default function DepthRequire() {
   const [profileGibun, setProfileGibun] = useState('');  // 기본값 설정
   const [viewType, setViewType] = useState(viewTypeFromRoute);  // 받아온 `viewType`을 상태에 설정
 
-
-
-
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -400,22 +394,8 @@ export default function DepthRequire() {
             liberalArts: requiredCredits.liberal_graduation_credits,
             elective: completedCredits.elective_credits + requiredCredits.liberal_graduation_credits // 자율선택 학점은 교양학점 + 자율선택 학점으로 계산
           }
-          
         });
-        if (response.data.profile_gibun && response.data.profile_gibun.length > 0) {
-          setProfileGibun(response.data.profile_gibun[0]); // 배열의 첫 번째 요소
-          console.log('Profile Gibun set to:', response.data.profile_gibun[0]);
       }
-      }
-      /// 'profile_gibun' 값에 "이중전공" 또는 "부전공"이 포함되었는지 확인
-      if (response.data.profile_gibun) {
-        if (response.data.profile_gibun.includes('이중전공')) {
-          setProfileGibun('이중전공');
-        } else if (response.data.profile_gibun.includes('부전공')) {
-          setProfileGibun('부전공');
-        }
-      }
-
       } catch (err) {
         setError('데이터를 가져오는 중 오류가 발생했습니다.');
         console.error('데이터 가져오기 오류:', err);
@@ -450,17 +430,12 @@ const handleToggleView = () => {
 // 이중전공/부전공 보기일 때, 전공명은 상관없이 처리
 const isDoubleOrMinorView = viewType === 'double_or_minor';
    
-// main_major_required_courses 또는 double_or_minor_required_courses 중 하나를 사용
-const filteredCourses = (main_major_required_courses || []).filter(course => course.subject);
-
-// 이 부분을 적절한 과목 리스트로 처리
-if (filteredCourses.length > 0) {
-  // 과목을 렌더링하는 부분
-} else {
-  return <div>필수과목이 없습니다.</div>;
-}
-
-
+   // 이중전공/부전공 과목 필터링 (이중전공 / 부전공에 해당하는 과목만)
+   const filteredCourses = double_or_minor_required_courses.filter(course => {
+     return course.subject_department_name; // 여기에 더 구체적인 조건을 추가할 수 있음
+   });
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>{error}</div>;
   
   return (
     <div>
@@ -507,33 +482,24 @@ if (filteredCourses.length > 0) {
         </TitleRow2>
         {/* 과목 목록 */}
         <SubjectBox>
-          {viewType === 'main' && main_major_required_courses && main_major_required_courses.length > 0 ? (
-            main_major_required_courses.map((course) => (
-              <DataRow key={course.subject_department_code}>
-                <CompletionStatus isCompleted={course.completion_status}>
-                  {course.completion_status ? '이수완료' : '미완료'}
-                </CompletionStatus>
-                <SubjectItem2>{course.subject_department_code}</SubjectItem2>
-                <SubjectItem>{course.subject_department_name}</SubjectItem>
-              </DataRow>
-            ))
-          ) : (
-            <div>필수과목이 없습니다.</div>  // 과목이 없을 때 메시지 표시
-          )}
-          
-          {viewType === 'double_or_minor' && filteredCourses && filteredCourses.length > 0 ? (
-            filteredCourses.map((course) => (
-              <DataRow key={course.subject_department_code}>
-                <CompletionStatus isCompleted={course.completion_status}>
-                  {course.completion_status ? '이수완료' : '미완료'}
-                </CompletionStatus>
-                <SubjectItem2>{course.subject_department_code}</SubjectItem2>
-                <SubjectItem>{course.subject_department_name}</SubjectItem>
-              </DataRow>
-            ))
-          ) : (
-            <div>필수과목이 없습니다.</div>  // 과목이 없을 때 메시지 표시
-          )}
+        {viewType === 'main' && main_major_required_courses && main_major_required_courses.map((course) => (
+          <DataRow key={course.subject_department_code}>
+            <CompletionStatus isCompleted={course.completion_status}>
+              {course.completion_status ? '이수완료' : '미완료'}
+            </CompletionStatus>
+            <SubjectItem2>{course.subject_department_code}</SubjectItem2>
+            <SubjectItem>{course.subject_department_name}</SubjectItem>
+          </DataRow>
+        ))}
+        {viewType === 'double_or_minor' && filteredCourses && filteredCourses.map((course) => (
+          <DataRow key={course.subject_department_code}>
+            <CompletionStatus isCompleted={course.completion_status}>
+              {course.completion_status ? '이수완료' : '미완료'}
+            </CompletionStatus>
+            <SubjectItem2>{course.subject_department_code}</SubjectItem2>
+            <SubjectItem>{course.subject_department_name}</SubjectItem>
+          </DataRow>
+        ))}
         </SubjectBox>
 
         <Title5Container>
@@ -546,24 +512,18 @@ if (filteredCourses.length > 0) {
           <MajorSubjectItem>영역</MajorSubjectItem>
           <MajorSubjectItem>교과목명</MajorSubjectItem>
         </TitleRow>
-
         <SubjectBox>
-          {liberal_required_courses && liberal_required_courses.length > 0 ? (
-            liberal_required_courses.map((course) => (
-              <DataRow key={course.subject_gened_code}>
-                <CompletionStatus isCompleted={course.completion_status}>
-                  {course.completion_status ? '이수완료' : '미완료'}
-                </CompletionStatus>
-                <SubjectItem>{course.subject_gened_code}</SubjectItem>
-                <SubjectItem>{course.gen_category_name}</SubjectItem>
-                <SubjectItem>{course.subject_gened_name}</SubjectItem>
-              </DataRow>
-            ))
-          ) : (
-            <div>필수과목이 없습니다.</div>  // 과목이 없을 때 메시지 표시
-          )}
+          {liberal_required_courses.map((course) => (
+            <DataRow key={course.subject_gened_code}>
+              <CompletionStatus isCompleted={course.completion_status}>
+                {course.completion_status ? '이수완료' : '미완료'}
+              </CompletionStatus>
+              <SubjectItem>{course.subject_gened_code}</SubjectItem>
+              <SubjectItem>{course.gen_category_name}</SubjectItem>
+              <SubjectItem>{course.subject_gened_name}</SubjectItem>
+            </DataRow>
+          ))}
         </SubjectBox>
-
         <ButtonContainer>
         <Button onClick={handleToggleView}>
         {viewType === 'main' ? `${majortype} 보기` : '본전공 보기'}
