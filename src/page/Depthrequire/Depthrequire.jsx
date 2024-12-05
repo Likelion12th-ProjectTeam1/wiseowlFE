@@ -450,12 +450,14 @@ const handleToggleView = () => {
 // 이중전공/부전공 보기일 때, 전공명은 상관없이 처리
 const isDoubleOrMinorView = viewType === 'double_or_minor';
    
-   // 이중전공/부전공 과목 필터링 (이중전공 / 부전공에 해당하는 과목만)
-   const filteredCourses = double_or_minor_required_courses.filter(course => {
-     return course.subject_department_name; // 여기에 더 구체적인 조건을 추가할 수 있음
-   });
-  if (loading) return <Loading />;
-  if (error) return <div>{error}</div>;
+const filteredCourses = requiredCourses.filter(course => course.subject);
+
+if (filteredCourses.length > 0) {
+  // 렌더링
+} else {
+  return <div>필수과목이 없습니다.</div>;
+}
+
   
   return (
     <div>
