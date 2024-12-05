@@ -116,7 +116,7 @@ const GradeText = styled.h4`
   font-family: Inter;
   font-size: 12px;
   font-weight: 500;
-  margin-left: 105px;
+  margin-left: 75px;
 `;
 
 const FormText = styled.h4`
