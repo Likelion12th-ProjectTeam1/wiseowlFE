@@ -320,9 +320,15 @@ export default function DashBoard({ data }) {
               <RateText>본전공 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
-              <RequireTitle>
-                <RequireText>졸업요건</RequireText>
-              </RequireTitle>
+              {data.major_requirements[0] || data.major_requirements[1] || data.major_requirements[2] ? (
+                <RequireTitle>
+                  <RequireText>졸업요건</RequireText>
+                </RequireTitle>)
+                : (
+                  <Requirement>
+                    <RequireText>졸업요건이 없습니다</RequireText>
+                  </Requirement>
+                )}  
               {data.major_requirements[0] && (
               <Requirement>
                 <RequireText>{data.major_requirements[0]}</RequireText>
