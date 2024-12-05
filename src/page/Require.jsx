@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../auth/axiosInstance';
 import styled from 'styled-components';
 import { BigCheckbox, Xbox, DeepArrow, Notice } from '../img/Logo'; 
+import { FaBookOpen } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom'; 
-import Loading from '../component/Loading';
 
 const PageContainer = styled.div`
   background-color: #F6F6F6;
@@ -287,7 +287,7 @@ const WrapperRow = styled.div`
 
 
 const StyledP = styled.p`
-  font-size: 8px; 
+  font-size: 12px; 
   color: #000000;
   margin: 0;
   padding: 0;
@@ -346,6 +346,7 @@ export default function Require() {
   const handleNoticeClick = async (type, e) => {
     e.stopPropagation();
     console.log('Notice type:', type);  // type이 잘 전달되는지 확인
+  
 
 
     try {
@@ -365,31 +366,6 @@ export default function Require() {
       console.error('Error fetching modal data:', error);
     }
   };
-
-  useEffect(() => {
-    const mockData = {
-      major: {
-        requirement_description: "졸업프로젝트 FAIL시 졸업시험",
-        lang_test: {
-          basic: [
-            { test_name: "TOEIC", test_basic_score: "645점 이상" }
-          ],
-          etc: [
-            { test_name: "FLEX", test_basic_score: "551점 이상" },
-            { test_name: "FLEX Speaking", test_basic_score: "160점 이상" },
-            { test_name: "TOEIC Speaking", test_basic_score: "110점 이상" },
-            { test_name: "OPIC", test_basic_score: "IM1 이상" }
-          ]
-        },
-        extra_foreign_test: [
-          { extra_test_name: "시험 A", extra_test_basic_score: "100점 이상", extra_test_gubun: "종류 A" },
-          { extra_test_name: "시험 B", extra_test_basic_score: "200점 이상", extra_test_gubun: "종류 B" }
-        ]
-      }
-    };
-  
-    setModalContent(mockData); // 목데이터 설정
-  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -436,64 +412,6 @@ useEffect(() => {
 }, [viewType, navigate]);  // viewType 변경 시 effect 실행
 
 
-
-
-
-
-useEffect(() => {
-  // Sample data from your JSON response, replace this with actual API call
-  const fetchedData = {
-    profile_gibun: "부전공",
-    main_major_conditions: {
-      complete_requirment: [
-        {
-          grad_research: false,
-          grad_exam: false,
-          grad_pro: false,
-          grad_certificate: false,
-          for_language: false
-        }
-      ],
-      requirement: [
-        {
-          graduation_foreign: true,
-          graduation_project: true,
-          graduation_exam: false,
-          graduation_thesis: true,
-          graduation_qualifications: false,
-          graduation_requirments: true
-        }
-      ]
-    },
-    double_minor_major_conditions: {
-      double_complete_requirment: [
-        {
-          double_grad_research: false,
-          double_grad_exam: false,
-          double_grad_pro: false,
-          double_grad_certificate: false,
-          double_for_language: false
-        }
-      ],
-      requirement: [
-        {
-          graduation_project: false,
-          graduation_exam: false,
-          graduation_thesis: true,
-          graduation_qualifications: false,
-          graduation_requirments: true
-        }
-      ]
-    }
-  };
-
-  setRequirements(fetchedData);
-  setProfileGibun(fetchedData.profile_gibun);
-  setCompleteRequirement(fetchedData.main_major_conditions.complete_requirment[0]);
-}, []);
-
-
-
   useEffect(() => {
     // navigate 함수는 페이지를 이동시키는 역할을 합니다.
 
@@ -507,10 +425,6 @@ useEffect(() => {
         if (response.data.main_major_conditions && response.data.main_major_conditions.complete_requirment) {
           setCompleteRequirement(response.data.main_major_conditions.complete_requirment[0]);
         }
-        if (response.data.profile_gibun && response.data.profile_gibun.length > 0) {
-          setProfileGibun(response.data.profile_gibun[0]); // 배열의 첫 번째 요소
-          console.log('Profile Gibun set to:', response.data.profile_gibun[0]);
-      }
 
         /// 'profile_gibun' 값에 "이중전공" 또는 "부전공"이 포함되었는지 확인
         if (response.data.profile_gibun) {
@@ -533,8 +447,6 @@ useEffect(() => {
           const liberalArtsCompletion = (completedCredits.liberal_credits / requiredCredits.liberal_graduation_credits) * 100;
           // 자율선택 이수율 계산
           const electiveCompletion = (completedCredits.elective_credits / (requiredCredits.liberal_graduation_credits + completedCredits.elective_credits)) * 100;
-
-        
 
           // 졸업 요건 총 학점도 계산
           setCompletionRates({
@@ -560,147 +472,125 @@ useEffect(() => {
     fetchRequirements();
   }, []);
 
-  if (!requirements || !completeRequirement) return <Loading />;
+  if (!requirements || !completeRequirement) return <div>로딩 중...</div>;
 
-  // 모든 졸업 요건이 충족되었는지 확인하는 함수
-const areAllRequirementsMet = () => {
-  if (!requirements || !completeRequirement) return false;
+  // 졸업 요건을 출력하는 함수
+  const renderRequirements = (requirements, completeRequirement) => {
+    return requirements.map((req, index) => (
+      <RequirementBox key={index}>
+        {/* 졸업 요건에 따라 '본전공' 또는 '이중전공'을 렌더링 */}
+        {req.graduation_foreign && (
 
-  const { graduation_foreign, graduation_project, graduation_exam, graduation_thesis, graduation_qualifications, graduation_requirments } = requirements.main_major_conditions.requirement[0];
-  const { grad_research, grad_exam, grad_pro, grad_certificate, for_language } = completeRequirement;
-  const req = requirements.main_major_conditions.requirement[0];
-  // 졸업 요건이 충족되지 않으면 false 반환
-  if (req.graduation_foreign && !completeRequirement.for_language) return false;
-  if (req.graduation_project && !completeRequirement.grad_pro) return false;
-  if (req.graduation_exam && !completeRequirement.grad_exam) return false;
-  if (req.graduation_thesis && !completeRequirement.grad_research) return false;
-  if (req.graduation_qualifications && !completeRequirement.grad_certificate) return false;
-  if (req.graduation_requirments && !completeRequirement.grad_requirments) return false;
-
-  return true; // 모든 요건이 충족되면 true
-};
-
-
-
-// renderRequirements에서 내용이 없을 경우 '졸업 요건이 없습니다' 메시지 출력
-const renderRequirements = (requirements, completeRequirement) => {
-  if (!requirements || !completeRequirement || requirements.length === 0) {
-    return <RequirementBox><div>졸업 요건이 없습니다.</div></RequirementBox>;
-  }
+          <RequirementRow>
+            {completeRequirement.for_langauge ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <BigCheckboxContainer>
+                <Xbox />
+              </BigCheckboxContainer>
+            )}
+              <RequirementContainer>
+              <RequirementTitle>어학시험 PASS</RequirementTitle>
+              </RequirementContainer>
 
 
-  return requirements.map((req, index) => (
-    <RequirementBox key={index}>
-      {/* 졸업 요건에 따라 '본전공' 또는 '이중전공'을 렌더링 */}
-      {req.graduation_foreign && (
-        <RequirementRow>
-          {completeRequirement.for_language ? (
-            <BigCheckboxContainer>
-              <BigCheckbox />
-            </BigCheckboxContainer>
-          ) : (
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-          )}
-          <RequirementContainer>
-            <RequirementTitle>어학시험 PASS</RequirementTitle>
-          </RequirementContainer>
-        </RequirementRow>
-      )}
+          </RequirementRow>
+        )}
 
-      {/* 졸업 프로젝트 */}
-      {req.graduation_project && (
-        <RequirementRow>
-          {completeRequirement.grad_pro ? (
-            <BigCheckboxContainer>
-              <BigCheckbox />
-            </BigCheckboxContainer>
-          ) : (
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-          )}
-          <RequirementContainer>
-            <RequirementTitle>졸업프로젝트 PASS</RequirementTitle>
-          </RequirementContainer>
-        </RequirementRow>
-      )}
+        {/* 졸업 프로젝트 */}
+        {req.graduation_project && (
+          <RequirementRow>
+            {completeRequirement.grad_pro ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <BigCheckboxContainer>
+                <Xbox />
+              </BigCheckboxContainer>
+            )}
+            <RequirementContainer>
+              <RequirementTitle>졸업프로젝트 PASS</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
 
-      {/* 졸업 시험 */}
-      {req.graduation_exam && (
-        <RequirementRow>
-          {completeRequirement.grad_exam ? (
-            <BigCheckboxContainer>
-              <BigCheckbox />
-            </BigCheckboxContainer>
-          ) : (
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-          )}
-          <RequirementContainer>
-            <RequirementTitle>졸업시험 PASS</RequirementTitle>
-          </RequirementContainer>
-        </RequirementRow>
-      )}
+        {/* 졸업 시험 */}
+        {req.graduation_exam && (
+          <RequirementRow>
+            {completeRequirement.grad_exam ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <BigCheckboxContainer>
+                <Xbox />
+              </BigCheckboxContainer>
+            )}
+            <RequirementContainer>
+              <RequirementTitle>졸업시험 PASS</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
 
-      {/* 졸업 논문 */}
-      {req.graduation_thesis && (
-        <RequirementRow>
-          {completeRequirement.grad_research ? (
-            <BigCheckboxContainer>
-              <BigCheckbox />
-            </BigCheckboxContainer>
-          ) : (
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-          )}
-          <RequirementContainer>
-            <RequirementTitle>졸업논문 제출</RequirementTitle>
-          </RequirementContainer>
-        </RequirementRow>
-      )}
+        {/* 졸업 논문 */}
+        {req.graduation_thesis && (
+          <RequirementRow>
+            {completeRequirement.grad_research ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <BigCheckboxContainer>
+                <Xbox />
+              </BigCheckboxContainer>
+            )}
+              <RequirementContainer>
+              <RequirementTitle>졸업논문 제출</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
 
-      {/* 졸업 자격증 */}
-      {req.graduation_qualifications && (
-        <RequirementRow>
-          {completeRequirement.grad_certificate ? (
-            <BigCheckboxContainer>
-              <BigCheckbox />
-            </BigCheckboxContainer>
-          ) : (
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-          )}
-          <RequirementContainer>
-            <RequirementTitle>졸업 자격증</RequirementTitle>
-          </RequirementContainer>
-        </RequirementRow>
-      )}
+        {/* 졸업 자격증 */}
+        {req.graduation_qualifications && (
+          <RequirementRow>
+            {completeRequirement.grad_certificate ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <BigCheckboxContainer>
+                <Xbox />
+              </BigCheckboxContainer>
+            )}
+            <RequirementContainer>
+              <RequirementTitle>졸업 자격증</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
 
-      {/* 졸업 필수과목 이수 */}
-      {req.graduation_requirments && (
-        <RequirementRow>
-          {completeRequirement.grad_requirments ? (
-            <BigCheckboxContainer>
-              <BigCheckbox />
-            </BigCheckboxContainer>
-          ) : (
-            <BigCheckboxContainer>
-              <Xbox />
-            </BigCheckboxContainer>
-          )}
-          <RequirementContainer>
-            <RequirementTitle>졸업 필수과목 이수</RequirementTitle>
-          </RequirementContainer>
-        </RequirementRow>
-      )}
-    </RequirementBox>
-  ));
-};
+        {/* 졸업 필수과목 이수 */}
+        {req.graduation_requirments && (
+          <RequirementRow>
+            {completeRequirement.grad_requirments ? (
+              <BigCheckboxContainer>
+                <BigCheckbox />
+              </BigCheckboxContainer>
+            ) : (
+              <BigCheckboxContainer>
+                <Xbox />
+              </BigCheckboxContainer>
+            )}
+            <RequirementContainer>
+              <RequirementTitle>졸업 필수과목 이수</RequirementTitle>
+            </RequirementContainer>
+          </RequirementRow>
+        )}
+      </RequirementBox>
+    ));
+  };
 
   return (
     <PageContainer>
@@ -733,7 +623,9 @@ const renderRequirements = (requirements, completeRequirement) => {
           </NoticeContainer>
       </TitleWithArrow>
 
-      
+
+      {requirements.main_major_conditions && renderRequirements(requirements.main_major_conditions.requirement, completeRequirement)}
+
       {/* 이중전공 섹션 */}
 
       {profileGibun && (
@@ -754,77 +646,64 @@ const renderRequirements = (requirements, completeRequirement) => {
     )}
   </>
 )}
-
-
       </Section2>
       {isModalOpen && modalContent && (
   <ModalBackground onClick={closeModal}>
     <NoticeModal onClick={(e) => e.stopPropagation()}>
+
       <ModalContent>
-        {/* 전체 내용이 없을 때 메시지 */}
-        {
-          !(
-            modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 ||
-            modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 ||
-            modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 ||
-            modalContent.requirement_description
-          ) ? (
-            <StyledP>상세 내용이 없습니다.</StyledP>
-          ) : (
-            <>
-              {/* 어학시험 데이터가 있을 때만 렌더링 */}
-              {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 ? (
-                <>
-                  <ModalTitle>어학시험</ModalTitle>
-                  <WrapperRow>
-                    <Image src="/img/Book.svg" alt="Request" />
-                    {modalContent.lang_test.basic.map((test, index) => (
-                      <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                        <StyledP style={{ marginRight: '10px' }}>{test.test_name}</StyledP>
-                        <StyledP2>{test.test_basic_score}점 이상</StyledP2>
-                      </div>
-                    ))}
-                  </WrapperRow>
-                </>
-              ) : null}
+        {/* lang_test.basic이 있을 때만 ModalTitle과 Image를 렌더링 */}
+        {modalContent.lang_test.basic && modalContent.lang_test.basic.length > 0 && (
+          <>
+            <ModalTitle>어학시험</ModalTitle>
+            <WrapperRow>
+              <Image src="/img/Book.svg" alt="Request" />
 
-              {/* 대체 가능한 시험이 있을 때만 렌더링 */}
-              {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 ? (
-                <WrapperRow>
-                  <StyledP3>대체 가능 시험</StyledP3>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
-                    {modalContent.lang_test.etc.map((test, index) => (
-                      <StyledP4 key={index}>
-                        {test.test_name} : {test.test_basic_score}
-                      </StyledP4>
-                    ))}
-                  </div>
-                </WrapperRow>
-              ) : null}
+              {modalContent.lang_test.basic.map((test, index) => (
+                <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                  <StyledP style={{ marginRight: '10px' }}>{test.test_name}</StyledP>
+                  <StyledP2>{test.test_basic_score}점 이상</StyledP2>
+                </div>
+              ))}
+            </WrapperRow>
+          </>
+        )}
 
-              {/* 추가 어학 시험이 있을 때만 렌더링 */}
-              {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 ? (
-                <>
-                  <StyledP5>추가 어학 시험:</StyledP5>
-                  {modalContent.extra_foreign_test.map((extraTest, index) => (
-                    <StyledP6 key={index}>
-                      {extraTest.extra_test_name}: {extraTest.extra_test_basic_score}
-                    </StyledP6>
-                  ))}
-                </>
-              ) : null}
+        {/* 대체 가능한 시험이 있을 때만 렌더링 */}
+        {modalContent.lang_test.etc && modalContent.lang_test.etc.length > 0 && (
+          <WrapperRow>
+            <StyledP3>대체 가능 시험 </StyledP3>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
+              {modalContent.lang_test.etc.map((test, index) => (
+                <StyledP4 key={index}>
+                  {test.test_name} : {test.test_basic_score}
+                </StyledP4>
+              ))}
+            </div>
+          </WrapperRow>
+        )}
 
-              {/* 기타 정보가 있을 때만 렌더링 */}
-              {modalContent.requirement_description ? (
-                <>
-                  <StyledP5>기타</StyledP5>
-                  <StyledP6>{modalContent.requirement_description}</StyledP6>
-                </>
-              ) : null}
-            </>
-          )
-        }
+        {/* 추가 어학 시험이 있을 때만 렌더링 */}
+        {modalContent.extra_foreign_test && modalContent.extra_foreign_test.length > 0 && (
+          <>
+            <StyledP5>추가 어학 시험:</StyledP5>
+            {modalContent.extra_foreign_test.map((extraTest, index) => (
+              <StyledP6 key={index}>
+                {extraTest.extra_test_name}: {extraTest.extra_test_basic_score}
+              </StyledP6>
+            ))}
+          </>
+        )}
+
+        {/* 기타 정보가 있을 때만 렌더링 */}
+        {modalContent.requirement_description && (
+          <>
+            <StyledP5>기타</StyledP5>
+            <StyledP6>{modalContent.requirement_description}</StyledP6>
+          </>
+        )}
       </ModalContent>
+
     </NoticeModal>
   </ModalBackground>
 )}
