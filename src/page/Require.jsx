@@ -287,7 +287,7 @@ const WrapperRow = styled.div`
 
 
 const StyledP = styled.p`
-  font-size: 14px; 
+  font-size: 12px; 
   color: #000000;
   margin: 0;
   padding: 0;
@@ -344,13 +344,15 @@ export default function Require() {
   const [modalContent, setModalContent] = useState(null);
   const navigate = useNavigate(); 
   const handleNoticeClick = async (type, e) => {
-    // 클릭 이벤트 전파 방지
     e.stopPropagation();
+    console.log('Notice type:', type);  // type이 잘 전달되는지 확인
+  
 
 
     try {
       const response = await axiosInstance.get('/api/requirements/i/');
       const data = response.data;
+      console.log('API Response:', data);
 
       // 타입에 따라 모달 내용 설정
       if (type === 'major') {
@@ -597,7 +599,11 @@ useEffect(() => {
         <Title>졸업진행도</Title>
         <ProgressContainer>
         <ProgressBox title={"본전공\n이수율"} progress={completionRates.major} total={completionRates.total.major} />
-          <ProgressBox title={"이중전공\n이수율"} progress={completionRates.doubleMajor} total={completionRates.total.doubleMajor} />
+        <ProgressBox 
+            title={profileGibun === "이중전공" ? "이중전공\n이수율" : "부전공\n이수율"} 
+            progress={completionRates.doubleMajor} 
+            total={completionRates.total.doubleMajor} 
+        />
           <ProgressBox title={"교양\n이수율"} progress={completionRates.liberalArts} total={completionRates.total.liberalArts} />
           <ProgressBox title={"자율선택\n이수학점"} progress={completionRates.elective} total={completionRates.total.elective} />
         </ProgressContainer>
@@ -821,3 +827,4 @@ function ProgressBox({ title, profileGibun }) {
     </ProgressBoxContainer>
   );
 }
+

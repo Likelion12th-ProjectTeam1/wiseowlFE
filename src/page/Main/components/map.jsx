@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
@@ -178,7 +178,7 @@ const TitleText = styled.h2`
 const ContentContainer = styled.div`
   width: 100%;
   height: 60%;
-  padding: 10px;
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -268,19 +268,29 @@ const SelectBottomContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding: 1px;
-  margin-left: 16px;
 `;
 
+
+const SelectContainer = styled.div`
+    width : 100%;
+    height : 70%;
+    display : flex;
+    flex-direction: row;
+    padding : 1px;
+`
+
+
 const FacilityContainer = styled.div`
-  width: 30%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  cursor: pointer;
-  margin-top: 2px;
-`;
+    width: auto;
+    height : 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    cursor: pointer;
+    margin-top: 2px;
+    margin-right: 20px;
+`
 
 const FacilityText = styled.h4`
   font-family: Inter;
@@ -318,6 +328,8 @@ const ChooseContianer = styled.div`
   flex-direction: column;
 `;
 
+
+
 const HeaderContainer = styled.div`
   width: 100%;
   height: 30%;
@@ -327,16 +339,18 @@ const HeaderContainer = styled.div`
 `;
 
 const CancleImg = styled.img`
-  width: 17px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   margin-left: 110px;
   cursor: pointer;
 `;
 
+// handleModal을 수정하여 모달 외부를 클릭하면 모달을 닫도록 함
 const Map = ({ data }) => {
   const [activeBuilding, setActiveBuilding] = useState(null); // 현재 활성화된 건물의 인덱스를 관리
   const [facilityList, setFacilityList] = useState([]);
   const mapRef = useRef(null);
+  const modalRef = useRef(null); // 모달의 참조 추가
   const navigate = useNavigate();
 
   const handleBuildingClick = (buildingIndex) => {
@@ -344,15 +358,10 @@ const Map = ({ data }) => {
 
     if (selectedBuilding && selectedBuilding.facilities_summary) {
       setActiveBuilding(buildingIndex); // 해당 건물을 클릭하면 그 건물만 모달이 열리도록
-      console.log(selectedBuilding);
-      console.log(selectedBuilding.facilities_summary);
-      console.log(activeBuilding);
-
       const allFacilities =
         selectedBuilding.facilities_summary.facility_set.find(
           (category) => category.facility_category === "전체"
         );
-
       setFacilityList(allFacilities ? allFacilities.facility_list : []);
     } else {
       console.error(`인덱스 ${buildingIndex}에 대한 정보가 없습니다.`);
@@ -360,27 +369,51 @@ const Map = ({ data }) => {
     }
   };
 
-  const handleMapClick = (e) => {
-    if (mapRef.current && mapRef.current.contains(e.target)) {
-      // setActiveBuilding(null);  // 맵 클릭 시 모든 모달을 닫음
-    }
-  };
-
-  const handleModal = (e) => {
+  const handleModal = () => {
     setActiveBuilding(null);
   };
 
-  const goToshopping = () => {
-    navigate("/shopping");
+  const handleModalClick = (e) => {
+    e.stopPropagation(); // 모달 클릭 시 이벤트 전파 막기
   };
+  
+  // TotalModal에 onClick 이벤트 추가
+  <TotalModal ref={modalRef} onClick={handleModalClick} />
+  
+  
 
-  const goToshoppingtwo = () => {
-    navigate("/shoppingtwo");
+  // 모달 외부 클릭 시 모달 닫기
+const handleClickOutside = (e) => {
+  if (
+    modalRef.current && !modalRef.current.contains(e.target) && 
+    mapRef.current && !mapRef.current.contains(e.target)
+  ) {
+    setActiveBuilding(null); // 모달 외부를 클릭하면 모달 닫기
+  }
+};
+
+useEffect(() => {
+  // 윈도우에서 클릭 이벤트를 감지
+  window.addEventListener("click", handleClickOutside);
+
+  // 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
+  return () => {
+    window.removeEventListener("click", handleClickOutside);
   };
+}, []);
 
-  return (
+const goToshopping = () => {
+  navigate('/shopping')
+}
+
+const goToshoppingtwo = () => {
+  navigate('/shoppingtwo')
+}
+
+
+   return (
     <ImageContainer>
-      <MapImage ref={mapRef} onClick={handleMapClick}>
+      <MapImage ref={mapRef}>
         {/* 각 건물의 클릭 이벤트에서 인덱스를 사용 */}
         <BuildingZero onClick={() => handleBuildingClick(0)} />
         <BuildingOne onClick={() => handleBuildingClick(1)} />
@@ -394,7 +427,7 @@ const Map = ({ data }) => {
 
         {/* 활성화된 건물에 대해서만 모달을 표시 */}
         {activeBuilding !== null && (
-          <TotalModal>
+          <TotalModal ref={modalRef}>
             <TitleContainer>
               <HeaderContainer>
                 <TitleText>
@@ -510,5 +543,6 @@ const Map = ({ data }) => {
     </ImageContainer>
   );
 };
+
 
 export default Map;

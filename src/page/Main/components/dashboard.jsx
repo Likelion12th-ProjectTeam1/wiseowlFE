@@ -320,9 +320,15 @@ export default function DashBoard({ data }) {
               <RateText>본전공 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
-              <RequireTitle>
-                <RequireText>졸업요건</RequireText>
-              </RequireTitle>
+              {data.major_requirements[0] || data.major_requirements[1] || data.major_requirements[2] ? (
+                <RequireTitle>
+                  <RequireText>졸업요건</RequireText>
+                </RequireTitle>)
+                : (
+                  <Requirement>
+                    <RequireText>졸업요건이 없습니다</RequireText>
+                  </Requirement>
+                )}  
               {data.major_requirements[0] && (
               <Requirement>
                 <RequireText>{data.major_requirements[0]}</RequireText>
@@ -375,15 +381,25 @@ export default function DashBoard({ data }) {
               <RateText>{data.gubun} 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
+            {data.double_requirements[0] || data.double_requirements[1] || data.double_requirements[2] ? (
               <RequireTitle>
                 <RequireText>졸업요건</RequireText>
-              </RequireTitle>
-              <Requirement>
-                <RequireText>{data.double_requirements[0]}</RequireText>
-              </Requirement>
-              <Requirement>
-                <RequireText>{data.double_requirements[1]}</RequireText>
-              </Requirement>
+              </RequireTitle>)
+              : (
+                <Requirement>
+                  <RequireText>졸업요건이 없습니다</RequireText>
+                </Requirement>
+              )}              
+              {data.double_requirements[0] && (
+                <Requirement>
+                  <RequireText>{data.double_requirements[0]}</RequireText>
+                </Requirement>
+              )}
+              {data.double_requirements[1] && (
+                <Requirement>
+                  <RequireText>{data.double_requirements[1]}</RequireText>
+                </Requirement>
+              )}
               {data.double_requirements[2] && (
                 <Requirement>
                   <RequireText>{data.double_requirements[2]}</RequireText>

@@ -116,7 +116,7 @@ const GradeText = styled.h4`
   font-family: Inter;
   font-size: 12px;
   font-weight: 500;
-  margin-left: 105px;
+  margin-left: 75px;
 `;
 
 const FormText = styled.h4`
@@ -247,7 +247,6 @@ const CustomSelect = styled(Select)` // antd의 Select로 사용
   height: 30px !important;
   border: none !important;
   text-align: center;
-  font-size: 11px;
   border-radius: 0 !important;
   .ant-select-selector {
     height: 30px !important;
@@ -255,6 +254,7 @@ const CustomSelect = styled(Select)` // antd의 Select로 사용
     border: 2.811px solid #E8E8E8 !important;
     background: #FFF !important;
     color: #000 !important;
+    font-size: 11px !important;
     display: flex;
     align-items: center;
   }
@@ -268,13 +268,22 @@ const GradeSelect = styled(Select)` // antd의 Select로 사용
   margin-left: 18px;
   .ant-select-selector {
     height: 30px !important;
-    border-radius: 4px !important;
-    border: 2.811px solid #E8E8E8 !important;
-    background: #FFF !important;
     color: #000 !important;
     display: flex;
     align-items: center;
   }
+`;
+
+const Image = styled.img`
+  width: 11px;
+  height: 11.64px;
+  flex-shrink: 0;
+`
+
+const StyledIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 8px; /* 아이콘과 값 사이의 간격 설정 */
 `;
 export default function InfoTwo() {
   const [forms, setForms] = useState(() => {
@@ -615,8 +624,8 @@ const ClassRow = ({ course, index, onFieldChange, onDelete, onCheckboxChange }) 
       <input
         type="checkbox"
         style={{
-          width: "20px",
-          height: "20px",
+          width: "17px",
+          height: "17px",
           marginRight: "10px",
           flexShrink: 0, // 크기 고정
         }}
@@ -646,6 +655,11 @@ const ClassRow = ({ course, index, onFieldChange, onDelete, onCheckboxChange }) 
           flexBasis: "20%", // 고정된 비율로 넓이 설정
           marginLeft: "10px",
         }}
+        bordered={false}
+        suffixIcon={
+        <StyledIconWrapper>
+          <Image src="/img/pen.svg" alt="pen" />
+        </StyledIconWrapper>}
       >
         <Select.Option value="A+">A+</Select.Option>
         <Select.Option value="A">A</Select.Option>

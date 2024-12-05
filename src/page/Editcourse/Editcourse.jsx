@@ -86,7 +86,7 @@ const FirstCourse = styled.div`
 `;
 
 const CourseText = styled.h3`
-  font-size: 15px;
+  font-size: 14px;
   color: #737373;
   width: 100px;
   white-space: nowrap; /* 텍스트가 한 줄에만 표시되도록 설정 */
@@ -100,7 +100,7 @@ const SecondCourse = styled.div`
   font-size: 15px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding-left: 5px;
   background: #FFF;
   box-shadow: 0px 0.246px 3.277px 0.246px rgba(0, 0, 0, 0.25);
 `;
@@ -318,7 +318,6 @@ const CustomSelect = styled(Select)`
   height: 30px !important;
   border: none !important;
   text-align: center;
-  font-size: 11px;
   border-radius: 0 !important;
   .ant-select-selector {
     height: 30px !important;
@@ -326,6 +325,7 @@ const CustomSelect = styled(Select)`
     border: 2.811px solid #e8e8e8 !important;
     background: #fff !important;
     color: #000 !important;
+    font-size: 11px !important;
     display: flex;
     align-items: center;
   }
@@ -340,13 +340,19 @@ const GradeSelect = styled(Select)`
   margin-left: 18px;
   .ant-select-selector {
     height: 30px !important;
-    border-radius: 4px !important;
-    border: 2.811px solid #e8e8e8 !important;
-    background: #fff !important;
     color: #000 !important;
     display: flex;
     align-items: center;
+    font-size: 13px;
+    border: none;
+    text-overflow : clip;
   }
+`;
+
+const StyledIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 8px; /* 아이콘과 값 사이의 간격 설정 */
 `;
 
 const CautionText = styled.h5`
@@ -374,6 +380,12 @@ const FormContainer1 = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const Image = styled.img`
+  width: 11px;
+  height: 11.64px;
+  flex-shrink: 0;
+`
 
 export default function EditCourse() {
   const [forms, setForms] = useState(() => {
@@ -544,7 +556,6 @@ export default function EditCourse() {
               ))}
         </FormArea>
         <AddFormButton onClick={addForm}>학기 추가하기</AddFormButton>
-        <EnterButton>수정완료</EnterButton>
       </FormContainer1>
     </Container>
   );
@@ -825,8 +836,8 @@ const ClassRow = ({
       <input
         type="checkbox"
         style={{
-          width: "20px",
-          height: "20px",
+          width: "17px",
+          height: "17px",
           marginRight: "10px",
           flexShrink: 0, // 크기 고정
         }}
@@ -856,6 +867,11 @@ const ClassRow = ({
           flexBasis: "20%", // 고정된 비율로 넓이 설정
           marginLeft: "10px",
         }}
+        bordered={false}
+        suffixIcon={
+        <StyledIconWrapper>
+          <Image src="/img/pen.svg" alt="pen" />
+        </StyledIconWrapper>}
       >
         <Select.Option value="A+">A+</Select.Option>
         <Select.Option value="A">A</Select.Option>
