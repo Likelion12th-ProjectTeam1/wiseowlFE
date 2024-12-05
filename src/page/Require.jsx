@@ -582,135 +582,125 @@ const areAllRequirementsMet = () => {
 
 
 
-  // 졸업 요건을 출력하는 함수
-  const renderRequirements = (requirements, completeRequirement) => {
-    if (!requirements || !completeRequirement) {
-      return <div>요건 데이터가 없습니다.</div>; // 데이터가 없으면 메시지 표시
-    }
-    // 요구사항이 없는 경우 메시지 표시
-  if (!requirements.length) {
-    return (
-      <RequirementBox>
-        <div>졸업 요건이 없습니다.</div>
-      </RequirementBox>
-    );
+// renderRequirements에서 내용이 없을 경우 '졸업 요건이 없습니다' 메시지 출력
+const renderRequirements = (requirements, completeRequirement) => {
+  if (!requirements || !completeRequirement || requirements.length === 0) {
+    return <RequirementBox><div>졸업 요건이 없습니다.</div></RequirementBox>;
   }
 
-    return requirements.map((req, index) => (
-      <RequirementBox key={index}>
-        {/* 졸업 요건에 따라 '본전공' 또는 '이중전공'을 렌더링 */}
-        {req.graduation_foreign && (
 
-          <RequirementRow>
-            {completeRequirement.for_langauge ? (
-              <BigCheckboxContainer>
-                <BigCheckbox />
-              </BigCheckboxContainer>
-            ) : (
-              <BigCheckboxContainer>
-                <Xbox />
-              </BigCheckboxContainer>
-            )}
-              <RequirementContainer>
-              <RequirementTitle>어학시험 PASS</RequirementTitle>
-              </RequirementContainer>
+  return requirements.map((req, index) => (
+    <RequirementBox key={index}>
+      {/* 졸업 요건에 따라 '본전공' 또는 '이중전공'을 렌더링 */}
+      {req.graduation_foreign && (
+        <RequirementRow>
+          {completeRequirement.for_language ? (
+            <BigCheckboxContainer>
+              <BigCheckbox />
+            </BigCheckboxContainer>
+          ) : (
+            <BigCheckboxContainer>
+              <Xbox />
+            </BigCheckboxContainer>
+          )}
+          <RequirementContainer>
+            <RequirementTitle>어학시험 PASS</RequirementTitle>
+          </RequirementContainer>
+        </RequirementRow>
+      )}
 
+      {/* 졸업 프로젝트 */}
+      {req.graduation_project && (
+        <RequirementRow>
+          {completeRequirement.grad_pro ? (
+            <BigCheckboxContainer>
+              <BigCheckbox />
+            </BigCheckboxContainer>
+          ) : (
+            <BigCheckboxContainer>
+              <Xbox />
+            </BigCheckboxContainer>
+          )}
+          <RequirementContainer>
+            <RequirementTitle>졸업프로젝트 PASS</RequirementTitle>
+          </RequirementContainer>
+        </RequirementRow>
+      )}
 
-          </RequirementRow>
-        )}
+      {/* 졸업 시험 */}
+      {req.graduation_exam && (
+        <RequirementRow>
+          {completeRequirement.grad_exam ? (
+            <BigCheckboxContainer>
+              <BigCheckbox />
+            </BigCheckboxContainer>
+          ) : (
+            <BigCheckboxContainer>
+              <Xbox />
+            </BigCheckboxContainer>
+          )}
+          <RequirementContainer>
+            <RequirementTitle>졸업시험 PASS</RequirementTitle>
+          </RequirementContainer>
+        </RequirementRow>
+      )}
 
-        {/* 졸업 프로젝트 */}
-        {req.graduation_project && (
-          <RequirementRow>
-            {completeRequirement.grad_pro ? (
-              <BigCheckboxContainer>
-                <BigCheckbox />
-              </BigCheckboxContainer>
-            ) : (
-              <BigCheckboxContainer>
-                <Xbox />
-              </BigCheckboxContainer>
-            )}
-            <RequirementContainer>
-              <RequirementTitle>졸업프로젝트 PASS</RequirementTitle>
-            </RequirementContainer>
-          </RequirementRow>
-        )}
+      {/* 졸업 논문 */}
+      {req.graduation_thesis && (
+        <RequirementRow>
+          {completeRequirement.grad_research ? (
+            <BigCheckboxContainer>
+              <BigCheckbox />
+            </BigCheckboxContainer>
+          ) : (
+            <BigCheckboxContainer>
+              <Xbox />
+            </BigCheckboxContainer>
+          )}
+          <RequirementContainer>
+            <RequirementTitle>졸업논문 제출</RequirementTitle>
+          </RequirementContainer>
+        </RequirementRow>
+      )}
 
-        {/* 졸업 시험 */}
-        {req.graduation_exam && (
-          <RequirementRow>
-            {completeRequirement.grad_exam ? (
-              <BigCheckboxContainer>
-                <BigCheckbox />
-              </BigCheckboxContainer>
-            ) : (
-              <BigCheckboxContainer>
-                <Xbox />
-              </BigCheckboxContainer>
-            )}
-            <RequirementContainer>
-              <RequirementTitle>졸업시험 PASS</RequirementTitle>
-            </RequirementContainer>
-          </RequirementRow>
-        )}
+      {/* 졸업 자격증 */}
+      {req.graduation_qualifications && (
+        <RequirementRow>
+          {completeRequirement.grad_certificate ? (
+            <BigCheckboxContainer>
+              <BigCheckbox />
+            </BigCheckboxContainer>
+          ) : (
+            <BigCheckboxContainer>
+              <Xbox />
+            </BigCheckboxContainer>
+          )}
+          <RequirementContainer>
+            <RequirementTitle>졸업 자격증</RequirementTitle>
+          </RequirementContainer>
+        </RequirementRow>
+      )}
 
-        {/* 졸업 논문 */}
-        {req.graduation_thesis && (
-          <RequirementRow>
-            {completeRequirement.grad_research ? (
-              <BigCheckboxContainer>
-                <BigCheckbox />
-              </BigCheckboxContainer>
-            ) : (
-              <BigCheckboxContainer>
-                <Xbox />
-              </BigCheckboxContainer>
-            )}
-              <RequirementContainer>
-              <RequirementTitle>졸업논문 제출</RequirementTitle>
-            </RequirementContainer>
-          </RequirementRow>
-        )}
-
-        {/* 졸업 자격증 */}
-        {req.graduation_qualifications && (
-          <RequirementRow>
-            {completeRequirement.grad_certificate ? (
-              <BigCheckboxContainer>
-                <BigCheckbox />
-              </BigCheckboxContainer>
-            ) : (
-              <BigCheckboxContainer>
-                <Xbox />
-              </BigCheckboxContainer>
-            )}
-            <RequirementContainer>
-              <RequirementTitle>졸업 자격증</RequirementTitle>
-            </RequirementContainer>
-          </RequirementRow>
-        )}
-
-        {/* 졸업 필수과목 이수 */}
-        {req.graduation_requirments && (
-          <RequirementRow>
-            {completeRequirement.grad_requirments ? (
-              <BigCheckboxContainer>
-                <BigCheckbox />
-              </BigCheckboxContainer>
-            ) : (
-              <BigCheckboxContainer>
-                <Xbox />
-              </BigCheckboxContainer>
-            )}
-            <RequirementContainer>
-              <RequirementTitle>졸업 필수과목 이수</RequirementTitle>
-            </RequirementContainer>
-          </RequirementRow>
-        )}
-      </RequirementBox>
-    ));
-  };
+      {/* 졸업 필수과목 이수 */}
+      {req.graduation_requirments && (
+        <RequirementRow>
+          {completeRequirement.grad_requirments ? (
+            <BigCheckboxContainer>
+              <BigCheckbox />
+            </BigCheckboxContainer>
+          ) : (
+            <BigCheckboxContainer>
+              <Xbox />
+            </BigCheckboxContainer>
+          )}
+          <RequirementContainer>
+            <RequirementTitle>졸업 필수과목 이수</RequirementTitle>
+          </RequirementContainer>
+        </RequirementRow>
+      )}
+    </RequirementBox>
+  ));
+};
 
   return (
     <PageContainer>
