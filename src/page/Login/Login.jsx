@@ -54,6 +54,7 @@ export default function Login() {
     const cookies = new Cookies();
     const navigate = useNavigate();
 
+    const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=359516737837-3ai4hvigr4b7l8dhm6s206mk95uoamda.apps.googleusercontent.com&redirect_uri=https://wiseowlone.vercel.app/googleLogin&response_type=code&scope=openid%20profile%20email`;
     // 엑세스/리프레시 토큰 확인 후 리다이렉트
     useEffect(() => {
         const accessToken = cookies.get('accessToken');
@@ -66,7 +67,7 @@ export default function Login() {
     }, [cookies, navigate]);
 
     const handleGoogleLogin = () => {
-        window.location.href = 'https://largeredjade.site/api/accounts/google/login/';
+        window.location.href = googleURL;
     };
 
     return (
