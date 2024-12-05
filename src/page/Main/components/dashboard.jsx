@@ -375,9 +375,15 @@ export default function DashBoard({ data }) {
               <RateText>{data.gubun} 이수율</RateText>
             </RateContainer>
             <RequirementsContainer>
+            {data.double_requirements[0] || data.double_requirements[1] || data.double_requirements[2] ? (
               <RequireTitle>
                 <RequireText>졸업요건</RequireText>
-              </RequireTitle>
+              </RequireTitle>)
+              : (
+                <Requirement>
+                  <RequireText>졸업요건이 없습니다</RequireText>
+                </Requirement>
+              )}              
               {data.double_requirements[0] && (
                 <Requirement>
                   <RequireText>{data.double_requirements[0]}</RequireText>
