@@ -373,23 +373,35 @@ const Map = ({ data }) => {
     setActiveBuilding(null);
   };
 
-  // 모달 외부 클릭 시 모달 닫기
-  const handleClickOutside = (e) => {
-    if (modalRef.current && !modalRef.current.contains(e.target) && !mapRef.current.contains(e.target)) {
-      setActiveBuilding(null); // 모달 외부를 클릭하면 모달 닫기
-    }
+  const handleModalClick = (e) => {
+    e.stopPropagation(); // 모달 클릭 시 이벤트 전파 막기
   };
+  
+  // TotalModal에 onClick 이벤트 추가
+  <TotalModal ref={modalRef} onClick={handleModalClick} />
+  
+  
 
-  // componentDidMount와 componentWillUnmount와 비슷한 기능을 할 수 있는 useEffect 추가
-  useEffect(() => {
-    // 윈도우에서 클릭 이벤트를 감지
-    window.addEventListener("click", handleClickOutside);
+  // 모달 외부 클릭 시 모달 닫기
+const handleClickOutside = (e) => {
+  if (
+    modalRef.current && !modalRef.current.contains(e.target) && 
+    mapRef.current && !mapRef.current.contains(e.target)
+  ) {
+    setActiveBuilding(null); // 모달 외부를 클릭하면 모달 닫기
+  }
+};
 
-    // 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
-    return () => {
-      window.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+useEffect(() => {
+  // 윈도우에서 클릭 이벤트를 감지
+  window.addEventListener("click", handleClickOutside);
+
+  // 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
+  return () => {
+    window.removeEventListener("click", handleClickOutside);
+  };
+}, []);
+
 
   return (
     <ImageContainer>
