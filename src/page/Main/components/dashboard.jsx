@@ -378,12 +378,16 @@ export default function DashBoard({ data }) {
               <RequireTitle>
                 <RequireText>졸업요건</RequireText>
               </RequireTitle>
-              <Requirement>
-                <RequireText>{data.double_requirements[0]}</RequireText>
-              </Requirement>
-              <Requirement>
-                <RequireText>{data.double_requirements[1]}</RequireText>
-              </Requirement>
+              {data.double_requirements[0] && (
+                <Requirement>
+                  <RequireText>{data.double_requirements[0]}</RequireText>
+                </Requirement>
+              )}
+              {data.double_requirements[1] && (
+                <Requirement>
+                  <RequireText>{data.double_requirements[1]}</RequireText>
+                </Requirement>
+              )}
               {data.double_requirements[2] && (
                 <Requirement>
                   <RequireText>{data.double_requirements[2]}</RequireText>
