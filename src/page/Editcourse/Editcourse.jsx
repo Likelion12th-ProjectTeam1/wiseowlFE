@@ -100,7 +100,7 @@ const SecondCourse = styled.div`
   font-size: 15px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding-right: 5px;
   background: #FFF;
   box-shadow: 0px 0.246px 3.277px 0.246px rgba(0, 0, 0, 0.25);
 `;
