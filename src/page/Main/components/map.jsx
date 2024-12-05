@@ -402,8 +402,16 @@ useEffect(() => {
   };
 }, []);
 
+const goToshopping = () => {
+  navigate('/shopping')
+}
 
-  return (
+const goToshoppingtwo = () => {
+  navigate('/shoppingtwo')
+}
+
+
+   return (
     <ImageContainer>
       <MapImage ref={mapRef}>
         {/* 각 건물의 클릭 이벤트에서 인덱스를 사용 */}
